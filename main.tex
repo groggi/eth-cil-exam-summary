@@ -102,7 +102,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $\matr{U}^T \matr{U} = I = \matr{V}^T \matr{V}$ ($\matr{U}, \matr{V}$ columns are orthonormal)
 	\item $\matr{U}$ columns are eigenvectors of $\matr{A} \matr{A}^T$, $\matr{V}$ columns are eigenvectors of $\matr{A}^T \matr{A}$, $\matr{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\matr{A}^T \matr{A}$ and $\matr{A} \matr{A}^T$ have the same eigenvalues)
 	\item $\matr{A}^T = \matr{V} \matr{D} \matr{U}^T$
-	\item $\matr{A}^T \matr{A} = \matr{A} \matr{D}^2 \matr{V}^T$
+	\item $\matr{A}^T \matr{A} = \matr{V} \matr{D}^2 \matr{V}^T$
 	\item $(\matr{D}^{-1})_{i,i} = \frac{1}{\matr{D}_{i, i}}$ ($\matr{D} \in \mathbb{R}^{N \times P} \to \matr{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
 \end{compactitem}
 
