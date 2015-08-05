@@ -163,7 +163,7 @@ Remember $\matr{x}$ here is just a vector with values and is not based on any ba
 
 \section{Norms}
 \begin{compactdesc}
-	\item[Euclidean:] $\|\matr{x}\|_2 := \sqrt{\sum_{i=1}^{N} \matr{x}_i^2} = \sqrt{\matr{x}^T \matr{x}}$
+	\item[Euclidean:] $\|\matr{x}\|_2 := \sqrt{\sum_{i=1}^{N} \matr{x}_i^2} = \sqrt{\matr{x}^T \matr{x}} = \sqrt{\langle \matr{x}, \matr{x} \rangle}$
 	\item[$p$-norm:] $\|\matr{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
 	\item[Frobenius:] $\|\matr{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\matr{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\matr{A}^T \matr{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\matr{A} \in \mathbb{R}^{M \times N}$
 \end{compactdesc}
