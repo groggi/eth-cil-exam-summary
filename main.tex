@@ -239,14 +239,18 @@ Minimize  $f(\matr{x})$ with subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m
 To find the best lower bound on the optimum $f(\matr{x}^\star)$ the dual problem $d(\matr{\lambda}, \matr{\nu})$ is maximized with subject to $\matr{\lambda} \geq \matr{0}$.
 
 \section{Matching Pursuit}
+\subsection{Over-Complete Dictionaries}
 Sparse approximation of a vector $\matr{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\matr{U}$ using $K$ dictionary entries.
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \matr{z} = \matr{0}$, Residual $\matr{r} = \matr{x}$
+	\item While $\|\matr{z}\|_0 < K$ repeat the following steps
 	\item Find dictionary entry with largest inner product between latest residual and a dictionary entry: $d^\star = \arg\,\max_d |\langle \matr{u}_d, \matr{r} \rangle|$
 	\item Update coefficients: $\matr{z}_{d^\star} = \matr{z}_{d^\star} + \langle \matr{u}_{d^\star}, \matr{r} \rangle$
 	\item Update residual: $\matr{r} = \matr{r} - \matr{z}_{d^\star} \matr{u}_{d^\star}$.
-	\item Repeat from (2.) while $\|\matr{z}\|_0 \leq K$ and $\|\matr{r}\|_2 > 0$.
 \end{compactenum}
+
+\subsection{Inpainting}
+TODO
 
 \section{Coherence ($m(\cdot)$)}
 \begin{compactitem}
