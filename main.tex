@@ -124,9 +124,11 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\matr
 \section{Basis Transform}
 Let $\matr{V}, \matr{W}$ be two matrices representing two basis (each column is a basis vector and they are invertible).
 
-The given vector $\matr{x}$ is represented by the \emph{coordinate vector} $\matr{a}$ in basis $\matr{V}$: $\matr{x} = \matr{V} \matr{a} \Rightarrow \matr{a} = \matr{V}^{-1} \matr{x}$. In other words: if we have a basis $\matr{V}$ and the vector $\matr{x}$ we can get the vector's representation in the basis $\matr{V}$ by calculating $\matr{a} = \matr{V}^{-1} \matr{x}$.
+The given vector $\matr{x}$ is represented by the \emph{coordinate vector} $\matr{a}$ in basis $\matr{V}$: $\matr{x} = \matr{V} \matr{a} \Rightarrow \matr{a} = \matr{V}^{-1} \matr{x}$.
 
-Remember $\matr{x}$ here is just a vector with values and is not based on any basis. Just an array of values! By calculating $\matr{a}$ we get a vector that represents these values based on a basis!
+Knowing $\matr{a}$ representing $\matr{x}$ for basis $\matr{V}$ we can get the coordinate vector $\matr{b}$ for basis $\matr{W}$ with: $\matr{x} = \matr{W}^{-1} \matr{b} = \matr{V}^{-1} \matr{a} \Rightarrow \matr{b} = \matr{W} \matr{V}^{-1} \matr{a}$.
+
+Remember $\matr{x}$ here is just a vector with values and is not based on any basis.
 
 \section{Matrix/Vector}
 \begin{compactdesc}
