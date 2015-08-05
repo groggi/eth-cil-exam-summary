@@ -244,9 +244,9 @@ Sparse approximation of a vector $\matr{x}$ onto an over-complete dictionary $\m
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \matr{z} = \matr{0}$, Residual $\matr{r} = \matr{x}$
 	\item While $\|\matr{z}\|_0 < K$ repeat the following steps
-	\item Find dictionary entry with largest inner product between latest residual and a dictionary entry: $d^\star = \arg\,\max_d |\langle \matr{u}_d, \matr{r} \rangle|$
+	\item Find dictionary entry with largest inner product between latest residual and a dictionary entry: $d^\star = \argmax_d |\langle \matr{u}_d, \matr{r} \rangle|$
 	\item Update coefficients: $\matr{z}_{d^\star} = \matr{z}_{d^\star} + \langle \matr{u}_{d^\star}, \matr{r} \rangle$
-	\item Update residual: $\matr{r} = \matr{r} - \matr{z}_{d^\star} \matr{u}_{d^\star}$.
+	\item Update residual: $\matr{r} = \matr{r} - \langle \matr{u}_{d^\star}, \matr{r} \rangle \matr{u}_{d^\star}$.
 \end{compactenum}
 
 \subsection{Inpainting}
