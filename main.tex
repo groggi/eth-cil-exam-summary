@@ -101,9 +101,13 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $\matr{A} \in \mathbb{R}^{N \times P}, \matr{U} \in \mathbb{R}^{N \times N}, \matr{D} \in \mathbb{R}^{N \times P}, \matr{V} \in \mathbb{R}^{P \times P}$
 	\item $\matr{U}^T \matr{U} = I = \matr{V}^T \matr{V}$ ($\matr{U}, \matr{V}$ columns are orthonormal)
 	\item $\matr{U}$ columns are eigenvectors of $\matr{A} \matr{A}^T$, $\matr{V}$ columns are eigenvectors of $\matr{A}^T \matr{A}$, $\matr{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\matr{A}^T \matr{A}$ and $\matr{A} \matr{A}^T$ have the same eigenvalues)
-	\item $\matr{A}^T = \matr{V} \matr{D}^T \matr{U}^T$
-	\item $\matr{A}^T \matr{A} = \matr{V} \matr{D}^T \matr{D} \matr{V}^T$
-	\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
+	{\setlength{\multicolsep}{0pt}
+		\begin{multicols*}{2}
+			\item $\matr{A}^T = \matr{V} \matr{D}^T \matr{U}^T$
+			\item $\matr{A}^T \matr{A} = \matr{V} \matr{D}^T \matr{D} \matr{V}^T$
+			\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
+		\end{multicols*}
+	}
 	\item $(\matr{D}^{-1})_{i,i} = \frac{1}{\matr{D}_{i, i}}$ ($\matr{D} \in \mathbb{R}^{N \times P} \to \matr{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
 \end{compactitem}
 
@@ -145,12 +149,16 @@ Remember $\matr{x}$ here is just a vector with values and is not based on any ba
 	\end{compactitem}
 	\item[Outer Product:] $\matr{u} \matr{v}^T$, $(\matr{u} \matr{v}^T)_{i, j} = \matr{u}_i \matr{v}_j$
 	\item[Transpose:]\hfill
-		\begin{compactitem}
-			\item $(\matr{A} + \matr{B})^T = \matr{A}^T + \matr{B}^T$
-			\item $(\matr{A}\matr{B})^T = \matr{B}^T \matr{A}^T$
-			\item $(\alpha \matr{A})^T = \alpha \matr{A}^T$
-			\item $(\matr{A}^T)^{-1} = (\matr{A}^{-1})^T$
-		\end{compactitem}
+	{\setlength{\multicolsep}{0pt}
+		\begin{multicols*}{2}
+			\begin{compactitem}
+				\item $(\matr{A} + \matr{B})^T = \matr{A}^T + \matr{B}^T$
+				\item $(\matr{A}\matr{B})^T = \matr{B}^T \matr{A}^T$
+				\item $(\alpha \matr{A})^T = \alpha \matr{A}^T$
+				\item $(\matr{A}^T)^{-1} = (\matr{A}^{-1})^T$
+			\end{compactitem}
+		\end{multicols*}
+	}
 \end{compactdesc}
 
 \section{Norms}
