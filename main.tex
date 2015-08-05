@@ -240,6 +240,15 @@ Sparse approximation of a vector $\matr{x}$ onto an over-complete dictionary $\m
 	\item Repeat from (2.) while $\|\matr{z}\|_0 \leq K$ and $\|\matr{r}\|_2 > 0$.
 \end{compactenum}
 
+\section{Coherence}
+\begin{compactitem}
+	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
+	\item $m(\matr{U}) = \max_{i,j:\, i \neq j} | \matr{u}_i^T \matr{u}_j |$
+	\item $m(\matr{B}) = 0$ if $\matr{B}$ is orthogonal matrix and a basis
+	\item $m([\matr{B}, \matr{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\matr{u}$ is added to orthogonal $\matr{B}$
+\end{compactitem}
+
+
 \section{TODOs}
 \url{https://en.wikipedia.org/wiki/Transpose#Special_transpose_matrices}
 
