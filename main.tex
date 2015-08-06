@@ -224,7 +224,7 @@ Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and
 Compare AIC/BIC for different values of $K$, best GMM is the one with smallest AIC/BIC.
 
 
-\subsection{Expectation-Maximization (EM)}
+\section{Expectation-Maximization (EM)}
 \begin{compactitem}
 	\item Expectation step: Assign data to parts of the model (e.g. assign data point to a mixture component)
 	\item Maximization step: Improve the model parameters based on the new assignment
@@ -232,7 +232,7 @@ Compare AIC/BIC for different values of $K$, best GMM is the one with smallest A
 	\item may not result in global maximum/optimum
 \end{compactitem}
 
-\subsubsection{EM for GMM}
+\subsection{EM for GMM}
 \begin{compactenum}
 	\item Initialize $\matr{\pi}_k^{(0)}, \matr{\mu}_k^{(0)}, \matr{\Sigma}_k, t = 1$ for $k = 1, \ldots, K$
 	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\matr{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_k^{(t-1)}, \matr{\Sigma}_k)}{\sum_{j=1}^K \matr{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_j^{(t-1)}, \matr{\Sigma}_j)}$
@@ -241,10 +241,10 @@ Compare AIC/BIC for different values of $K$, best GMM is the one with smallest A
 \end{compactenum}
 
 
-\subsubsection{EM for Inpainting}
+\subsection{EM for Inpainting}
 TODO
 
-\subsection{Haar Wavelet}
+\section{Haar Wavelet}
 \begin{compactdesc}
 	\item[Mother function:] $\psi(t)$ is $1$ for $0 \leq t < \frac{1}{2}$, $-1$ for $\frac{1}{2} \leq t < 1$, $0$ otherwise.
 	\item[Haar function:] $\psi_{n,k}(t) = 2^{n/2} \psi(2^n t - k)$, $2^{n/2}$ only needed if normalized values needed!
