@@ -104,7 +104,7 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 \section{Eigenvalue / -vectors}
 Eigenvalue Problem: $\matr{Ax} = \lambda \matr{x}$
 \begin{compactenum}
-	\item solve $(\matr{A} - \lambda \matr{I}) \matr{x} = \matr{0} \; \forall \matr{x} \neq \matr{0}$ by solving $\operatorname{det}(\matr{A} - \lambda \matr{I}) \overset{!}{=} 0$
+	\item solve $\operatorname{det}(\matr{A} - \lambda \matr{I}) \overset{!}{=} 0$ resulting in $\{\lambda_i\}_i$
 	\item $\forall \lambda_i$:
 		solve $(\matr{A} - \lambda_i \matr{I}) \matr{x}_i = \matr{0}$, $\matr{x}_i$ is the $i$-th eigenvector.
 	\item (opt.) normalize eigenvector $q_i$: $q_i^{\text{norm}} = \frac{1}{\|q_i\|_2} q_i$.
@@ -266,14 +266,14 @@ Update one coordinate (the $d$-th) at a time, others are fixed.
 	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $n$ uniformly from $1, \ldots, D$
-	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$
+	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$ ($\gamma \approx \frac{1}{t}$ is the stepsize)
 \end{compactenum}
 
 \subsection{Projected Gradient Descent}
 In the gradient update step use a projection into constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\matr{x}) = \argmin_{y \in Q} \|y - x\|$: $\matr{x}^{(t+1)} = P_Q\left(\matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})\right)$
 
 \subsection{Lagrangian Multipliers}
-Minimize  $f(\matr{x})$ with subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\matr{x}) = \matr{a}_i^T \matr{x} - b_i = 0,\ i = 1, \ldots, p$.
+Minimize  $f(\matr{x})$ subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\matr{x}) = \matr{a}_i^T \matr{x} - b_i = 0,\ i = 1, \ldots, p$.
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\matr{x}, \matr{\lambda}, \matr{\nu}) := f(\matr{x}) + \sum_{i=1}^m \lambda_i g_i(\matr{x}) + \sum_{i=1}^p \nu_i h_i(\matr{x})$
 	\item[Dual function:] $d(\matr{\lambda}, \matr{\nu}) := \inf_{\matr{x}} L(\matr{x}, \matr{\lambda}, \matr{\nu}) \in \mathbb{R}$
