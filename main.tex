@@ -41,6 +41,18 @@
   {\subcolorsection}
 \newcommand{\subcolorsection}[1]{%
 	\colorbox{orange!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesubsection\ #1}}}
+	
+% environment for multicols inside a list
+\newenvironment{listcols}[1]
+	{%
+		\bgroup %
+		\setlength{\multicolsep}{0pt} %
+		\begin{multicols*}{#1} %
+	}
+	{%
+		\end{multicols*} %
+		\egroup %
+	}
 
 % multicols lines & spacing
 \setlength{\columnsep}{0.2cm}
@@ -101,13 +113,11 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $\matr{A} \in \mathbb{R}^{N \times P}, \matr{U} \in \mathbb{R}^{N \times N}, \matr{D} \in \mathbb{R}^{N \times P}, \matr{V} \in \mathbb{R}^{P \times P}$
 	\item $\matr{U}^T \matr{U} = I = \matr{V}^T \matr{V}$ ($\matr{U}, \matr{V}$ columns are orthonormal)
 	\item $\matr{U}$ columns are eigenvectors of $\matr{A} \matr{A}^T$, $\matr{V}$ columns are eigenvectors of $\matr{A}^T \matr{A}$, $\matr{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\matr{A}^T \matr{A}$ and $\matr{A} \matr{A}^T$ have the same eigenvalues)
-	{\setlength{\multicolsep}{0pt}
-		\begin{multicols*}{2}
-			\item $\matr{A}^T = \matr{V} \matr{D}^T \matr{U}^T$
-			\item $\matr{A}^T \matr{A} = \matr{V} \matr{D}^T \matr{D} \matr{V}^T$
-			\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
-		\end{multicols*}
-	}
+	\begin{listcols}{2}
+		\item $\matr{A}^T = \matr{V} \matr{D}^T \matr{U}^T$
+		\item $\matr{A}^T \matr{A} = \matr{V} \matr{D}^T \matr{D} \matr{V}^T$
+		\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
+	\end{listcols}
 	\item $(\matr{D}^{-1})_{i,i} = \frac{1}{\matr{D}_{i, i}}$ ($\matr{D} \in \mathbb{R}^{N \times P} \to \matr{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
 \end{compactitem}
 
@@ -149,16 +159,14 @@ Remember $\matr{x}$ here is just a vector with values and is not based on any ba
 	\end{compactitem}
 	\item[Outer Product:] $\matr{u} \matr{v}^T$, $(\matr{u} \matr{v}^T)_{i, j} = \matr{u}_i \matr{v}_j$
 	\item[Transpose:]\hfill
-	{\setlength{\multicolsep}{0pt}
-		\begin{multicols*}{2}
-			\begin{compactitem}
-				\item $(\matr{A} + \matr{B})^T = \matr{A}^T + \matr{B}^T$
-				\item $(\matr{A}\matr{B})^T = \matr{B}^T \matr{A}^T$
-				\item $(\alpha \matr{A})^T = \alpha \matr{A}^T$
-				\item $(\matr{A}^T)^{-1} = (\matr{A}^{-1})^T$
-			\end{compactitem}
-		\end{multicols*}
-	}
+	\begin{listcols}{2}
+		\begin{compactitem}
+			\item $(\matr{A} + \matr{B})^T = \matr{A}^T + \matr{B}^T$
+			\item $(\matr{A}\matr{B})^T = \matr{B}^T \matr{A}^T$
+			\item $(\alpha \matr{A})^T = \alpha \matr{A}^T$
+			\item $(\matr{A}^T)^{-1} = (\matr{A}^{-1})^T$
+		\end{compactitem}
+	\end{listcols}
 \end{compactdesc}
 
 \section{Norms}
@@ -250,7 +258,15 @@ Sparse approximation of a vector $\matr{x}$ onto an over-complete dictionary $\m
 \end{compactenum}
 
 \subsection{Inpainting}
-TODO
+Diagonal matrix $\matr{M}$ with $\matr{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\matr{M}_{i,i} = 0$. Interested in $\matr{z}^\star \in \argmax_{\matr{z}} \|\matr{z}\|_0$ subject to $\|\matr{M}(\matr{x} - \matr{Uz})\|_2 < \sigma$. $\matr{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\matr{x}} = \matr{Mx} + (\matr{I} - \matr{M})\matr{U} \matr{z}^\star$.
+\begin{compactenum}
+	\item Initialize: Coefficient vector $\matr{z} = \matr{0}$, residual $\matr{r} = \matr{M}\matr{x}$.
+	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
+	\item $d^\star = \argmax_d \frac{|\langle \matr{M}\matr{u}_d, \matr{r}\rangle|}{\|\matr{M}\matr{u}_d\|_2}$
+	\item $\matr{z}_{d^\star} = \matr{z}_{d^\star} + \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2}$
+	\item $\matr{r} = \matr{r} - \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2} \matr{M}\matr{u}_{d^\star}$
+\end{compactenum}
+
 
 \section{Coherence ($m(\cdot)$)}
 \begin{compactitem}
