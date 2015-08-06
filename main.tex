@@ -129,6 +129,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 		\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
 	\end{listcols}
 	\item $(\matr{D}^{-1})_{i,i} = \frac{1}{\matr{D}_{i, i}}$ ($\matr{D} \in \mathbb{R}^{N \times P} \to \matr{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
+	\item Missing columns in $\matr{U}$ are basis of $\operatorname{null}(A^T)$ and in $\matr{V}$ are basis of $\operatorname{null}(A)$. Calculating: $\matr{A}^T \matr{u} = \matr{0}$ or $\matr{A} \matr{v} = \matr{0}$ for $\matr{u}$ or $\matr{v}$.
 \end{compactitem}
 
 \begin{compactenum}
