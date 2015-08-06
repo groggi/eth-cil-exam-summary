@@ -31,7 +31,7 @@
   {0pt}
   {\colorsection}
 \newcommand{\colorsection}[1]{%
-	\colorbox{blue!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesection\ #1}}}
+	\colorbox{red!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesection\ #1}}}
 
 
 \titleformat{name=\subsection}[block]
@@ -41,6 +41,15 @@
   {\subcolorsection}
 \newcommand{\subcolorsection}[1]{%
 	\colorbox{orange!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesubsection\ #1}}}
+
+
+\titleformat{name=\subsubsection}[block]
+  {\sffamily}
+  {}
+  {0pt}
+  {\subsubcolorsection}
+\newcommand{\subsubcolorsection}[1]{%
+	\colorbox{blue!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesubsubsection\ #1}}}
 	
 % environment for multicols inside a list
 \newenvironment{listcols}[1]
@@ -215,6 +224,9 @@ Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\fr
 	\item may not result in global maximum/optimum
 	\item TODO
 \end{compactitem}
+
+\subsubsection{EM for Inpainting}
+TODO
 
 \subsection{Haar Wavelet}
 \begin{compactdesc}
