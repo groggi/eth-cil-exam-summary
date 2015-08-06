@@ -149,11 +149,11 @@ Remember $\matr{x}$ here is just a vector with values and is not based on any ba
 \begin{compactdesc}
 	\item[Symmetric:] $\matr{A} = \matr{A}^T$
 	\item[Orthogonal (i.e. columns are orthonormal!):] $\matr{A}^{-1} = \matr{A}^T$, $\matr{A} \matr{A}^T = \matr{A}^T \matr{A} = \matr{I}$, $\operatorname{det}(\matr{A}) \in \{+1, -1\}$, $\operatorname{det}(\matr{A}^T \matr{A}) = 1$
-	\item[Inner Product:] (assuming everything in $\mathbb{R}^D$) $\left\langle \matr{x}, \matr{y} \right\rangle = \matr{x}^T \matr{y} = \sum_{i=1}^{N} \matr{x}_i \matr{y}_i$.
+	\item[Inner Product:] (assuming everything in $\mathbb{R}^D$) $\langle \matr{x}, \matr{y} \rangle = \matr{x}^T \matr{y} = \sum_{i=1}^{N} \matr{x}_i \matr{y}_i$.
 	\begin{compactitem}
-		\item $\left\langle \matr{x} \pm \matr{y}, \matr{x} \pm \matr{y} \right\rangle = \left\langle \matr{x}, \matr{x} \right\rangle \pm 2 \left\langle \matr{x}, \matr{y} \right\rangle + \left\langle \matr{y}, \matr{y} \right\rangle$
-		\item $\left\langle \matr{x}, \matr{y} + \matr{z} \right\rangle = \left\langle \matr{x}, \matr{y} \right\rangle + \left\langle \matr{x}, \matr{z} \right\rangle$
-		\item $\left\langle \matr{x} + \matr{y}, \matr{z} \right\rangle = \left\langle \matr{x}, \matr{z} \right\rangle + \left\langle \matr{y}, \matr{z} \right\rangle$
+		\item $\langle \matr{x} \pm \matr{y}, \matr{x} \pm \matr{y} \rangle = \langle \matr{x}, \matr{x} \rangle \pm 2 \langle \matr{x}, \matr{y} \rangle + \langle \matr{y}, \matr{y} \rangle$
+		\item $\langle \matr{x}, \matr{y} + \matr{z} \rangle = \langle \matr{x}, \matr{y} \rangle + \langle \matr{x}, \matr{z} \rangle$
+		\item $\langle \matr{x} + \matr{y}, \matr{z} \rangle = \langle \matr{x}, \matr{z} \rangle + \langle \matr{y}, \matr{z} \rangle$
 		\item If $\matr{y}$ is a unit vector then $\langle \matr{x}, \matr{y} \rangle$ projects $\matr{x}$ onto $\matr{y}$
 		\item $\langle \matr{x}, \matr{y} \rangle = |\matr{x}| \cdot |\matr{y}| \cdot \cos(\theta)$
 	\end{compactitem}
