@@ -242,13 +242,36 @@ TODO
 \end{compactitem}
 
 \section{Optimization}
+Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\matr{x}) := \left( \frac{\partial f(\matr{x})}{\partial \matr{x}_1}, \ldots, \frac{\partial f(\matr{x})}{\partial \matr{x}_D} \right)^T \in \mathbb{R}^D$
+
 \subsection{Convex Functions}
 A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $R^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
+
+\subsection{Coordinate Descent}
+Update one coordinate (the $d$-th) at a time, others are fixed.
+\begin{compactenum}
+	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
+	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
+	\item choose $d$ uniformly from $1, \ldots, D$
+	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, u, \ldots, x_D^{(t)})$
+	\item $\matr{x}_d^{(t+1)} = u^\star$ and $\matr{x}_i^{(t+1)} = \matr{x}_i^{(t)}$ for $i \neq d$
+\end{compactenum}
+
 \subsection{Gradient Descent}
-TODO
+\begin{compactenum}
+	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
+	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
+	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})$ ($\gamma \approx \frac{1}{t}$ is the stepsize)
+\end{compactenum}
 
 \subsection{Stochastic Gradient Descent}
-TODO
+\begin{compactenum}
+	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
+	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
+	\item choose $n$ uniformly from $1, \ldots, D$
+	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$
+\end{compactenum}
+
 
 \subsection{Lagrangian Multipliers}
 Minimize  $f(\matr{x})$ with subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\matr{x}) = \matr{a}_i^T \matr{x} - b_i = 0,\ i = 1, \ldots, p$.
