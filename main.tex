@@ -211,7 +211,18 @@ Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\fr
 	\item[] $p(\matr{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \Sigma_k)$
 	\item[Likelihood of observed data $\matr{X}$:] $p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) = \prod_{n=1}^N p(\matr{x}_n) = \prod_{n=1}^N \sum_{k=1}^N \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \matr{\Sigma}_k)$
 	\item[Log-likelihood:] $\log p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) =\break \sum_{i=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
+	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \matr{\pi}_k \mathcal{N}(\matr{x}_n | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
 \end{compactdesc}
+
+\subsection{AIC / BIC for GMM}
+Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
+\begin{compactdesc}
+	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \matr{X}) = -\ln p_\theta(\matr{X}) + \kappa(\theta)$
+	\item[Bayesian Information Criterion (BIC):] $-\ln(p_\theta(\matr{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
+	\item[\# of free params:] $\kappa(\theta) = K \cdot D + (K-1)$
+\end{compactdesc}
+Compare AIC/BIC for different values of $K$, best GMM is the one with smallest AIC/BIC.
+
 
 \subsection{Expectation-Maximization (EM)}
 \begin{compactitem}
