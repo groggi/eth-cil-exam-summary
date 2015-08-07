@@ -296,8 +296,8 @@ Minimize  $f(\matr{x})$ subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\matr{x}, \matr{\lambda}, \matr{\nu}) := f(\matr{x}) + \sum_{i=1}^m \lambda_i g_i(\matr{x}) + \sum_{i=1}^p \nu_i h_i(\matr{x})$
 	\item[Dual function:] $d(\matr{\lambda}, \matr{\nu}) := \inf_{\matr{x}} L(\matr{x}, \matr{\lambda}, \matr{\nu}) \in \mathbb{R}$
+	\item[Dual Problem:] Maximize $d(\matr{\lambda}, \matr{\nu})$ with $\boldsymbol{\lambda} \geq \matr{0}$. Result is lower bound of optimum $f(\matr{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite.
 \end{compactdesc}
-To find the best lower bound on the optimum $f(\matr{x}^\star)$ the dual problem $d(\matr{\lambda}, \matr{\nu})$ is maximized with subject to $\matr{\lambda} \geq \matr{0}$.
 
 \section{Matching Pursuit}
 \subsection{Over-Complete Dictionaries}
