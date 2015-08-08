@@ -139,7 +139,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 \end{compactenum}
 
 \subsection{Low-Rank approximation}
-Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\matr{A}}_{i, j} = \sum_{k}^K \matr{U}_{i, k} \matr{D}_{k,k} \matr{V}_{k, j}$.
+Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\matr{A}}_{i, j} = \sum_{k}^K \matr{U}_{i, k} \matr{D}_{k,k} \matr{V}_{j, k}$.
 \begin{compactdesc}
 	\item[Approx. Error Frobenius Norm:] $\|\matr{A} - \tilde{\matr{A}}\|_F = \sqrt{\sum_{i > K} \sigma_i^2} = \sqrt{\sum_{i > K} \lambda_i}$
 	\item[Approx. Error Euclidean Norm:] $\|\matr{A} - \tilde{\matr{A}}\|_2 = \sigma_{K+1}$ (i.e. largest singular value that was thrown away)
