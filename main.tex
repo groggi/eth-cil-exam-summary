@@ -92,6 +92,11 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 	\item Reverse centring: $\tilde{\matr{X}} = \tilde{\overline{\matr{X}}} + \matr{M}$
 \end{compactenum}
 
+\begin{compactitem}
+	\item For compression save $\matr{U}_k, \overline{\matr{Z}}, \overline{\matr{x}}$.
+	\item $\matr{U}_k \in \mathbb{R}^{D \times K}, \matr{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\matr{Z}} \in \mathbb{R}^{K \times N}, \overline{\matr{X}} \in \mathbb{R}^{D \times N}$
+\end{compactitem}
+
 \begin{compactdesc}
 	\item[Approx. Error:] Sum of discarded eigenvalues
 \end{compactdesc}
@@ -299,7 +304,7 @@ Minimize  $f(\matr{x})$ subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and
 	\item[Dual Problem:] Maximize $d(\matr{\lambda}, \matr{\nu})$ with $\boldsymbol{\lambda} \geq \matr{0}$. Result is lower bound of optimum $f(\matr{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite.
 \end{compactdesc}
 
-\section{Matching Pursuit}
+\section{Matching Pursuit (MP)}
 \subsection{Over-Complete Dictionaries}
 Sparse approximation of a vector $\matr{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\matr{U}$ using $K$ dictionary entries.
 \begin{compactenum}
