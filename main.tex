@@ -213,11 +213,19 @@ Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\fr
 
 \section{Gaussian Mixture Models (GMM)}
 \begin{compactdesc}
-	\item[] $p(\matr{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \Sigma_k)$
+	\item[GMM:] $p(\matr{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \Sigma_k)$
+	\item[Assignment variable:] $\matr{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \matr{z}_k = 1$, $\operatorname{Pr}(\matr{z}_k = 1) = \matr{\pi}_k \Leftrightarrow p(\matr{z}) = \prod_{k=1}^K \matr{\pi}_k^{\matr{z}_k}$
+	\item[Complete data distribution:] $p(\matr{x}, \matr{z}) = \prod_{k=1}^K \left( \matr{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\matr{z}_k}$
+	\item[Posterior Probabilities:] $\operatorname{Pr}(\matr{z}_k = 1 | \matr{x}) = \frac{\operatorname{Pr}(\matr{z}_k = 1) p(\matr{x} | \matr{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\matr{z}_l = 1) p(\matr{x} | \matr{z}_l = 1)} = \frac{\matr{\pi}_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \matr{\pi}_l \mathcal{N}(\matr{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
 	\item[Likelihood of observed data $\matr{X}$:] $p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) = \prod_{n=1}^N p(\matr{x}_n) = \prod_{n=1}^N \sum_{k=1}^N \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \matr{\Sigma}_k)$
 	\item[Log-likelihood:] $\log p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) =\break \sum_{i=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
 	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \matr{\pi}_k \mathcal{N}(\matr{x}_n | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
 \end{compactdesc}
+\begin{compactitem}
+	\item Generative: given $\matr{z}$, generate $\matr{x}$
+	\item Inference: given $\matr{x}$, infer $\matr{z}$
+\end{compactitem}
+
 
 \subsection{AIC / BIC for GMM}
 Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
