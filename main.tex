@@ -232,7 +232,7 @@ Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and
 \begin{compactdesc}
 	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \matr{X}) = -\ln p_\theta(\matr{X}) + \kappa(\theta)$
 	\item[Bayesian Information Criterion (BIC):] $-\ln(p_\theta(\matr{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
-	\item[\# of free params:] $\kappa(\theta) = K \cdot D + (K-1)$
+	\item[\# of free params:] $\kappa(\theta) = K \cdot D + T$ ($K$ number of clusters, $D$ number of $\mu$'s, $T$ number of not fixed $\pi$'s (usually $T=(K-1)$ as the last $\pi$ is defined by the others (sum up to $1$)))
 \end{compactdesc}
 Compare AIC/BIC for different values of $K$, best GMM is the one with smallest AIC/BIC.
 
