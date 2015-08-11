@@ -84,8 +84,8 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 \begin{compactenum}
 	\item Empirical Mean: $\overline{\matr{x}} = \frac{1}{N} \sum_{n=1}^N \matr{x}_n$
 	\item Center Data: $\overline{\matr{X}} = \matr{X} - [\overline{\matr{x}}, \ldots, \overline{\matr{x}}] = \matr{X} - \matr{M}$
-	\item Covariance Matrix: $\matr{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\matr{x}_n - \overline{\matr{x}}) (\matr{x}_n - \overline{\matr{x}})^T = \frac{1}{N} \overline{\matr{X}}\overline{\matr{X}}^T$
-	\item Eigenvalue Decomposition: $\matr{\Sigma} = \matr{U \Lambda U}^T$, sort eigenvalues (and eigenvectors) in descending order
+	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\matr{x}_n - \overline{\matr{x}}) (\matr{x}_n - \overline{\matr{x}})^T = \frac{1}{N} \overline{\matr{X}}\overline{\matr{X}}^T$
+	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \matr{U \Lambda U}^T$, sort eigenvalues (and eigenvectors) in descending order
 	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \matr{U}_K, \matr{\Lambda}_K$
 	\item Transform data onto new Basis: $\overline{\matr{Z}} = \matr{U}_K^T \overline{\matr{X}}$
 	\item Reconstruct to original Basis: $\tilde{\overline{\matr{X}}} = \matr{U}_k \overline{\matr{Z}}$
@@ -94,7 +94,7 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 
 \begin{compactitem}
 	\item For compression save $\matr{U}_k, \overline{\matr{Z}}, \overline{\matr{x}}$.
-	\item $\matr{U}_k \in \mathbb{R}^{D \times K}, \matr{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\matr{Z}} \in \mathbb{R}^{K \times N}, \overline{\matr{X}} \in \mathbb{R}^{D \times N}$
+	\item $\matr{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\matr{Z}} \in \mathbb{R}^{K \times N}, \overline{\matr{X}} \in \mathbb{R}^{D \times N}$
 \end{compactitem}
 
 \begin{compactdesc}
@@ -214,13 +214,13 @@ Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\fr
 
 \section{Gaussian Mixture Models (GMM)}
 \begin{compactdesc}
-	\item[GMM:] $p(\matr{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \Sigma_k)$
-	\item[Assignment variable:] $\matr{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \matr{z}_k = 1$, $\operatorname{Pr}(\matr{z}_k = 1) = \matr{\pi}_k \Leftrightarrow p(\matr{z}) = \prod_{k=1}^K \matr{\pi}_k^{\matr{z}_k}$
-	\item[Complete data distribution:] $p(\matr{x}, \matr{z}) = \prod_{k=1}^K \left( \matr{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\matr{z}_k}$
-	\item[Posterior Probabilities:] $\operatorname{Pr}(\matr{z}_k = 1 | \matr{x}) = \frac{\operatorname{Pr}(\matr{z}_k = 1) p(\matr{x} | \matr{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\matr{z}_l = 1) p(\matr{x} | \matr{z}_l = 1)} = \frac{\matr{\pi}_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \matr{\pi}_l \mathcal{N}(\matr{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
-	\item[Likelihood of observed data $\matr{X}$:] $p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) = \prod_{n=1}^N p(\matr{x}_n) = \prod_{n=1}^N \sum_{k=1}^N \pi_k \mathcal{N}(\matr{x} | \matr{\mu}_k, \matr{\Sigma}_k)$
-	\item[Log-likelihood:] $\log p(\matr{X} | \matr{\pi}, \matr{\mu}, \matr{\Sigma}) =\break \sum_{i=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
-	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \matr{\pi}_k \mathcal{N}(\matr{x}_n | \matr{\mu}_k, \matr{\Sigma}_k) \right)$
+	\item[GMM:] $p(\matr{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \Sigma_k)$
+	\item[Assignment variable:] $\matr{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \matr{z}_k = 1$, $\operatorname{Pr}(\matr{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\matr{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\matr{z}_k}$
+	\item[Complete data distribution:] $p(\matr{x}, \matr{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\matr{z}_k}$
+	\item[Posterior Probabilities:] $\operatorname{Pr}(\matr{z}_k = 1 | \matr{x}) = \frac{\operatorname{Pr}(\matr{z}_k = 1) p(\matr{x} | \matr{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\matr{z}_l = 1) p(\matr{x} | \matr{z}_l = 1)} = \frac{\boldsymbol{\pi}_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \boldsymbol{\pi}_l \mathcal{N}(\matr{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
+	\item[Likelihood of observed data $\matr{X}$:] $p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \prod_{n=1}^N p(\matr{x}_n) = \prod_{n=1}^N \sum_{k=1}^N \pi_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$
+	\item[Log-likelihood:] $\log p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
+	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \boldsymbol{\pi}_k \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
 \end{compactdesc}
 \begin{compactitem}
 	\item Generative: given $\matr{z}$, generate $\matr{x}$
@@ -248,10 +248,10 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 
 \subsection{EM for GMM}
 \begin{compactenum}
-	\item Initialize $\matr{\pi}_k^{(0)}, \matr{\mu}_k^{(0)}, \matr{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
-	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\matr{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_k^{(t-1)}, \matr{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \matr{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_j^{(t-1)}, \matr{\Sigma}_j^{(t-1)})}$
-	\item M-Step: $\matr{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \matr{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\matr{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\matr{x}_n - \boldsymbol{\mu}_k^{(t)})(\matr{x}_k - \boldsymbol{\mu}_k^{(t)})^T}{\sum_{n=1}^N q_{k,n}}$
-	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\matr{X} | \matr{\pi}^{(t)}, \matr{\mu}^{(t)}, \matr{\Sigma}^{(t)}) - \log p(\matr{X} | \matr{\pi}^{(t-1)}, \matr{\mu}^{(t-1)}, \matr{\Sigma}^{(t-1)}) \| < \epsilon$
+	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
+	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
+	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \matr{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\matr{x}_n - \boldsymbol{\mu}_k^{(t)})(\matr{x}_k - \boldsymbol{\mu}_k^{(t)})^T}{\sum_{n=1}^N q_{k,n}}$
+	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\matr{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\matr{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
 
