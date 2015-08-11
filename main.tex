@@ -86,7 +86,7 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 	\item Center Data: $\overline{\matr{X}} = \matr{X} - [\overline{\matr{x}}, \ldots, \overline{\matr{x}}] = \matr{X} - \matr{M}$
 	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\matr{x}_n - \overline{\matr{x}}) (\matr{x}_n - \overline{\matr{x}})^T = \frac{1}{N} \overline{\matr{X}}\overline{\matr{X}}^T$
 	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \matr{U \Lambda U}^T$, sort eigenvalues (and eigenvectors) in descending order
-	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \matr{U}_K, \matr{\Lambda}_K$
+	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \matr{U}_K, \boldsymbol{\lambda}_K$
 	\item Transform data onto new Basis: $\overline{\matr{Z}} = \matr{U}_K^T \overline{\matr{X}}$
 	\item Reconstruct to original Basis: $\tilde{\overline{\matr{X}}} = \matr{U}_k \overline{\matr{Z}}$
 	\item Reverse centring: $\tilde{\matr{X}} = \tilde{\overline{\matr{X}}} + \matr{M}$
@@ -116,9 +116,9 @@ Eigenvalue Problem: $\matr{Ax} = \lambda \matr{x}$
 \end{compactenum}
 
 \section{Eigendecomposition}
-$\matr{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\matr{A} = \matr{Q \Lambda Q}^{-1}$. $\matr{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\matr{A}$. $\matr{\Lambda}$ is diagonal and $\matr{\Lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
-$\matr{A}^{-1} = \matr{Q} \matr{\Lambda}^{-1} \matr{Q}^{-1}$, $\left[ \matr{\Lambda}^{-1} \right]_{i,i} = \frac{1}{\lambda_i}$ 
-Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\matr{Q}$ and eigenvalues into the diagonal of $\matr{\Lambda}$.
+$\matr{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\matr{A} = \matr{Q \Lambda Q}^{-1}$. $\matr{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\matr{A}$. $\boldsymbol{\lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
+$\matr{A}^{-1} = \matr{Q} \boldsymbol{\lambda}^{-1} \matr{Q}^{-1}$, $\left[ \boldsymbol{\lambda}^{-1} \right]_{i,i} = \frac{1}{\lambda_i}$ 
+Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\matr{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\lambda}$.
 
 \section{SVD}
 \begin{compactitem}
@@ -308,9 +308,9 @@ In the gradient update step use a projection into constraint space $Q \subseteq 
 \subsection{Lagrangian Multipliers}
 Minimize  $f(\matr{x})$ subject to $g_i(\matr{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\matr{x}) = \matr{a}_i^T \matr{x} - b_i = 0,\ i = 1, \ldots, p$.
 \begin{compactdesc}
-	\item[Lagrangian:] $L(\matr{x}, \matr{\lambda}, \matr{\nu}) := f(\matr{x}) + \sum_{i=1}^m \lambda_i g_i(\matr{x}) + \sum_{i=1}^p \nu_i h_i(\matr{x})$
-	\item[Dual function:] $d(\matr{\lambda}, \matr{\nu}) := \inf_{\matr{x}} L(\matr{x}, \matr{\lambda}, \matr{\nu}) \in \mathbb{R}$
-	\item[Dual Problem:] Maximize $d(\matr{\lambda}, \matr{\nu})$ with $\boldsymbol{\lambda} \geq \matr{0}$. Result is lower bound of optimum $f(\matr{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite.
+	\item[Lagrangian:] $L(\matr{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\matr{x}) + \sum_{i=1}^m \lambda_i g_i(\matr{x}) + \sum_{i=1}^p \nu_i h_i(\matr{x})$
+	\item[Dual function:] $d(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\matr{x}} L(\matr{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
+	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \matr{0}$. Result is lower bound of optimum $f(\matr{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
 \end{compactdesc}
 
 \section{Matching Pursuit (MP)}
