@@ -331,8 +331,8 @@ Diagonal matrix $\matr{M}$ with $\matr{M}_{i, i} = 1$ if $i$-th pixel known, oth
 	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
 	\begin{listcols}[2][5pt]
 		\item $d^\star = \argmax_d \frac{|\langle \matr{M}\matr{u}_d, \matr{r}\rangle|}{\|\matr{M}\matr{u}_d\|_2}$
-		\item $\matr{z}_{d^\star} = \matr{z}_{d^\star} + \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2}$
-		\item $\matr{r} = \matr{r} - \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2} \matr{M}\matr{u}_{d^\star}$
+		\item $\matr{z}_{d^\star} = \matr{z}_{d^\star} + \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2^2}$
+		\item $\matr{r} = \matr{r} - \frac{\langle \matr{M}\matr{u}_{d^\star}, \matr{r} \rangle}{\|\matr{M}\matr{u}_{d^\star}\|_2^2} \matr{M}\matr{u}_{d^\star}$
 	\end{listcols}
 \end{compactenum}
 
