@@ -248,10 +248,10 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 
 \subsection{EM for GMM}
 \begin{compactenum}
-	\item Initialize $\matr{\pi}_k^{(0)}, \matr{\mu}_k^{(0)}, \matr{\Sigma}_k, t = 1$ for $k = 1, \ldots, K$
-	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\matr{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_k^{(t-1)}, \matr{\Sigma}_k)}{\sum_{j=1}^K \matr{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_j^{(t-1)}, \matr{\Sigma}_j)}$
-	\item M-Step: $\matr{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \matr{x}_n}{\sum_{n=1}^N q_{k,n}}$ and $\matr{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$
-	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\matr{X} | \matr{\pi}^{(t)}, \matr{\mu}^{(t)}, \matr{\Sigma}) - \log p(\matr{X} | \matr{\pi}^{(t-1)}, \matr{\mu}^{(t-1)}, \matr{\Sigma}) \| < \epsilon$
+	\item Initialize $\matr{\pi}_k^{(0)}, \matr{\mu}_k^{(0)}, \matr{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
+	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\matr{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_k^{(t-1)}, \matr{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \matr{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \matr{\mu}_j^{(t-1)}, \matr{\Sigma}_j^{(t-1)})}$
+	\item M-Step: $\matr{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \matr{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\matr{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\matr{x}_n - \boldsymbol{\mu}_k^{(t)})(\matr{x}_k - \boldsymbol{\mu}_k^{(t)})^T}{\sum_{n=1}^N q_{k,n}}$
+	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\matr{X} | \matr{\pi}^{(t)}, \matr{\mu}^{(t)}, \matr{\Sigma}^{(t)}) - \log p(\matr{X} | \matr{\pi}^{(t-1)}, \matr{\mu}^{(t-1)}, \matr{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
 
