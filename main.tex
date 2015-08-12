@@ -276,17 +276,16 @@ Update one coordinate (the $d$-th) at a time, others are fixed.
 
 \subsection{Gradient Descent}
 \begin{compactenum}
-	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
-	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})$ ($\gamma \approx \frac{1}{t}$ is the stepsize)
+	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
+	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$: $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})$
 \end{compactenum}
 
 \subsection{Stochastic Gradient Descent}
 \begin{compactenum}
-	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
+	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $n$ uniformly from $1, \ldots, D$
-	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$ ($\gamma \approx \frac{1}{t}$ is the stepsize)
+	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$
 \end{compactenum}
 
 \subsection{Projected Gradient Descent}
