@@ -111,9 +111,9 @@ Eigenvalue Problem: $\matr{Ax} = \lambda \matr{x}$
 \end{compactenum}
 
 \section{Eigendecomposition}
-$\matr{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\matr{A} = \matr{Q \Lambda Q}^{-1}$. $\matr{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\matr{A}$. $\boldsymbol{\lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
-$\matr{A}^{-1} = \matr{Q} \boldsymbol{\lambda}^{-1} \matr{Q}^{-1}$, $\left[ \boldsymbol{\lambda}^{-1} \right]_{i,i} = \frac{1}{\lambda_i}$ 
-Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\matr{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\lambda}$.
+$\matr{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\matr{A} = \matr{Q \Lambda Q}^{-1}$. $\matr{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\matr{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
+$\matr{A}^{-1} = \matr{Q} \boldsymbol{\Lambda}^{-1} \matr{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
+Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\matr{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
 
 \section{SVD}
 \begin{compactitem}
@@ -127,7 +127,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 		\item $\matr{A} \matr{A}^T = \matr{U} \matr{D} \matr{D}^T \matr{U}^T$
 	\end{listcols}
 	\item $(\matr{D}^{-1})_{i,i} = \frac{1}{\matr{D}_{i, i}}$ ($\matr{D} \in \mathbb{R}^{N \times P} \to \matr{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
-	\item Missing columns in $\matr{U}$ are basis of $\operatorname{null}(A^T)$ and in $\matr{V}$ are basis of $\operatorname{null}(A)$. Calculating: $\matr{A}^T \matr{u} = \matr{0}$ or $\matr{A} \matr{v} = \matr{0}$ for $\matr{u}$ or $\matr{v}$.
+	\item Missing columns in $\matr{U}$ are basis of $\operatorname{null}(A^T)$ and in $\matr{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\matr{A}^T \matr{u} = \matr{0}$ or $\matr{A} \matr{v} = \matr{0}$ for $\matr{u}$ or $\matr{v}$.
 \end{compactitem}
 
 \begin{compactenum}
@@ -200,11 +200,8 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 	\item $P(x, y) = P(x|y) P(y)$
 	\item $\sum_{y \in Y} P(x, y) = P(x)$
 	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
-	\item Two random variables $X$, $Y$ are called \emph{independent}, if knowing one of them \textbf{doesn't} reveal any information about the other one: $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$
-	\item \emph{IID} (Independent and Identically Distributed): $n$ random variables are IID if each has the same distribution and they are mutually independent.
-	\begin{compactitem}
-		\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
-	\end{compactitem}
+	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
+	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
 \end{compactitem}
 
 \section{Gaussian Mixture Models (GMM)}
@@ -226,11 +223,11 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 \subsection{AIC / BIC for GMM}
 Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
 \begin{compactdesc}
-	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \matr{X}) = -\ln p_\theta(\matr{X}) + \kappa(\theta)$
-	\item[Bayesian Information Criterion (BIC):] $-\ln(p_\theta(\matr{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
-	\item[\# of free params:] (fixed covariance matrix!) $\kappa(\theta) = K \cdot D + T$ ($K$ number of clusters, $D$ is data dimension (i.e. dimension of the $\mu$'s), $T$ number of not fixed $\pi$'s (usually $T=(K-1)$ as the last $\pi$ is defined by the others (sum up to $1$)))
+	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \matr{X}) = -\ln(p_\theta(\matr{X})) + \kappa(\theta)$
+	\item[Bayesian Information Criterion (BIC):] $\operatorname{BIC}(\theta | \matr{X}) = -\ln(p_\theta(\matr{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
+	\item[\# of free params:] (fixed covariance matrix!) $\kappa(\theta) = K \cdot D + T$ ($K$ number of clusters, $D$ is data dimension (i.e. dimension of the $\mu$'s), $T$ number of not fixed $\pi$'s.
 \end{compactdesc}
-Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different values of $K$, best GMM is the one with smallest AIC/BIC.
+Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different $L$, smaller is better.
 
 
 \section{Expectatin-Maximization (EM) for GMM}
@@ -254,8 +251,8 @@ TODO
 \begin{compactitem}
 	\item For the not normalized basis: $\matr{W}^{-1} = (\matr{W^T} \matr{W})^{-1} \matr{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \matr{W}^T$ where $l_i$ is the norm of the $i$-th column of $\matr{W}$. This is valid because $\matr{W}$ is orthogonal!
 	\item Don't forget that $[1, 1, \ldots, 1]^T$ is the first non-normalized Haar Wavelet basis!
-	\item \textbf{``Coding'' step:} Tranform $\matr{x}$ into coordinate vector $\matr{c}$ for Haar Wavelets
-	\item \textbf{``Thresholding'' step:} Set small absolute values in $\matr{c}$ to $0$ or remove them alongside the basis vector.
+	\item \textbf{``Coding'' step:} Tranform $\matr{x}$ into coordinate vector $\matr{c}$
+	\item \textbf{``Thresholding'' step:} Set small absolute values in $\matr{c}$ to $0$
 \end{compactitem}
 
 \section{Optimization}
@@ -266,27 +263,27 @@ A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.
 
 \subsection{Coordinate Descent}
 Update one coordinate (the $d$-th) at a time, others are fixed.
-\begin{compactenum}
+\begin{inparaenum}[\color{red} 1.]
 	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $d$ uniformly from $1, \ldots, D$
 	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, u, \ldots, x_D^{(t)})$
 	\item $\matr{x}_d^{(t+1)} = u^\star$ and $\matr{x}_i^{(t+1)} = \matr{x}_i^{(t)}$ for $i \neq d$
-\end{compactenum}
+\end{inparaenum}
 
 \subsection{Gradient Descent}
-\begin{compactenum}
+\begin{inparaenum}[\color{red} 1.]
 	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$: $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})$
-\end{compactenum}
+\end{inparaenum}
 
 \subsection{Stochastic Gradient Descent}
-\begin{compactenum}
+\begin{inparaenum}[\color{red} 1.]
 	\item Initialize: $\matr{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $n$ uniformly from $1, \ldots, D$
 	\item $\matr{x}^{(t+1)} = \matr{x}^{(t)} - \gamma \nabla f_n(\matr{x}^{(t)})$
-\end{compactenum}
+\end{inparaenum}
 
 \subsection{Projected Gradient Descent}
 In the gradient update step use a projection into constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\matr{x}) = \argmin_{y \in Q} \|y - x\|$: $\matr{x}^{(t+1)} = P_Q\left(\matr{x}^{(t)} - \gamma \nabla f(\matr{x}^{(t)})\right)$
