@@ -1,1 +1,1 @@
-[![PDF Status](https://www.sharelatex.com/github/repos/groggi/eth-cil-exam-summary/builds/latest/badge.svg)](https://www.sharelatex.com/github/repos/groggi/eth-cil-exam-summary/builds/latest/output.pdf) ***:point_left: pre-compiled PDF :bowtie::thumbsup:***
+[![PDF Status](https://www.sharelatex.com/github/repos/groggi/eth-cil-exam-summary/builds/latest/badge.svg)](https://www.sharelatex.com/github/repos/groggi/eth-cil-exam-summary/builds/latest/output.pdf) ***:point_left: precompiled PDF :bowtie::thumbsup:***
