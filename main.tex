@@ -101,11 +101,6 @@ $\matr{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target
 	\item[Approx. Error:] Sum of discarded eigenvalues
 \end{compactdesc}
 
-\begin{compactitem}
-	\item TODO: Covariance Matrix of the result is diagonlized
-	\item TODO: Properties needed to be known?
-\end{compactitem}
-
 \section{Eigenvalue / -vectors}
 Eigenvalue Problem: $\matr{Ax} = \lambda \matr{x}$
 \begin{compactenum}
@@ -182,6 +177,7 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 
 \section{Norms}
 \begin{compactdesc}
+	\item[$l_0$:] $\|\matr{x}\|_0 := |\{i | x_i \neq 0\}|$
 	\item[Euclidean:] $\|\matr{x}\|_2 := \sqrt{\sum_{i=1}^{N} \matr{x}_i^2} = \sqrt{\matr{x}^T \matr{x}} = \sqrt{\langle \matr{x}, \matr{x} \rangle}$
 	\item[$p$-norm:] $\|\matr{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
 	\item[Frobenius:] $\|\matr{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\matr{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\matr{A}^T \matr{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\matr{A} \in \mathbb{R}^{M \times N}$
@@ -193,9 +189,8 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 	\item Initiate: choose randomly $K$ centroids $\matr{U} = [\matr{u}_1, \ldots, \matr{u}_K]$ (usually $K$ randomly chosen data points).
 	\item Assign data points to clusters. $k^\star(\matr{x}_n) = \argmin_k \{ \|\matr{x}_n - \matr{u}_1\|_2^2, \ldots, \|\matr{x}_n - \matr{u}_K\|_2^2 \}$ gives us the cluster $k$ whose centroid $\matr{u}_k$ is closest to data point $\matr{x}_n$. Set accordingly the $k$-th element of the $n$-th column of the assignment matrix $\matr{Z}$ to $1$, others to $0$.
 	\item Update centroids: $\matr{u}_k = \frac{\sum_{n=1}^N z_{k,n} \matr{x}_n}{\sum_{n=1}^N z_{k,n}}$ (each centroid is in the middle of all data points assigned to it's cluster).
-	\item Repeat from step 2.
+	\item Repeat from step 2, stops if $\frac{1}{2} \|\matr{Z} - \matr{Z}^\text{new}\|_0 = 0$.
 \end{compactenum}
-Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\frac{1}{2} \|\matr{Z} - \matr{Z}^\text{new}\|_0$).
 
 \section{Probability / Statistics}
 \begin{compactitem}
@@ -208,7 +203,7 @@ Iteration stops if the half of the number of changes in $\matr{Z}$ is zero ($\fr
 	\item Two random variables $X$, $Y$ are called \emph{independent}, if knowing one of them \textbf{doesn't} reveal any information about the other one: $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$
 	\item \emph{IID} (Independent and Identically Distributed): $n$ random variables are IID if each has the same distribution and they are mutually independent.
 	\begin{compactitem}
-		\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$
+		\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
 	\end{compactitem}
 \end{compactitem}
 
@@ -238,15 +233,7 @@ Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and
 Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different values of $K$, best GMM is the one with smallest AIC/BIC.
 
 
-\section{Expectation-Maximization (EM)}
-\begin{compactitem}
-	\item Expectation step: Assign data to parts of the model (e.g. assign data point to a mixture component)
-	\item Maximization step: Improve the model parameters based on the new assignment
-	\item Iterative process, i.e. repeat until converges
-	\item may not result in global maximum/optimum
-\end{compactitem}
-
-\subsection{EM for GMM}
+\section{Expectatin-Maximization (EM) for GMM}
 \begin{compactenum}
 	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
 	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
@@ -255,7 +242,7 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \end{compactenum}
 
 
-\subsection{EM for Inpainting}
+\section{Expectatin-Maximization (EM) for Inpainting}
 TODO
 
 \section{Haar Wavelet}
@@ -275,7 +262,7 @@ TODO
 Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\matr{x}) := \left( \frac{\partial f(\matr{x})}{\partial \matr{x}_1}, \ldots, \frac{\partial f(\matr{x})}{\partial \matr{x}_D} \right)^T \in \mathbb{R}^D$
 
 \subsection{Convex Functions}
-A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $R^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
+A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $\mathbb{R}^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
 
 \subsection{Coordinate Descent}
 Update one coordinate (the $d$-th) at a time, others are fixed.
@@ -347,9 +334,9 @@ Diagonal matrix $\matr{M}$ with $\matr{M}_{i, i} = 1$ if $i$-th pixel known, oth
 
 \section{Robust PCA}
 \begin{compactitem}
-	\item Idea: Approximate $\matr{X}$ with $\matr{L} + \matr{S}$ where $\matr{L}$ is low-rank, $\matr{S}$ is sparse.
+	\item Idea: Approximate $\matr{X}$ with $\matr{L} + \matr{S}$, $\matr{L}$ is low-rank, $\matr{S}$ is sparse.
 	\item Minimize $\|\matr{L}\|_\star + \lambda \|\matr{S}\|_1$ s. t. $\matr{L} + \matr{S} = \matr{X}$
-	\item A perfect reconstruction is possible if $\matr{S}$ is not low-rank, $\matr{L}$ is not sparse, $\matr{X}$ is not low-rank \textit{and} sparse at the same time
+	\item A perfect reconstruction is possible if $\matr{S}$ is not low-rank, $\matr{L}$ is not sparse, or $\matr{X}$ is not low-rank \textit{and} sparse at the same time
 \end{compactitem}
 
 \section{TODO}
