@@ -198,7 +198,6 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
 	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
 	\item $P(x, y) = P(x|y) P(y)$
-	\item $\sum_{y \in Y} P(x, y) = P(x)$
 	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
 	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
 	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
@@ -211,7 +210,7 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 	\item[Complete data distribution:] $p(\matr{x}, \matr{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\matr{z}_k}$
 	\item[Posterior Probabilities:] $\operatorname{Pr}(\matr{z}_k = 1 | \matr{x}) = \frac{\operatorname{Pr}(\matr{z}_k = 1) p(\matr{x} | \matr{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\matr{z}_l = 1) p(\matr{x} | \matr{z}_l = 1)} = \frac{\boldsymbol{\pi}_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \boldsymbol{\pi}_l \mathcal{N}(\matr{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
 	\item[Likelihood of observed data $\matr{X}$:] $p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \prod_{n=1}^N p(\matr{x}_n) = \prod_{n=1}^N \sum_{k=1}^N \pi_k \mathcal{N}(\matr{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$
-	\item[Log-likelihood:] $\log p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \log \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
+	\item[Log-likelihood:] $\ln p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \ln \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
 	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \boldsymbol{\pi}_k \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
 \end{compactdesc}
 \begin{compactitem}
