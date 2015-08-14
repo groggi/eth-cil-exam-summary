@@ -84,7 +84,7 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 	\item Empirical Mean: $\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n$
 	\item Center Data: $\overline{\mathbf{X}} = \mathbf{X} - [\overline{\mathbf{x}}, \ldots, \overline{\mathbf{x}}] = \mathbf{X} - \mathbf{M}$
 	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^T = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^T$
-	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U \Lambda U}^T$, sort eigenvalues (and eigenvectors) in descending order
+	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^T$, sort eigenvalues (and eigenvectors) in descending order
 	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
 	\item Transform data onto new Basis: $\overline{\mathbf{Z}} = \mathbf{U}_K^T \overline{\mathbf{X}}$
 	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}$
@@ -110,7 +110,7 @@ Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
 \end{compactenum}
 
 \section{Eigendecomposition}
-$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q \Lambda Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
+$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
 $\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
 Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
 
