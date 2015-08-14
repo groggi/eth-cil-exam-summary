@@ -177,11 +177,13 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 
 \section{Norms}
 \begin{compactdesc}
-	\item[$l_0$:] $\|\matr{x}\|_0 := |\{i | x_i \neq 0\}|$
+	\begin{listcols}
+		\item[$l_0$:] $\|\matr{x}\|_0 := |\{i | x_i \neq 0\}|$
+		\item[Nuclear:] $\|\matr{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
+	\end{listcols}
 	\item[Euclidean:] $\|\matr{x}\|_2 := \sqrt{\sum_{i=1}^{N} \matr{x}_i^2} = \sqrt{\matr{x}^T \matr{x}} = \sqrt{\langle \matr{x}, \matr{x} \rangle}$
 	\item[$p$-norm:] $\|\matr{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
 	\item[Frobenius:] $\|\matr{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\matr{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\matr{A}^T \matr{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\matr{A} \in \mathbb{R}^{M \times N}$
-	\item[Nuclear:] $\|\matr{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
 \end{compactdesc}
 
 \section{$K$-means Algorithm}
@@ -213,11 +215,6 @@ $\matr{V}, \matr{W}$ are two basis matrices (each column is a basis vector, inve
 	\item[Log-likelihood:] $\ln p(\matr{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \ln \left( \sum_{k=1}^K \pi_k \mathcal{N}(\matr{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
 	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\matr{X} | \matr{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \boldsymbol{\pi}_k \mathcal{N}(\matr{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
 \end{compactdesc}
-\begin{compactitem}
-	\item Generative: given $\matr{z}$, generate $\matr{x}$
-	\item Inference: given $\matr{x}$, infer $\matr{z}$
-\end{compactitem}
-
 
 \subsection{AIC / BIC for GMM}
 Trade-off: balance between data fit (i.e. likelihood $p(\matr{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
@@ -249,7 +246,7 @@ TODO
 
 \begin{compactitem}
 	\item For the not normalized basis: $\matr{W}^{-1} = (\matr{W^T} \matr{W})^{-1} \matr{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \matr{W}^T$ where $l_i$ is the norm of the $i$-th column of $\matr{W}$. This is valid because $\matr{W}$ is orthogonal!
-	\item Don't forget that $[1, 1, \ldots, 1]^T$ is the first non-normalized Haar Wavelet basis!
+	\item Don't forget $[1, 1, \ldots, 1]^T$: first non-normalized basis!
 	\item \textbf{``Coding'' step:} Tranform $\matr{x}$ into coordinate vector $\matr{c}$
 	\item \textbf{``Thresholding'' step:} Set small absolute values in $\matr{c}$ to $0$
 \end{compactitem}
