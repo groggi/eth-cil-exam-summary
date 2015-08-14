@@ -339,6 +339,24 @@ Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known,
 \subsection{LSI}
 Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^T$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^T$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
 
+\subsection{pLSI}
+\begin{compactitem}
+	\item $P(\mathit{word} | \mathit{doc}) = \sum_{k=1}^K P(\mathit{word} | \mathit{topic} = k) P(\mathit{topic} = k | \mathit{doc})$
+	\item $P(\mathit{word}, \mathit{doc}) = P(\mathit{word} | \mathit{doc}) P(\mathit{doc}) \break= \sum_z P(\mathit{word} | \mathit{topic}) P(\mathit{doc} | \mathit{topic}) P(\mathit{topic})$
+\end{compactitem}
+
+\textbf{Matrix Factorization View:}
+\begin{inparaitem}
+	\item Normalize $\mathbf{X}$ resulting in $\hat{\mathbf{X}}$: $\hat{\mathbf{X}}_{d, n} := \frac{\mathbf{X}_{d,n}}{\sum_{d'=1}^D \sum_{n'=1}^N \mathbf{X}_{d', n'}}$
+	\item $\hat{\mathbf{X}} \approx \mathbf{U} \mathbf{Z}$, $\hat{\mathbf{X}} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents
+	\item $\mathbf{U}_{d, k} \equiv P(\mathit{word}=d | \mathit{topic} = k)$, $\sum_{d=1}^D \mathbf{U}_{d,k} = 1\, \forall k$
+	\item $\mathbf{Z}_{k,n} \equiv P(\mathit{topic} = k | \mathit{doc} = n) P(\mathit{doc} = n)$, $\sum_{k, n} \mathbf{Z}_{k,n} = 1$
+	\item $(\mathbf{U}\mathbf{Z})_{d, n} \equiv P(\mathit{word = d}, \mathit{doc} = n)$
+	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
+\end{inparaitem}
+
+
+
 \subsection{NMF Algorithm for quadratic cost function}
 \begin{compactitem}
 \item $\mathbf{U} \gets \mathrm{rand}(D,K), \mathbf{Z} \gets \mathrm{rand}(K,N)$
