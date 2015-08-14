@@ -342,8 +342,8 @@ Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{
 \subsection{NMF Algorithm for quadratic cost function}
 \begin{compactitem}
 \item $\mathbf{U} \gets \mathrm{rand}(D,K), \mathbf{Z} \gets \mathrm{rand}(K,N)$
-\item Update $\mathbf{U}$: $u_{dk} \gets u_{dk} \frac{(\mathbf{X}\mathbf{Z}^T)_{dk}}{(\mathbf{U}\mathbf{Z}\mathbf{Z}^T)_{dk}}$
-\item Update $\mathbf{Z}$: $z_{kn} \gets z_{kn} \frac{(\mathbf{U}^T\mathbf{X})_{kn}}{(\mathbf{U}^T\mathbf{U}\mathbf{Z})_{kn}}$
+\item Update $\mathbf{U}$: $u_{d,k} \gets u_{d,k} \frac{(\mathbf{X}\mathbf{Z}^T)_{d,k}}{(\mathbf{U}\mathbf{Z}\mathbf{Z}^T)_{d,k}}$
+\item Update $\mathbf{Z}$: $z_{k,n} \gets z_{k,n} \frac{(\mathbf{U}^T\mathbf{X})_{k,n}}{(\mathbf{U}^T\mathbf{U}\mathbf{Z})_{k,n}}$
 \end{compactitem}
 
 \section{TODO}
