@@ -120,11 +120,6 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $\mathbf{A} \in \mathbb{R}^{N \times P}, \mathbf{U} \in \mathbb{R}^{N \times N}, \mathbf{D} \in \mathbb{R}^{N \times P}, \mathbf{V} \in \mathbb{R}^{P \times P}$
 	\item $\mathbf{U}^T \mathbf{U} = I = \mathbf{V}^T \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
 	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^T$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^T \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same eigenvalues)
-	\begin{listcols}
-		\item $\mathbf{A}^T = \mathbf{V} \mathbf{D}^T \mathbf{U}^T$
-		\item $\mathbf{A}^T \mathbf{A} = \mathbf{V} \mathbf{D}^T \mathbf{D} \mathbf{V}^T$
-		\item $\mathbf{A} \mathbf{A}^T = \mathbf{U} \mathbf{D} \mathbf{D}^T \mathbf{U}^T$
-	\end{listcols}
 	\item $(\mathbf{D}^{-1})_{i,i} = \frac{1}{\mathbf{D}_{i, i}}$ ($\mathbf{D} \in \mathbb{R}^{N \times P} \to \mathbf{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
 	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^T)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^T \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
 \end{compactitem}
@@ -159,13 +154,7 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
 	\end{inparaitem}
 	\item[Outer Product:] $\mathbf{u} \mathbf{v}^T$, $(\mathbf{u} \mathbf{v}^T)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
-	\item[Transpose:]
-		\begin{inparaitem}[\color{red}\textbullet]
-			\item $(\mathbf{A} + \mathbf{B})^T = \mathbf{A}^T + \mathbf{B}^T$
-			\item $(\mathbf{A}\mathbf{B})^T = \mathbf{B}^T \mathbf{A}^T$
-			\item $(\alpha \mathbf{A})^T = \alpha \mathbf{A}^T$
-			\item $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
-		\end{inparaitem}
+	\item[Transpose:] $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
 	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis (same space).
 \end{compactdesc}
 
@@ -291,8 +280,7 @@ Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$
 	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
 \end{compactdesc}
 
-\section{Matching Pursuit (MP)}
-\subsection{Over-Complete Dictionaries}
+\section{Matching Pursuit (MP): Over-Complete Dictionaries}
 Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\mathbf{U}$ using $K$ dictionary entries.
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \mathbf{z} = \mathbf{0}$, Residual $\mathbf{r} = \mathbf{x}$
@@ -302,7 +290,7 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 	\item Update residual: $\mathbf{r} = \mathbf{r} - \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle \mathbf{u}_{d^\star}$.
 \end{compactenum}
 
-\subsection{Inpainting}
+\section{Matching Pursuit (MP): Inpainting}
 Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbf{z} = \mathbf{0}$, residual $\mathbf{r} = \mathbf{M}\mathbf{x}$.
