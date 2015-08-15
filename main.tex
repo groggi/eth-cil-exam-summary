@@ -355,6 +355,13 @@ Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{
 	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
 \end{inparaitem}
 
+\textbf{Expectation Maximization (EM):}
+\begin{compactenum}
+	\item E-Step: $P(z|d, w) = \frac{P(z)P(d|z)P(w|z)}{\sum_{z' \in \mathcal{Z}} P(z') P(d|z') P(w|z')}$
+	\item M-Steps: $P(w|z) \propto \sum_{d} f(d, w) P(z|d, w)$, $P(d|z) \propto \sum_{w} f(d, w) P(z|d, w)$, $P(z) \propto \sum_{d} \sum_{w} f(d, w) P(z|d, w)$, $f(d, w)$ is frequency of term $w$ in doc $d$.
+\end{compactenum}
+
+
 
 
 \subsection{NMF Algorithm for quadratic cost function}
