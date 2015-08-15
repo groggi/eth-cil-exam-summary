@@ -138,7 +138,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 \end{compactenum}
 
 \subsection{Low-Rank approximation}
-Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k}$.
+Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k} = \mathbf{U}_{i, k} \mathbf{D}_{k,k} (\mathbf{V}^T)_{k, j}$.
 \begin{compactdesc}
 	\item[Error Frobenius:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_F = \sqrt{\sum_{i > K} \sigma_i^2} = \sqrt{\sum_{i > K} \lambda_i}$
 	\item[Error Euclidean:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_2 = \sigma_{K+1}$
