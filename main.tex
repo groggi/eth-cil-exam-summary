@@ -318,6 +318,15 @@ Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known,
 	\item A perfect reconstruction is possible if $\mathbf{S}$ is not low-rank, $\mathbf{L}$ is not sparse, or $\mathbf{X}$ is not low-rank \textit{and} sparse at the same time
 \end{compactitem}
 
+\subsection{Alternating Direction Method of Multipliers (ADMM)}
+$\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b}$, $f_1, f_2$ convex
+\begin{inparaitem}[\color{red}\textbullet]
+	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^T (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
+	\item ADMM: $\mathbf{x}_1^{(t+1)} := \argmin_{\mathbf{x}_1} L_p(\mathbf{x}_1, \mathbf{x}_2^{(t)}, \boldsymbol{\nu}^{(t)})$, $\mathbf{x}_2^{(t+1)} := \argmin_{\mathbf{x}_2} L_p(\mathbf{x}_1^{(t+1)}, \mathbf{x}_2, \boldsymbol{\nu}^{(t)})$, $\boldsymbol{\nu}^{(t+1)} := \boldsymbol{\nu}^{(t)} + p(\mathbf{A}_1 \mathbf{x}_1^{(t+1)} + \mathbf{A}_2 \mathbf{x}_2^{(t+1)} - \mathbf{b})$
+	\item ADDM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \ldots$, $\boldsymbol{\nu}$ is matrix here!
+\end{inparaitem}
+
+
 \section{Non-Negative Matrix Factorization (NMF)}
 \begin{inparaitem}[\color{red}\textbullet]
 	\item $\mathbf{X} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents, $X$ stores word count per document
