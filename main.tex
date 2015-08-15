@@ -151,26 +151,22 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 \begin{compactdesc}
 	\item[Symmetric:] $\mathbf{A} = \mathbf{A}^T$
 	\item[Orthogonal:] (i.e. columns are orthonormal!) $\mathbf{A}^{-1} = \mathbf{A}^T$, $\mathbf{A} \mathbf{A}^T = \mathbf{A}^T \mathbf{A} = \mathbf{I}$, $\operatorname{det}(\mathbf{A}) \in \{+1, -1\}$, $\operatorname{det}(\mathbf{A}^T \mathbf{A}) = 1$
-	\item[Inner Product:] (assuming everything in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
-	\begin{compactitem}
+	\item[Inner Product:] (in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
+	\begin{inparaitem}
 		\item $\langle \mathbf{x} \pm \mathbf{y}, \mathbf{x} \pm \mathbf{y} \rangle = \langle \mathbf{x}, \mathbf{x} \rangle \pm 2 \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{y}, \mathbf{y} \rangle$
-		\begin{listcols}
-			\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
-			\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
-			\item $\langle \mathbf{x}, \mathbf{y} \rangle = |\mathbf{x}| \cdot |\mathbf{y}| \cdot \cos(\theta)$
-		\end{listcols}
+		\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x}, \mathbf{y} \rangle = |\mathbf{x}| \cdot |\mathbf{y}| \cdot \cos(\theta)$
 		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
-	\end{compactitem}
+	\end{inparaitem}
 	\item[Outer Product:] $\mathbf{u} \mathbf{v}^T$, $(\mathbf{u} \mathbf{v}^T)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
-	\item[Transpose:]\hfill
-	\begin{listcols}
-		\begin{compactitem}
+	\item[Transpose:]
+		\begin{inparaitem}
 			\item $(\mathbf{A} + \mathbf{B})^T = \mathbf{A}^T + \mathbf{B}^T$
 			\item $(\mathbf{A}\mathbf{B})^T = \mathbf{B}^T \mathbf{A}^T$
 			\item $(\alpha \mathbf{A})^T = \alpha \mathbf{A}^T$
 			\item $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
-		\end{compactitem}
-	\end{listcols}
+		\end{inparaitem}
 	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis (same space).
 \end{compactdesc}
 
@@ -186,12 +182,12 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 \end{compactdesc}
 
 \section{$K$-means Algorithm}
-\begin{compactenum}
+\begin{inparaenum}[\color{red} 1.]
 	\item Initiate: choose randomly $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually $K$ randomly chosen data points).
 	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_1\|_2^2, \ldots, \|\mathbf{x}_n - \mathbf{u}_K\|_2^2 \}$ gives us the cluster $k$ whose centroid $\mathbf{u}_k$ is closest to data point $\mathbf{x}_n$. Set accordingly the $k$-th element of the $n$-th column of the assignment matrix $\mathbf{Z}$ to $1$, others to $0$.
 	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$ (each centroid is in the middle of all data points assigned to it's cluster).
 	\item Repeat from step 2, stops if $\frac{1}{2} \|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = 0$.
-\end{compactenum}
+\end{inparaenum}
 
 \section{Probability / Statistics}
 \begin{compactitem}
