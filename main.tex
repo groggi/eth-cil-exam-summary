@@ -229,7 +229,14 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 
 
 \section{Expectatin-Maximization (EM) for Inpainting}
-TODO
+\begin{inparaenum}[\color{red} 1.]
+	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
+	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
+	\item Sparse coding of $\mathbf{x}^{(t)}$: $\mathbf{z}^{(t)} \in \argmin_{\mathbf{z}} \|\mathbf{z}\|_0$ s.t. $\|\mathbf{x}^{(t)} - \mathbf{Uz}\|_2 < \sigma$
+	\item Repeat (2.) \& (3.) till converging/$\mathit{maxIters}$
+	\item Image reconstruction: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{x}^{(t)}$
+\end{inparaenum}
+
 
 \section{Haar Wavelet}
 \begin{compactdesc}
