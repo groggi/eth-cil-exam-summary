@@ -257,9 +257,9 @@ Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( 
 A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $\mathbb{R}^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
 
 \subsection{Coordinate Descent}
-Update one coordinate (the $d$-th) at a time, others are fixed.
+Update one coordinate (the $d$-th), others are fixed.
 \begin{inparaenum}[\color{red} 1.]
-	\item Initialize: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
+	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $d$ uniformly from $1, \ldots, D$
 	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, u, \ldots, x_D^{(t)})$
@@ -268,13 +268,13 @@ Update one coordinate (the $d$-th) at a time, others are fixed.
 
 \subsection{Gradient Descent}
 \begin{inparaenum}[\color{red} 1.]
-	\item Initialize: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
+	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$: $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})$
 \end{inparaenum}
 
 \subsection{Stochastic Gradient Descent}
 \begin{inparaenum}[\color{red} 1.]
-	\item Initialize: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
+	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
 	\item choose $n$ uniformly from $1, \ldots, D$
 	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$
