@@ -171,15 +171,13 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 \end{compactdesc}
 
 \section{Norms}
-\begin{compactdesc}
-	\begin{listcols}
-		\item[$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
-		\item[Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
-	\end{listcols}
+\begin{inparadesc}
+	\item[$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
+	\item[Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
 	\item[Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^T \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
 	\item[$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
 	\item[Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^T \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
-\end{compactdesc}
+\end{inparadesc}
 
 \section{$K$-means Algorithm}
 \begin{inparaenum}[\color{red} 1.]
@@ -293,7 +291,7 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \mathbf{z} = \mathbf{0}$, Residual $\mathbf{r} = \mathbf{x}$
 	\item While $\|\mathbf{z}\|_0 < K$ repeat the following steps
-	\item Find dictionary entry with largest inner product between latest residual and a dictionary entry: $d^\star = \argmax_d |\langle \mathbf{u}_d, \mathbf{r} \rangle|$
+	\item Find next dictionary index: $d^\star = \argmax_d |\langle \mathbf{u}_d, \mathbf{r} \rangle|$
 	\item Update coefficients: $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle$
 	\item Update residual: $\mathbf{r} = \mathbf{r} - \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle \mathbf{u}_{d^\star}$.
 \end{compactenum}
