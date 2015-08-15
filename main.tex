@@ -354,9 +354,11 @@ Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{
 	\item E-Step: $P(z|d, w) = \frac{P(z)P(d|z)P(w|z)}{\sum_{z' \in \mathcal{Z}} P(z') P(d|z') P(w|z')}$
 	\item M-Steps: $P(w|z) \propto \sum_{d} f(d, w) P(z|d, w)$, $P(d|z) \propto \sum_{w} f(d, w) P(z|d, w)$, $P(z) \propto \sum_{d} \sum_{w} f(d, w) P(z|d, w)$, $f(d, w)$ is frequency of term $w$ in doc $d$.
 \end{compactenum}
-
-
-
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $P(w|z) \in \mathbb{R}^{D \times K}$
+	\item $P(d|z) \in \mathbb{R}^{N \times K}$
+	\item $P(z) \in \mathbb{R}^{K}$
+\end{inparaitem}
 
 \subsection{NMF Algorithm for quadratic cost function}
 $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}\mathbf{Z}\|_F^2$ s.t. $\mathbf{U}_{d,k} \in [0, \infty)\ \forall d, k$ \&  $\mathbf{Z}_{k, n} \in [0, \infty)\ \forall k, n$
@@ -366,6 +368,7 @@ $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \frac{1}{2} \|\mathbf
 	\item Update $\mathbf{U}$: $u_{d,k} \gets u_{d,k} \frac{(\mathbf{X}\mathbf{Z}^T)_{d,k}}{(\mathbf{U}\mathbf{Z}\mathbf{Z}^T)_{d,k}}$
 	\item Update $\mathbf{Z}$: $z_{k,n} \gets z_{k,n} \frac{(\mathbf{U}^T\mathbf{X})_{k,n}}{(\mathbf{U}^T\mathbf{U}\mathbf{Z})_{k,n}}$
 \end{inparaenum}
+
 
 \section{TODO}
 Check if everywehere orthogonal matrix == orthonormal columns!
