@@ -168,6 +168,9 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 \end{inparadesc}
 
 \section{$K$-means Algorithm}
+\begin{compactdesc}
+	\item[\color{red}Target:] $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \|\mathbf{X} - \mathbf{U} \mathbf{Z}\|_F^2 = \sum_{n=1}^N \sum_{k=1}^K \mathbf{z}_{k,n} \|\mathbf{x}_n - \mathbf{u}_k\|_2^2$
+\end{compactdesc}
 \begin{inparaenum}[\color{red} 1.]
 	\item Initiate: choose randomly $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually $K$ randomly chosen data points).
 	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_1\|_2^2, \ldots, \|\mathbf{x}_n - \mathbf{u}_K\|_2^2 \}$ gives us the cluster $k$ whose centroid $\mathbf{u}_k$ is closest to data point $\mathbf{x}_n$. Set accordingly the $k$-th element of the $n$-th column of the assignment matrix $\mathbf{Z}$ to $1$, others to $0$.
