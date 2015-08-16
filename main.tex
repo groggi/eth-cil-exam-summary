@@ -207,7 +207,7 @@ Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) a
 Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different $L$, smaller is better.
 
 
-\section{Expectatin-Maximization (EM) for GMM}
+\section{Expectation-Maximization (EM) for GMM}
 \begin{compactenum}
 	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
 	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
@@ -216,7 +216,7 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \end{compactenum}
 
 
-\section{Expectatin-Maximization (EM) for Inpainting}
+\section{Expectation-Maximization (EM) for Inpainting}
 \begin{inparaenum}[\color{red} 1.]
 	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
 	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
