@@ -8,7 +8,7 @@
 \usepackage{enumitem}
 \usepackage{paralist} % for compacter lists
 \usepackage{hyperref} % for Todo's and similar things
-\usepackage[margin=0.5cm, landscape, nohead, nofoot]{geometry}
+\usepackage[left=4.5mm, right=4.5mm, top=4.5mm, bottom=6mm, landscape, nohead, nofoot]{geometry}
 \usepackage[small,compact]{titlesec}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{xparse}
@@ -155,7 +155,7 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 	\end{inparaitem}
 	\item[Outer Product:] $\mathbf{u} \mathbf{v}^T$, $(\mathbf{u} \mathbf{v}^T)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
 	\item[Transpose:] $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
-	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis (same space).
+	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis
 \end{compactdesc}
 
 \section{Norms}
