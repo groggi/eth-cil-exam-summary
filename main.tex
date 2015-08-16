@@ -160,11 +160,11 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 
 \section{Norms}
 \begin{inparadesc}
-	\item[$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
-	\item[Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
-	\item[Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^T \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
-	\item[$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
-	\item[Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^T \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
+	\item[\color{red}$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
+	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
+	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^T \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
+	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
+	\item[\color{red}Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^T \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
 \end{inparadesc}
 
 \section{$K$-means Algorithm}
