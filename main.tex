@@ -345,19 +345,45 @@ Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$
 \end{compactdesc}
 
 \section{Sparse Coding}
-TODO
+Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
+
+\subsection{Coherence ($m(\cdot)$)}
+\begin{compactitem}
+	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
+	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
+	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
+	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
+\end{compactitem}
+
+
 \section{Dictionary Learning}
 
 \subsection{Matching Pursuit (MP): Over-Complete Dictionaries}
 Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\mathbf{U}$ using $K$ dictionary entries.
+Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz} \|_2$, s.t. $\|\mathbf{z}\|_0 \leq K$
 \begin{compactenum}
-	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \mathbf{z} = \mathbf{0}$, Residual $\mathbf{r} = \mathbf{x}$
-	\item While $\|\mathbf{z}\|_0 < K$ repeat the following steps
-	\item Find next dictionary index: $d^\star = \argmax_d |\langle \mathbf{u}_d, \mathbf{r} \rangle|$
-	\item Update coefficients: $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle$
-	\item Update residual: $\mathbf{r} = \mathbf{r} - \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle \mathbf{u}_{d^\star}$.
+	\item init: $z \leftarrow 0, r \leftarrow x$
+	\item while $\|\mathbf{z}\|_0 < K$ do
+	\item select atom with smallest angle $i^\star = \argmax_i |\langle \mathbf{u}_i, \mathbf{r} \rangle|$
+	\item update coefficients: $\mathbf{z}_{i^\star} \leftarrow \mathbf{z}_{i^\star} + \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle$
+	\item update residual: $\mathbf{r} \leftarrow \mathbf{r} - \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle \mathbf{u}_{i^\star}$.
 \end{compactenum}
 
+\subsection{Compressive Sensing}
+\begin{compactitem}
+  \item Find: $z^\star \in \argmin_{\mathbf{z}}\|\mathbf{z}\|_0$, s.t $\mathbf{y} = \mathbf{\theta z}$ (e.g. with MP)
+  \item Recovery of $\mathbf{x} \in \mathbb{R}^D$ from measured signal $\mathbf{y} \in \mathbb{R}^M$ (need to find $\mathbf{z}$).
+  $\mathbf{y} = \mathbf{Wx} = \mathbf{WUz} = \mathbf{\theta z}$, with $\theta \in \mathbb{R}^{M \times D}$
+  \item Given $\mathbf{z}$, reconstruct $\mathbf{x}$ via $\mathbf{x} = \mathbf{Uz}$
+\end{compactitem}
+
+\subsection{CS: Matrix Factorization}
+$(\mathbf{U}^\star, \mathbf{Z}^\star) \in \argmin_\mathbf{U,Z} \| \mathbf{X} - \mathbf{U} \cdot \mathbf{Z} \|_F^2$
+Iterative greedy minimization
+\begin{inparaenum}[\color{red} 1.]
+  \item Coding step: $\mathbf{Z}^{t+1} \in \argmin_\mathbf{Z} \| \mathbf{X} - \mathbf{U}^t \mathbf{Z} \|_F^2$ subject to $\mathbf{Z}$ being sparse and $\mathbf{U}$ being fixed
+  \item Dictionary update step: $\mathbf{U}^{t+1} \in \argmin_\mathbf{U} \| \mathbf{X} - \mathbf{UZ}^{t+1} \|_F^2$, subject to $\|\mathbf{u}_l\|_2 = 1 \forall l=1,\dots,L$ and $\mathbf{Z}$ being fixed.
+\end{inparaenum}
 %\section{Matching Pursuit (MP): Inpainting}
 %Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
 %\begin{compactenum}
@@ -371,13 +397,6 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 %\end{compactenum}
 
 
-%\section{Coherence ($m(\cdot)$)}
-%\begin{compactitem}
-%	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
-%	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
-%	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
-%	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
-%\end{compactitem}
 
 \section{Robust PCA}
 \begin{compactitem}
