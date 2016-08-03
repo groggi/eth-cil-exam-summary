@@ -218,15 +218,25 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
+\section{Word Embeddings}
+\begin{compactdesc}
+  \item[Latent vector model:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}[b_{w(t+\Delta)} + \langle \mathbf{x}_{w(t+\Delta)}, \mathbf{x}_{w(t)} \rangle - \log\sum_{v \in V}\exp[\langle \mathbf{x}_v, \mathbf{x}_{w(t)} \rangle + b_v]]$ 
+\end{compactdesc}
 
-\section{Expectation-Maximization (EM) for Inpainting}
-\begin{inparaenum}[\color{red} 1.]
-	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
-	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
-	\item Sparse coding of $\mathbf{x}^{(t)}$: $\mathbf{z}^{(t)} \in \argmin_{\mathbf{z}} \|\mathbf{z}\|_0$ s.t. $\|\mathbf{x}^{(t)} - \mathbf{Uz}\|_2 < \sigma$
-	\item Repeat (2.) \& (3.) till converging/$\mathit{maxIters}$
-	\item Image reconstruction: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{x}^{(t)}$
-\end{inparaenum}
+\subsection{GloVe Objective}
+\begin{compactdesc}
+  \item $H(\theta;N) = \sum_{i,j:n_{ij}>0} f(n_{ij})(\log n_{ij} - \log \tilde{p}_\theta(w_j|w_i))$ and
+  \item $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
+  \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$
+\end{compactdesc}
+%\section{Expectation-Maximization (EM) for Inpainting}
+%\begin{inparaenum}[\color{red} 1.]
+%	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
+%	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
+%	\item Sparse coding of $\mathbf{x}^{(t)}$: $\mathbf{z}^{(t)} \in \argmin_{\mathbf{z}} \|\mathbf{z}\|_0$ s.t. $\|\mathbf{x}^{(t)} - \mathbf{Uz}\|_2 < \sigma$
+%	\item Repeat (2.) \& (3.) till converging/$\mathit{maxIters}$
+%	\item Image reconstruction: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{x}^{(t)}$
+%\end{inparaenum}
 
 
 \section{Haar Wavelet}
