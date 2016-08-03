@@ -78,15 +78,70 @@
 \begin{document}
 \begin{multicols*}{3}
 
-\section{PCA}
+\section{Essentials}
+\subsection{Matrix/Vector}
+\begin{compactdesc}
+	\item[Orthogonal:] (i.e. columns are orthonormal!) $\mathbf{A}^{-1} = \mathbf{A}^\top$, $\mathbf{A} \mathbf{A}^\top = \mathbf{A}^\top \mathbf{A} = \mathbf{I}$, $\operatorname{det}(\mathbf{A}) \in \{+1, -1\}$, $\operatorname{det}(\mathbf{A}^\top \mathbf{A}) = 1$
+	\item[Inner Product:] (in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^\top \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
+	\begin{inparaitem}[\color{red}\textbullet]
+		\item $\langle \mathbf{x} \pm \mathbf{y}, \mathbf{x} \pm \mathbf{y} \rangle = \langle \mathbf{x}, \mathbf{x} \rangle \pm 2 \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{y}, \mathbf{y} \rangle$
+		\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x}, \mathbf{y} \rangle = \|\mathbf{x}\|_2 \cdot \|\mathbf{y}\|_2 \cdot \cos(\theta)$
+		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
+	\end{inparaitem}
+	\item[Outer Product:] $\mathbf{u} \mathbf{v}^\top$, $(\mathbf{u} \mathbf{v}^\top)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
+	\item[Transpose:] $(\mathbf{A}^\top)^{-1} = (\mathbf{A}^{-1})^\top$
+	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis
+\end{compactdesc}
+
+\subsection{Norms}
+\begin{inparadesc}
+	\item[\color{red}$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
+	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
+	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^\top \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
+	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
+	\item[\color{red}Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^\top \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
+\end{inparadesc}
+
+\subsection{Basis Transformation}
+$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
+
+\subsection{Eigenvalue / -vectors}
+Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
+\begin{compactenum}
+	\item solve $\operatorname{det}(\mathbf{A} - \lambda \mathbf{I}) \overset{!}{=} 0$ resulting in $\{\lambda_i\}_i$
+	\item $\forall \lambda_i$:
+		solve $(\mathbf{A} - \lambda_i \mathbf{I}) \mathbf{x}_i = \mathbf{0}$, $\mathbf{x}_i$ is the $i$-th eigenvector.
+	\item (opt.) normalize eigenvector $q_i$: $q_i^{\text{norm}} = \frac{1}{\|q_i\|_2} q_i$.
+\end{compactenum}
+
+\subsection{Eigendecomposition}
+$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
+$\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
+Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
+
+\subsection{Probability / Statistics}
+\begin{compactitem}
+	\item $P(x) := Pr[X = x] := \sum_{y \in Y} P(x, y)$
+	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
+	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
+	\item $P(x, y) = P(x|y) P(y)$
+	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
+	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
+	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
+\end{compactitem}
+
+
+\section{Dimensionality Reduction / PCA}
 $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target: $\tilde{\mathbf{X}} \in \mathbb{R}^{K \times N}$.
 \begin{compactenum}
 	\item Empirical Mean: $\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n$
 	\item Center Data: $\overline{\mathbf{X}} = \mathbf{X} - [\overline{\mathbf{x}}, \ldots, \overline{\mathbf{x}}] = \mathbf{X} - \mathbf{M}$
-	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^T = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^T$
-	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^T$, sort eigenvalues (and eigenvectors) in descending order
+	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^\top = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^\top$
+	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^\top$, sort eigenvalues (and eigenvectors) in descending order
 	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
-	\item Transform data onto new Basis: $\overline{\mathbf{Z}} = \mathbf{U}_K^T \overline{\mathbf{X}}$
+	\item Transform data onto new Basis: $\overline{\mathbf{Z}} = \mathbf{U}_K^\top \overline{\mathbf{X}}$
 	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}$
 	\item Reverse centring: $\tilde{\mathbf{X}} = \tilde{\overline{\mathbf{X}}} + \mathbf{M}$
 \end{compactenum}
@@ -100,72 +155,30 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 	\item[Approx. Error:] Sum of discarded eigenvalues
 \end{compactdesc}
 
-\section{Eigenvalue / -vectors}
-Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
-\begin{compactenum}
-	\item solve $\operatorname{det}(\mathbf{A} - \lambda \mathbf{I}) \overset{!}{=} 0$ resulting in $\{\lambda_i\}_i$
-	\item $\forall \lambda_i$:
-		solve $(\mathbf{A} - \lambda_i \mathbf{I}) \mathbf{x}_i = \mathbf{0}$, $\mathbf{x}_i$ is the $i$-th eigenvector.
-	\item (opt.) normalize eigenvector $q_i$: $q_i^{\text{norm}} = \frac{1}{\|q_i\|_2} q_i$.
-\end{compactenum}
-
-\section{Eigendecomposition}
-$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
-$\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
-Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
-
 \section{SVD}
 \begin{compactitem}
-	\item $\mathbf{A} = \mathbf{U} \mathbf{D} \mathbf{V}^T = \sum_{k=1}^{\operatorname{rank}(\mathbf{A})} d_{k,k} u_k (v_k)^T$
+	\item $\mathbf{A} = \mathbf{U} \mathbf{D} \mathbf{V}^\top = \sum_{k=1}^{\operatorname{rank}(\mathbf{A})} d_{k,k} u_k (v_k)^\top$
 	\item $\mathbf{A} \in \mathbb{R}^{N \times P}, \mathbf{U} \in \mathbb{R}^{N \times N}, \mathbf{D} \in \mathbb{R}^{N \times P}, \mathbf{V} \in \mathbb{R}^{P \times P}$
-	\item $\mathbf{U}^T \mathbf{U} = I = \mathbf{V}^T \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
-	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^T$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^T \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same eigenvalues)
+	\item $\mathbf{U}^\top \mathbf{U} = I = \mathbf{V}^\top \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
+	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^\top$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^\top \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^\top \mathbf{A}$ and $\mathbf{A} \mathbf{A}^\top$ have the same eigenvalues)
 	\item $(\mathbf{D}^{-1})_{i,i} = \frac{1}{\mathbf{D}_{i, i}}$ ($\mathbf{D} \in \mathbb{R}^{N \times P} \to \mathbf{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
-	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^T)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^T \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
+	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^\top)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^\top \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
 \end{compactitem}
 
 \begin{compactenum}
-	\item calculate $\mathbf{A}^T \mathbf{A}$.
-	\item calculate eigenvalues of $\mathbf{A}^T \mathbf{A}$, the square root of them are the diagonal elements of $\mathbf{D}$.
-	\item calculate eigenvectors of $\mathbf{A}^T \mathbf{A}$ using the eigenvalues resulting in the columns of $\mathbf{V}$.
-	\item calculate the missing matrix: $\mathbf{U} = \mathbf{A} \mathbf{V} \mathbf{D}^{-1}$. Can be checked by calculating the eigenvectors of $\mathbf{A} \mathbf{A}^T$.
+	\item calculate $\mathbf{A}^\top \mathbf{A}$.
+	\item calculate eigenvalues of $\mathbf{A}^\top \mathbf{A}$, the square root of them are the diagonal elements of $\mathbf{D}$.
+	\item calculate eigenvectors of $\mathbf{A}^\top \mathbf{A}$ using the eigenvalues resulting in the columns of $\mathbf{V}$.
+	\item calculate the missing matrix: $\mathbf{U} = \mathbf{A} \mathbf{V} \mathbf{D}^{-1}$. Can be checked by calculating the eigenvectors of $\mathbf{A} \mathbf{A}^\top$.
 	\item normalize each columns of $\mathbf{U}$ and $\mathbf{V}$.
 \end{compactenum}
 
 \subsection{Low-Rank approximation}
-Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k} = \mathbf{U}_{i, k} \mathbf{D}_{k,k} (\mathbf{V}^T)_{k, j}$.
+Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k} = \mathbf{U}_{i, k} \mathbf{D}_{k,k} (\mathbf{V}^\top)_{k, j}$.
 \begin{compactdesc}
 	\item[Error Frobenius:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_F = \sqrt{\sum_{i > K} \sigma_i^2} = \sqrt{\sum_{i > K} \lambda_i}$
 	\item[Error Euclidean:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_2 = \sigma_{K+1}$
 \end{compactdesc}
-
-\section{Basis Transform}
-$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
-
-\section{Matrix/Vector}
-\begin{compactdesc}
-	\item[Orthogonal:] (i.e. columns are orthonormal!) $\mathbf{A}^{-1} = \mathbf{A}^T$, $\mathbf{A} \mathbf{A}^T = \mathbf{A}^T \mathbf{A} = \mathbf{I}$, $\operatorname{det}(\mathbf{A}) \in \{+1, -1\}$, $\operatorname{det}(\mathbf{A}^T \mathbf{A}) = 1$
-	\item[Inner Product:] (in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
-	\begin{inparaitem}[\color{red}\textbullet]
-		\item $\langle \mathbf{x} \pm \mathbf{y}, \mathbf{x} \pm \mathbf{y} \rangle = \langle \mathbf{x}, \mathbf{x} \rangle \pm 2 \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{y}, \mathbf{y} \rangle$
-		\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
-		\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
-		\item $\langle \mathbf{x}, \mathbf{y} \rangle = \|\mathbf{x}\|_2 \cdot \|\mathbf{y}\|_2 \cdot \cos(\theta)$
-		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
-	\end{inparaitem}
-	\item[Outer Product:] $\mathbf{u} \mathbf{v}^T$, $(\mathbf{u} \mathbf{v}^T)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
-	\item[Transpose:] $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
-	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis
-\end{compactdesc}
-
-\section{Norms}
-\begin{inparadesc}
-	\item[\color{red}$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
-	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
-	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^T \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
-	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
-	\item[\color{red}Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^T \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
-\end{inparadesc}
 
 \section{$K$-means Algorithm}
 \begin{inparadesc}
@@ -177,17 +190,6 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$ (each centroid is in the middle of all data points assigned to it's cluster).
 	\item Repeat from step 2, stops if $\frac{1}{2} \|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = 0$.
 \end{inparaenum}
-
-\section{Probability / Statistics}
-\begin{compactitem}
-	\item $P(x) := Pr[X = x] := \sum_{y \in Y} P(x, y)$
-	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
-	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
-	\item $P(x, y) = P(x|y) P(y)$
-	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
-	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
-	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
-\end{compactitem}
 
 \section{Gaussian Mixture Models (GMM)}
 \begin{compactdesc}
@@ -214,13 +216,13 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \begin{compactenum}
 	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
 	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
-	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^T}{\sum_{n=1}^N q_{k,n}}$
+	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^\top}{\sum_{n=1}^N q_{k,n}}$
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
 \section{Word Embeddings}
 \begin{compactdesc}
-  \item[Latent vector model:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}[b_{w(t+\Delta)} + \langle \mathbf{x}_{w(t+\Delta)}, \mathbf{x}_{w(t)} \rangle - \log\sum_{v \in V}\exp[\langle \mathbf{x}_v, \mathbf{x}_{w(t)} \rangle + b_v]]$ 
+  \item[Latent vector model:] $L(\theta; \mathbf{w}) = \sum_{t=1}^\top\sum_{\Delta \in I}[b_{w(t+\Delta)} + \langle \mathbf{x}_{w(t+\Delta)}, \mathbf{x}_{w(t)} \rangle - \log\sum_{v \in V}\exp[\langle \mathbf{x}_v, \mathbf{x}_{w(t)} \rangle + b_v]]$ 
 \end{compactdesc}
 
 \subsection{GloVe Objective}
@@ -247,8 +249,8 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 %\end{compactdesc}
 
 %\begin{compactitem}
-%	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^T} \mathbf{W})^{-1} \mathbf{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^T$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
-%	\item Don't forget $[1, 1, \ldots, 1]^T$: first non-normalized basis!
+%	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^\top} \mathbf{W})^{-1} \mathbf{W}^\top = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^\top$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
+%	\item Don't forget $[1, 1, \ldots, 1]^\top$: first non-normalized basis!
 %	\item \textbf{``Coding'' step:} Tranform $\mathbf{x}$ into coordinate vector $\mathbf{c}$
 %	\item \textbf{``Thresholding'' step:} Set small absolute values in $\mathbf{c}$ to $0$
 %\end{compactitem}
@@ -256,7 +258,7 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 
 
 %\subsection{LSI}
-%Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^T$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^T$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
+%Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^\top$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^\top$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
 \section{Non-Negative Matrix Factorization (NMF) / pLSA}
 \begin{compactitem}
 	\item Context Model: $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
@@ -301,18 +303,19 @@ $\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf
 TODO
 
 \section{Optimization}
-Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^T \in \mathbb{R}^D$
+Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^\top \in \mathbb{R}^D$
 
 \subsection{Convex Functions}
-A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $\mathbb{R}^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
+A function $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex if $dom\ f$ is a convex set and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and $\theta$ with $0 \leq \theta \leq 1$, we have $f(\theta \mathbf{x} + (1 - \theta)\mathbf{y}) \leq \theta f(\mathbf{x}) + (1-\theta)f(\mathbf{y})$
+%E.g: $\textbf{a)^\top\textbf{x} + b, \exp{\alpha x}$
 
 \subsection{Coordinate Descent}
 Update one coordinate (the $d$-th), others are fixed.
 \begin{inparaenum}[\color{red} 1.]
 	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item choose $d$ uniformly from $1, \ldots, D$
-	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, u, \ldots, x_D^{(t)})$
+	\item uniformly sample $d \sim \{1, \ldots, D\}$
+	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, x_{d-1}^{(t)}, u, x_{d+1}^{(t)}, \ldots, x_D^{(t)})$
 	\item $\mathbf{x}_d^{(t+1)} = u^\star$ and $\mathbf{x}_i^{(t+1)} = \mathbf{x}_i^{(t)}$ for $i \neq d$
 \end{inparaenum}
 
@@ -326,25 +329,25 @@ Update one coordinate (the $d$-th), others are fixed.
 \begin{inparaenum}[\color{red} 1.]
 	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item choose $n$ uniformly from $1, \ldots, D$
+	\item uniformly sample $n \sim \{1, \ldots, D\}$
 	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$
 \end{inparaenum}
 
 \subsection{Projected Gradient Descent}
-In the gradient update step use a projection into constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|y - x\|$: $\mathbf{x}^{(t+1)} = P_Q\left(\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})\right)$
+In the gradient update step use a projection onto constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$
 
 \subsection{Lagrangian Multipliers}
-Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\mathbf{x}) = \mathbf{a}_i^T \mathbf{x} - b_i = 0,\ i = 1, \ldots, p$.
+Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\mathbf{x}) = \mathbf{a}_i^\top \mathbf{x} - b_i = 0,\ i = 1, \ldots, p$.
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\mathbf{x}) + \sum_{i=1}^m \lambda_i g_i(\mathbf{x}) + \sum_{i=1}^p \nu_i h_i(\mathbf{x})$
-	\item[Dual function:] $d(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
+	\item[Dual function:] $D(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
 	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
 \end{compactdesc}
 
 \section{Sparse Coding}
 TODO
 \section{Dictionary Learning}
-TODO/EXTEND
+
 \subsection{Matching Pursuit (MP): Over-Complete Dictionaries}
 Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\mathbf{U}$ using $K$ dictionary entries.
 \begin{compactenum}
@@ -371,7 +374,7 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 %\section{Coherence ($m(\cdot)$)}
 %\begin{compactitem}
 %	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
-%	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^T \mathbf{u}_j |$
+%	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
 %	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
 %	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
 %\end{compactitem}
@@ -386,7 +389,7 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 \subsection{Alternating Direction Method of Multipliers (ADMM)}
 $\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b}$, $f_1, f_2$ convex
 \begin{inparaitem}[\color{red}\textbullet]
-	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^T (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
+	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^\top (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
 	\item ADMM: $\mathbf{x}_1^{(t+1)} := \argmin_{\mathbf{x}_1} L_p(\mathbf{x}_1, \mathbf{x}_2^{(t)}, \boldsymbol{\nu}^{(t)})$, $\mathbf{x}_2^{(t+1)} := \argmin_{\mathbf{x}_2} L_p(\mathbf{x}_1^{(t+1)}, \mathbf{x}_2, \boldsymbol{\nu}^{(t)})$, $\boldsymbol{\nu}^{(t+1)} := \boldsymbol{\nu}^{(t)} + p(\mathbf{A}_1 \mathbf{x}_1^{(t+1)} + \mathbf{A}_2 \mathbf{x}_2^{(t+1)} - \mathbf{b})$
 	\item ADDM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \ldots$, $\boldsymbol{\nu}$ is matrix here!
 \end{inparaitem}
