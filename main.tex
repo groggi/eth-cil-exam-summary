@@ -227,7 +227,8 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \begin{compactdesc}
   \item $H(\theta;N) = \sum_{i,j:n_{ij}>0} f(n_{ij})(\log n_{ij} - \log \tilde{p}_\theta(w_j|w_i))$ and
   \item $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
-  \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$
+  \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
+  \item \hspace{28pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
 \end{compactdesc}
 %\section{Expectation-Maximization (EM) for Inpainting}
 %\begin{inparaenum}[\color{red} 1.]
