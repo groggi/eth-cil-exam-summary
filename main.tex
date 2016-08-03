@@ -210,7 +210,7 @@ Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) a
 Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different $L$, smaller is better.
 
 
-\section{Expectation-Maximization (EM) for GMM}
+\subsection{Expectation-Maximization (EM) for GMM}
 \begin{compactenum}
 	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
 	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
@@ -224,12 +224,12 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \end{compactdesc}
 
 \subsection{GloVe Objective}
-\begin{compactdesc}
+\begin{compactitem}
   \item $H(\theta;N) = \sum_{i,j:n_{ij}>0} f(n_{ij})(\log n_{ij} - \log \tilde{p}_\theta(w_j|w_i))$ and
-  \item $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
+  $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
   \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
   \item \hspace{28pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
-\end{compactdesc}
+\end{compactitem}
 %\section{Expectation-Maximization (EM) for Inpainting}
 %\begin{inparaenum}[\color{red} 1.]
 %	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
@@ -240,18 +240,65 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 %\end{inparaenum}
 
 
-\section{Haar Wavelet}
-\begin{compactdesc}
-	\item[Mother function:] $\psi(t)$ is $1$ for $0 \leq t < \frac{1}{2}$, $-1$ for $\frac{1}{2} \leq t < 1$, $0$ otherwise.
-	\item[Haar function:] $\psi_{n,k}(t) = 2^{n/2} \psi(2^n t - k)$, $2^{n/2}$ only needed if normalized values needed!
-\end{compactdesc}
+%\section{Haar Wavelet}
+%\begin{compactdesc}
+%	\item[Mother function:] $\psi(t)$ is $1$ for $0 \leq t < \frac{1}{2}$, $-1$ for $\frac{1}{2} \leq t < 1$, $0$ otherwise.
+%	\item[Haar function:] $\psi_{n,k}(t) = 2^{n/2} \psi(2^n t - k)$, $2^{n/2}$ only needed if normalized values needed!
+%\end{compactdesc}
 
+%\begin{compactitem}
+%	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^T} \mathbf{W})^{-1} \mathbf{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^T$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
+%	\item Don't forget $[1, 1, \ldots, 1]^T$: first non-normalized basis!
+%	\item \textbf{``Coding'' step:} Tranform $\mathbf{x}$ into coordinate vector $\mathbf{c}$
+%	\item \textbf{``Thresholding'' step:} Set small absolute values in $\mathbf{c}$ to $0$
+%\end{compactitem}
+
+
+
+%\subsection{LSI}
+%Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^T$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^T$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
+\section{Non-Negative Matrix Factorization (NMF) / pLSA}
 \begin{compactitem}
-	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^T} \mathbf{W})^{-1} \mathbf{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^T$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
-	\item Don't forget $[1, 1, \ldots, 1]^T$: first non-normalized basis!
-	\item \textbf{``Coding'' step:} Tranform $\mathbf{x}$ into coordinate vector $\mathbf{c}$
-	\item \textbf{``Thresholding'' step:} Set small absolute values in $\mathbf{c}$ to $0$
+	\item Context Model: $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
+	\item Conditional independence assumption ($*$): $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
+	\item Symmetric parameterization: $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
 \end{compactitem}
+
+%\textbf{Matrix Factorization View:}
+%\begin{inparaitem}[\color{red}\textbullet]
+%	\item Normalize $\mathbf{X}$ resulting in $\hat{\mathbf{X}}$: $\hat{\mathbf{X}}_{d, n} := \frac{\mathbf{X}_{d,n}}{\sum_{d'=1}^D \sum_{n'=1}^N \mathbf{X}_{d', n'}}$
+%	\item $\hat{\mathbf{X}} \approx \mathbf{U} \mathbf{Z}$, $\hat{\mathbf{X}} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents
+%	\item $\mathbf{U}_{d, k} \equiv P(\mathit{word}=d | \mathit{topic} = k)$, $\sum_{d=1}^D \mathbf{U}_{d,k} = 1\, \forall k$
+%	\item $\mathbf{Z}_{k,n} \equiv P(\mathit{topic} = k | \mathit{doc} = n) P(\mathit{doc} = n)$, $\sum_{k, n} \mathbf{Z}_{k,n} = 1$
+%	\item $(\mathbf{U}\mathbf{Z})_{d, n} \equiv P(\mathit{word = d}, \mathit{doc} = n)$
+%	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
+%\end{inparaitem}
+
+\subsection{EM for pLSA:}
+\begin{compactenum}
+  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
+	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
+	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
+\end{compactenum}
+
+\subsection{NMF Algorithm for quadratic cost function}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $\mathbf{X} \in \mathbb{Z}^{N \times M}_{\geq 0}$
+	\item NMF: $\mathbf{X} \approx \mathbf{U^\top Z}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
+\end{inparaitem}
+
+$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $u_{zi},v_{zj} \leq 0 (\forall i,j,z)$
+\begin{inparaenum}[\color{red} 1.]
+	\item init: $\mathbf{U}, \mathbf{V} = rand()$
+	\item repeat for $\mathit{maxIters}$:
+	\item update $\mathbf{U}$: $(\mathbf{VV}^\top)\mathbf{U} = \mathbf{VX}^\top$
+	\item project $u_{zi} = \max \{ 0, u_{zi} \}$
+	\item update $\mathbf{V}$: $(\mathbf{UU}^\top)\mathbf{V} = \mathbf{UX}$
+	\item project $v_{zj} = \max \{ 0, v_{zj} \}$
+\end{inparaenum}
+
+\section{Convolutional Neural Networks}
+TODO
 
 \section{Optimization}
 Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^T \in \mathbb{R}^D$
@@ -294,7 +341,11 @@ Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$
 	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
 \end{compactdesc}
 
-\section{Matching Pursuit (MP): Over-Complete Dictionaries}
+\section{Sparse Coding}
+TODO
+\section{Dictionary Learning}
+TODO/EXTEND
+\subsection{Matching Pursuit (MP): Over-Complete Dictionaries}
 Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\mathbf{U}$ using $K$ dictionary entries.
 \begin{compactenum}
 	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \mathbf{z} = \mathbf{0}$, Residual $\mathbf{r} = \mathbf{x}$
@@ -304,26 +355,26 @@ Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $
 	\item Update residual: $\mathbf{r} = \mathbf{r} - \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle \mathbf{u}_{d^\star}$.
 \end{compactenum}
 
-\section{Matching Pursuit (MP): Inpainting}
-Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
-\begin{compactenum}
-	\item Initialize: Coefficient vector $\mathbf{z} = \mathbf{0}$, residual $\mathbf{r} = \mathbf{M}\mathbf{x}$.
-	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
-	\begin{listcols}[2][5pt]
-		\item $d^\star = \argmax_d \frac{|\langle \mathbf{M}\mathbf{u}_d, \mathbf{r}\rangle|}{\|\mathbf{M}\mathbf{u}_d\|_2}$
-		\item $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2}$
-		\item $\mathbf{r} = \mathbf{r} - \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2} \mathbf{M}\mathbf{u}_{d^\star}$
-	\end{listcols}
-\end{compactenum}
+%\section{Matching Pursuit (MP): Inpainting}
+%Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
+%\begin{compactenum}
+%	\item Initialize: Coefficient vector $\mathbf{z} = \mathbf{0}$, residual $\mathbf{r} = \mathbf{M}\mathbf{x}$.
+%	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
+%	\begin{listcols}[2][5pt]
+%		\item $d^\star = \argmax_d \frac{|\langle \mathbf{M}\mathbf{u}_d, \mathbf{r}\rangle|}{\|\mathbf{M}\mathbf{u}_d\|_2}$
+%		\item $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2}$
+%		\item $\mathbf{r} = \mathbf{r} - \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2} \mathbf{M}\mathbf{u}_{d^\star}$
+%	\end{listcols}
+%\end{compactenum}
 
 
-\section{Coherence ($m(\cdot)$)}
-\begin{compactitem}
-	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
-	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^T \mathbf{u}_j |$
-	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
-	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
-\end{compactitem}
+%\section{Coherence ($m(\cdot)$)}
+%\begin{compactitem}
+%	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
+%	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^T \mathbf{u}_j |$
+%	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
+%	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
+%\end{compactitem}
 
 \section{Robust PCA}
 \begin{compactitem}
@@ -341,50 +392,7 @@ $\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. 
 \end{inparaitem}
 
 
-\section{Non-Negative Matrix Factorization (NMF)}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item $\mathbf{X} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents, $X$ stores word count per document
-	\item Target: $\mathbf{X} \approx \mathbf{UZ}$, $\mathbf{U} \in \mathbb{R}^{D \times K}_{\geq 0}$, $\mathbf{Z} \in \mathbb{R}^{K \times N}_{\geq 0}$ (semi-NMF: $\mathbf{U}$ allows negative entries)
-\end{inparaitem}
 
-\subsection{LSI}
-Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^T$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^T$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
-
-\subsection{pLSI}
-\begin{compactitem}
-	\item $P(\mathit{word} | \mathit{doc}) = \sum_{k=1}^K P(\mathit{word} | \mathit{topic} = k) P(\mathit{topic} = k | \mathit{doc})$
-	\item $P(\mathit{word}, \mathit{doc}) = P(\mathit{word} | \mathit{doc}) P(\mathit{doc}) \break= \sum_z P(\mathit{word} | \mathit{topic}) P(\mathit{doc} | \mathit{topic}) P(\mathit{topic})$
-\end{compactitem}
-
-\textbf{Matrix Factorization View:}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item Normalize $\mathbf{X}$ resulting in $\hat{\mathbf{X}}$: $\hat{\mathbf{X}}_{d, n} := \frac{\mathbf{X}_{d,n}}{\sum_{d'=1}^D \sum_{n'=1}^N \mathbf{X}_{d', n'}}$
-	\item $\hat{\mathbf{X}} \approx \mathbf{U} \mathbf{Z}$, $\hat{\mathbf{X}} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents
-	\item $\mathbf{U}_{d, k} \equiv P(\mathit{word}=d | \mathit{topic} = k)$, $\sum_{d=1}^D \mathbf{U}_{d,k} = 1\, \forall k$
-	\item $\mathbf{Z}_{k,n} \equiv P(\mathit{topic} = k | \mathit{doc} = n) P(\mathit{doc} = n)$, $\sum_{k, n} \mathbf{Z}_{k,n} = 1$
-	\item $(\mathbf{U}\mathbf{Z})_{d, n} \equiv P(\mathit{word = d}, \mathit{doc} = n)$
-	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
-\end{inparaitem}
-
-\textbf{Expectation Maximization (EM):}
-\begin{compactenum}
-	\item E-Step: $P(z|d, w) = \frac{P(z)P(d|z)P(w|z)}{\sum_{z' \in \mathcal{Z}} P(z') P(d|z') P(w|z')}$
-	\item M-Steps: $P(w|z) \propto \sum_{d} f(d, w) P(z|d, w)$, $P(d|z) \propto \sum_{w} f(d, w) P(z|d, w)$, $P(z) \propto \sum_{d} \sum_{w} f(d, w) P(z|d, w)$, $f(d, w)$ is frequency of term $w$ in doc $d$.
-\end{compactenum}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item $P(w|z) \in \mathbb{R}^{D \times K}$
-	\item $P(d|z) \in \mathbb{R}^{N \times K}$
-	\item $P(z) \in \mathbb{R}^{K}$
-\end{inparaitem}
-
-\subsection{NMF Algorithm for quadratic cost function}
-$\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}\mathbf{Z}\|_F^2$ s.t. $\mathbf{U}_{d,k} \in [0, \infty)\ \forall d, k$ \&  $\mathbf{Z}_{k, n} \in [0, \infty)\ \forall k, n$
-\begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{U} \gets \mathrm{rand}(D,K), \mathbf{Z} \gets \mathrm{rand}(K,N)$
-	\item repeat for $\mathit{maxIters}$:
-	\item Update $\mathbf{U}$: $u_{d,k} \gets u_{d,k} \frac{(\mathbf{X}\mathbf{Z}^T)_{d,k}}{(\mathbf{U}\mathbf{Z}\mathbf{Z}^T)_{d,k}}$
-	\item Update $\mathbf{Z}$: $z_{k,n} \gets z_{k,n} \frac{(\mathbf{U}^T\mathbf{X})_{k,n}}{(\mathbf{U}^T\mathbf{U}\mathbf{Z})_{k,n}}$
-\end{inparaenum}
 
 \raggedcolumns
 \end{multicols*}
