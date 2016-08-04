@@ -309,10 +309,6 @@ Translation invariance of images $\rightarrow$ neurons compute same fct, shift i
 \section{Optimization}
 Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^\top \in \mathbb{R}^D$
 
-\subsection{Convex Functions}
-A function $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex if $dom\ f$ is a convex set and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and $\theta$ with $0 \leq \theta \leq 1$, we have $f(\theta \mathbf{x} + (1 - \theta)\mathbf{y}) \leq \theta f(\mathbf{x}) + (1-\theta)f(\mathbf{y})$
-%E.g: $\textbf{a)^\top\textbf{x} + b, \exp{\alpha x}$
-
 \subsection{Coordinate Descent}
 Update one coordinate (the $d$-th), others are fixed.
 \begin{inparaenum}[\color{red} 1.]
@@ -330,23 +326,28 @@ Update one coordinate (the $d$-th), others are fixed.
 \end{inparaenum}
 
 \subsection{Stochastic Gradient Descent}
+Assume additive objective; $f(x) = \frac{1}{N}\sum_{n=1}^{N}f_n(x)$
 \begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
+	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item uniformly sample $n \sim \{1, \ldots, D\}$
-	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$
+	\item sample u.a.r. $n \sim \{1, \ldots, D\}$
+	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$, usually $\gamma \approx \frac{1}{t}$. 
 \end{inparaenum}
 
 \subsection{Projected Gradient Descent}
-In the gradient update step use a projection onto constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$
+In the gradient update step use a projection onto constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$. $\mathbf{x}^{(t+1)}$ unique if $Q$ convex.
 
 \subsection{Lagrangian Multipliers}
 Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\mathbf{x}) = \mathbf{a}_i^\top \mathbf{x} - b_i = 0,\ i = 1, \ldots, p$.
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\mathbf{x}) + \sum_{i=1}^m \lambda_i g_i(\mathbf{x}) + \sum_{i=1}^p \nu_i h_i(\mathbf{x})$
 	\item[Dual function:] $D(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
-	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
+	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Note that $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu}) \le \min_x{f(x)}$. Equality if $dom\ f$ and $f$ convex.
 \end{compactdesc}
+
+\subsection{Convex Functions}
+A function $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex if $dom\ f$ is a convex set and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and $\alpha$ with $0 \leq \alpha \leq 1$, we have $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local $\min = $ global $\min$ and all above algos converge with $f(x^{(t)}) - f(x^*) \le \frac{c}{t}$. 
+%E.g: $\textbf{a)^\top\textbf{x} + b, \exp{\alpha x}$
 
 \section{Sparse Coding}
 Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
