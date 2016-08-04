@@ -191,6 +191,7 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 	\item Repeat from step 2, stops if $\frac{1}{2} \|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = 0$.
 \end{inparaenum}
 
+
 \section{Gaussian Mixture Models (GMM)}
 \begin{compactdesc}
 	\item[GMM:] $p(\mathbf{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
@@ -300,14 +301,13 @@ $\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf
 \end{inparaenum}
 
 \section{Convolutional Neural Networks}
-TODO
+Neurons: $F_\sigma(x;w) = \sigma(w_0 + \sum_{i=1}^M{x_iw_i})$. Output: linear regression; $y = W^Lx^{L-1}$, binary classification; $y_1 = \text{P}[Y=1|x] = \frac{1}{1 + \exp[-\langle w_1^L,x^{L-1}\rangle]}$, multiclass; $y_k = \text{P}[Y=k|x]= \frac{\exp[\langle w_k^L,x^{L-1}\rangle]}{\sum_{m=1}^{K}{\exp[\langle w_m^L,x^{L-1}\rangle]}}$. Loss function $l(y, \hat{y})$: squared loss; $\frac{1}{2}(y - \hat{y})^2$, cross-entropy loss; $-y \log \hat{y} - (1-y)\log(1-\hat{y})$.
+
+\subsection{Neural Networks for Images}
+Translation invariance of images $\rightarrow$ neurons compute same fct, shift invariant filters; weights defined as filter masks, e.g. convolution: $F_{n,m}(x;w) = \sigma(b + \sum_{k=-2}^2\sum_{l=-2}^{2}{w_{k,l}x_{n+k,m+1}})$. To reduce dimension of convolution, use \{max, avg\}-pooling 
 
 \section{Optimization}
 Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^\top \in \mathbb{R}^D$
-
-\subsection{Convex Functions}
-A function $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex if $dom\ f$ is a convex set and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and $\theta$ with $0 \leq \theta \leq 1$, we have $f(\theta \mathbf{x} + (1 - \theta)\mathbf{y}) \leq \theta f(\mathbf{x}) + (1-\theta)f(\mathbf{y})$
-%E.g: $\textbf{a)^\top\textbf{x} + b, \exp{\alpha x}$
 
 \subsection{Coordinate Descent}
 Update one coordinate (the $d$-th), others are fixed.
@@ -326,23 +326,28 @@ Update one coordinate (the $d$-th), others are fixed.
 \end{inparaenum}
 
 \subsection{Stochastic Gradient Descent}
+Assume additive objective; $f(x) = \frac{1}{N}\sum_{n=1}^{N}f_n(x)$
 \begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
+	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
 	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item uniformly sample $n \sim \{1, \ldots, D\}$
-	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$
+	\item sample u.a.r. $n \sim \{1, \ldots, D\}$
+	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$, usually $\gamma \approx \frac{1}{t}$. 
 \end{inparaenum}
 
 \subsection{Projected Gradient Descent}
-In the gradient update step use a projection onto constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$
+In the gradient update step use a projection onto constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$. $\mathbf{x}^{(t+1)}$ unique if $Q$ convex.
 
 \subsection{Lagrangian Multipliers}
 Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\mathbf{x}) = \mathbf{a}_i^\top \mathbf{x} - b_i = 0,\ i = 1, \ldots, p$.
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\mathbf{x}) + \sum_{i=1}^m \lambda_i g_i(\mathbf{x}) + \sum_{i=1}^p \nu_i h_i(\mathbf{x})$
 	\item[Dual function:] $D(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
-	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
+	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Note that $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu}) \le \min_x{f(x)}$. Equality if $dom\ f$ and $f$ convex.
 \end{compactdesc}
+
+\subsection{Convex Functions}
+A function $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex if $dom\ f$ is a convex set and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and $\alpha$ with $0 \leq \alpha \leq 1$, we have $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local $\min = $ global $\min$ and all above algos converge with $f(x^{(t)}) - f(x^*) \le \frac{c}{t}$. 
+%E.g: $\textbf{a)^\top\textbf{x} + b, \exp{\alpha x}$
 
 \section{Sparse Coding}
 Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
