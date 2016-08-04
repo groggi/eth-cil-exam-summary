@@ -122,7 +122,7 @@ $\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\bol
 Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
 
 \subsection{Probability / Statistics}
-\begin{compactitem}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $P(x) := Pr[X = x] := \sum_{y \in Y} P(x, y)$
 	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
 	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
@@ -130,7 +130,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
 	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
 	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
-\end{compactitem}
+\end{inparaitem}
 
 
 \section{Dimensionality Reduction / PCA}
@@ -167,10 +167,10 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 
 \begin{compactenum}
 	\item calculate $\mathbf{A}^\top \mathbf{A}$.
-	\item calculate eigenvalues of $\mathbf{A}^\top \mathbf{A}$, the square root of them are the diagonal elements of $\mathbf{D}$.
+	\item calculate eigenvalues of $\mathbf{A}^\top \mathbf{A}$, the square root of them, in descending order, are the diagonal elements of $\mathbf{D}$.
 	\item calculate eigenvectors of $\mathbf{A}^\top \mathbf{A}$ using the eigenvalues resulting in the columns of $\mathbf{V}$.
 	\item calculate the missing matrix: $\mathbf{U} = \mathbf{A} \mathbf{V} \mathbf{D}^{-1}$. Can be checked by calculating the eigenvectors of $\mathbf{A} \mathbf{A}^\top$.
-	\item normalize each columns of $\mathbf{U}$ and $\mathbf{V}$.
+	\item normalize each column of $\mathbf{U}$ and $\mathbf{V}$.
 \end{compactenum}
 
 \subsection{Low-Rank approximation}
@@ -185,54 +185,59 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 	\item[\color{red}Target:] $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \|\mathbf{X} - \mathbf{U} \mathbf{Z}\|_F^2 = \sum_{n=1}^N \sum_{k=1}^K \mathbf{z}_{k,n} \|\mathbf{x}_n - \mathbf{u}_k\|_2^2$
 \end{inparadesc}
 \begin{inparaenum}[\color{red} 1.]
-	\item Initiate: choose randomly $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually $K$ randomly chosen data points).
-	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_1\|_2^2, \ldots, \|\mathbf{x}_n - \mathbf{u}_K\|_2^2 \}$ gives us the cluster $k$ whose centroid $\mathbf{u}_k$ is closest to data point $\mathbf{x}_n$. Set accordingly the $k$-th element of the $n$-th column of the assignment matrix $\mathbf{Z}$ to $1$, others to $0$.
-	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$ (each centroid is in the middle of all data points assigned to it's cluster).
+	\item Initiate: choose $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually u.a.r.)
+	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_k\|_2 \}$ returns cluster $k^\star$, whose centroid $\mathbf{u}_{k^\star}$ is closest to data point $\mathbf{x}_n$. Set $\mathbf{z}_{k^\star,n} = 1$, and for $ l \neq k^\star~ \mathbf{z}_{l,n}=0$.
+	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$.
 	\item Repeat from step 2, stops if $\frac{1}{2} \|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = 0$.
 \end{inparaenum}
 
 
 \section{Gaussian Mixture Models (GMM)}
+For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$; $p_{\theta_k}(\mathbf{x}) = \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
 \begin{compactdesc}
-	\item[GMM:] $p(\mathbf{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
-	\item[Assignment variable:] $\mathbf{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \mathbf{z}_k = 1$, $\operatorname{Pr}(\mathbf{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\mathbf{z}_k}$
-	\item[Complete data distribution:] $p(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\mathbf{z}_k}$
-	\item[Posterior Probabilities:] $\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \boldsymbol{\pi}_l \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
-	\item[Likelihood of observed data $\mathbf{X}$:] $p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \prod_{n=1}^N p(\mathbf{x}_n) = \prod_{n=1}^N \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$
-	\item[Log-likelihood:] $\ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \ln \left( \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
-	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\mathbf{X} | \mathbf{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \boldsymbol{\pi}_k \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
+	\item[Mixture Models:] $p_\theta(\mathbf{x}) = \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x})$
+	\item[Assignment variable (generative model):] $\\\mathbf{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \mathbf{z}_k = 1$, $\operatorname{Pr}(\mathbf{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\mathbf{z}_k}$
+	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)$
+	\item[Posterior Probabilities:] $\\\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
+	\item[Likelihood of observed data $\mathbf{X}$:] $p_\theta(\mathbf{X}) = \prod_{n=1}^N p_\theta(\mathbf{x}_n) = \prod_{n=1}^N \left(\sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right)$
+	\item[MLE:] $\argmax_\theta\sum_{n=1}^N \log \left( \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right) \break \log \left( \sum_{k=1}^K{\frac{q_k \pi_k p_{\theta_k}(\mathbf{x}_n)}{q_k}}\right) \ge \sum_{k=1}^K{q_k[\log p_{\theta_k}(\mathbf{x}_n) + \log \pi_k - \log q_k]}$ with $\sum_{k=1}^K{q_k} = 1$ by Jensen. Lagrangian and get $q_k$ as below.
 \end{compactdesc}
-
-\subsection{AIC / BIC for GMM}
-Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
-\begin{compactdesc}
-	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \mathbf{X}) = -\ln(p_\theta(\mathbf{X})) + \kappa(\theta)$
-	\item[Bayesian Information Criterion (BIC):] $\operatorname{BIC}(\theta | \mathbf{X}) = -\ln(p_\theta(\mathbf{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
-	\item[\# of free params:] (fixed covariance matrix!) $\kappa(\theta) = K \cdot D + T$ ($K$ number of clusters, $D$ is data dimension (i.e. dimension of the $\mu$'s), $T$ number of not fixed $\pi$'s.
-\end{compactdesc}
-Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different $L$, smaller is better.
-
 
 \subsection{Expectation-Maximization (EM) for GMM}
 \begin{compactenum}
-	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
-	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
+	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}$ for $k = 1, \ldots, K$ and $t=1$.
+	\item E-Step: Pr$[z_{k,n} = 1 | \mathbf{x}_n] = q_{k, n} = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
 	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^\top}{\sum_{n=1}^N q_{k,n}}$
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
+\subsection{AIC / BIC for GMM}
+Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
+\begin{compactdesc}
+	\item[Akaike Information Criterion (AIC):] $\\\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
+	\item[Bayesian Information Criterion (BIC):] $\\\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
+	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \# clusters, $D$ is data dimension; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$
+\end{compactdesc}
+Compare AIC/BIC for different $K$ -- the smaller the better.
+
 \section{Word Embeddings}
 \begin{compactdesc}
-  \item[Latent vector model:] $L(\theta; \mathbf{w}) = \sum_{t=1}^\top\sum_{\Delta \in I}[b_{w(t+\Delta)} + \langle \mathbf{x}_{w(t+\Delta)}, \mathbf{x}_{w(t)} \rangle - \log\sum_{v \in V}\exp[\langle \mathbf{x}_v, \mathbf{x}_{w(t)} \rangle + b_v]]$ 
+  \item[Distributional Model:] $p_\theta(w|w') = $ Pr[$w$ occurs close to $w'$]
+  \item[Log-likelihood:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}{\log p_\theta(w^{(t+\Delta)}|w^{(t)})}$
+  \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$ Log-L'd is hard to compute.
 \end{compactdesc}
+Simplify; distinguish vocabulary $V$ and context vocabulary $C$ $\rightarrow$ use mixed inner products. Change objective to GloVe.
 
 \subsection{GloVe Objective}
-\begin{compactitem}
-  \item $H(\theta;N) = \sum_{i,j:n_{ij}>0} f(n_{ij})(\log n_{ij} - \log \tilde{p}_\theta(w_j|w_i))$ and
-  $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
-  \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
-  \item \hspace{28pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
-\end{compactitem}
+\begin{compactdesc}
+  \item[Co-occurence Matrix:]$\mathbf{N} = (n_{ij}) \in \mathbb{R}^{|V|\cdot |C|} \leftrightarrow \# w_i$ in c'txt $w_j$
+  \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j]$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
+\end{compactdesc}
+unnormalized distribution $\rightarrow$ two-sided loss function
+\begin{compactdesc}
+  \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
+  \item \hspace{26pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
+\end{compactdesc}
 %\section{Expectation-Maximization (EM) for Inpainting}
 %\begin{inparaenum}[\color{red} 1.]
 %	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
@@ -261,11 +266,11 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 %\subsection{LSI}
 %Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^\top$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^\top$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
 \section{Non-Negative Matrix Factorization (NMF) / pLSA}
-\begin{compactitem}
-	\item Context Model: $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
-	\item Conditional independence assumption ($*$): $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
-	\item Symmetric parameterization: $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
-\end{compactitem}
+\begin{compactdesc}
+	\item[Context Model:] $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
+	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
+	\item[Symmetric parameterization:] $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
+\end{compactdesc}
 
 %\textbf{Matrix Factorization View:}
 %\begin{inparaitem}[\color{red}\textbullet]
@@ -279,7 +284,7 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 
 \subsection{EM for pLSA:}
 \begin{compactenum}
-  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
+  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} x_{i,j}\log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
 	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
 	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
 \end{compactenum}
@@ -287,10 +292,11 @@ Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/B
 \subsection{NMF Algorithm for quadratic cost function}
 \begin{inparaitem}[\color{red}\textbullet]
 	\item $\mathbf{X} \in \mathbb{Z}^{N \times M}_{\geq 0}$
-	\item NMF: $\mathbf{X} \approx \mathbf{U^\top Z}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
+	\item NMF: $\mathbf{X} \approx \mathbf{U^\top V}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
 \end{inparaitem}
 
-$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $u_{zi},v_{zj} \leq 0 (\forall i,j,z)$
+$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $\forall i,j,z~u_{zi},v_{zj} \geq 0 $
+
 \begin{inparaenum}[\color{red} 1.]
 	\item init: $\mathbf{U}, \mathbf{V} = rand()$
 	\item repeat for $\mathit{maxIters}$:
