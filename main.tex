@@ -122,7 +122,7 @@ $\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\bol
 Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
 
 \subsection{Probability / Statistics}
-\begin{compactitem}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $P(x) := Pr[X = x] := \sum_{y \in Y} P(x, y)$
 	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
 	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
@@ -130,7 +130,7 @@ Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvec
 	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
 	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
 	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
-\end{compactitem}
+\end{inparaitem}
 
 
 \section{Dimensionality Reduction / PCA}
@@ -216,22 +216,28 @@ Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) a
 \begin{compactdesc}
 	\item[Akaike Information Criterion (AIC):] $\\\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
 	\item[Bayesian Information Criterion (BIC):] $\\\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
-	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \#clusters, $D$ is data dimension; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$
+	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \# clusters, $D$ is data dimension; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$
 \end{compactdesc}
 Compare AIC/BIC for different $K$ -- the smaller the better.
 
 \section{Word Embeddings}
 \begin{compactdesc}
-  \item[Latent vector model:] $L(\theta; \mathbf{w}) = \sum_{t=1}^\top\sum_{\Delta \in I}[b_{w(t+\Delta)} + \langle \mathbf{x}_{w(t+\Delta)}, \mathbf{x}_{w(t)} \rangle - \log\sum_{v \in V}\exp[\langle \mathbf{x}_v, \mathbf{x}_{w(t)} \rangle + b_v]]$ 
+  \item[Distributional Model:] $p_\theta(w|w') = $ Pr[$w$ occurs close to $w'$]
+  \item[Log-likelihood:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}{\log p_\theta(w^{(t+\Delta)}|w^{(t)})}$
+  \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$ Log-L'd is hard to compute.
 \end{compactdesc}
+Simplify; distinguish vocabulary $V$ and context vocabulary $C$ $\rightarrow$ use mixed inner products. Change objective to GloVe.
 
 \subsection{GloVe Objective}
-\begin{compactitem}
-  \item $H(\theta;N) = \sum_{i,j:n_{ij}>0} f(n_{ij})(\log n_{ij} - \log \tilde{p}_\theta(w_j|w_i))$ and
-  $\tilde{p}_\theta(w_j|w_i) = \exp[\langle x_i; y_j \rangle + b_i + d_j]$ \& $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$
-  \item SGD: 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
-  \item \hspace{28pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
-\end{compactitem}
+\begin{compactdesc}
+  \item[Co-occurence Matrix:]$\mathbf{N} = (n_{ij}) \in \mathbb{R}^{|V|\cdot |C|} \leftrightarrow \# w_i$ in c'txt $w_j$
+  \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j]$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
+\end{compactdesc}
+unnormalized distribution $\rightarrow$ two-sided loss function
+\begin{compactdesc}
+  \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
+  \item \hspace{26pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
+\end{compactdesc}
 %\section{Expectation-Maximization (EM) for Inpainting}
 %\begin{inparaenum}[\color{red} 1.]
 %	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
@@ -260,11 +266,11 @@ Compare AIC/BIC for different $K$ -- the smaller the better.
 %\subsection{LSI}
 %Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^\top$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^\top$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
 \section{Non-Negative Matrix Factorization (NMF) / pLSA}
-\begin{compactitem}
-	\item Context Model: $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
-	\item Conditional independence assumption ($*$): $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
-	\item Symmetric parameterization: $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
-\end{compactitem}
+\begin{compactdesc}
+	\item[Context Model:] $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
+	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
+	\item[Symmetric parameterization:] $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
+\end{compactdesc}
 
 %\textbf{Matrix Factorization View:}
 %\begin{inparaitem}[\color{red}\textbullet]
@@ -277,19 +283,19 @@ Compare AIC/BIC for different $K$ -- the smaller the better.
 %\end{inparaitem}
 
 \subsection{EM for pLSA:}
-\begin{compactenum}
-  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
+\begin{inparaenum}[\color{red} 1.]
+  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} x_{i,j}\log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
 	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
 	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
-\end{compactenum}
+\end{inparaenum}
 
 \subsection{NMF Algorithm for quadratic cost function}
 \begin{inparaitem}[\color{red}\textbullet]
 	\item $\mathbf{X} \in \mathbb{Z}^{N \times M}_{\geq 0}$
-	\item NMF: $\mathbf{X} \approx \mathbf{U^\top Z}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
+	\item NMF: $\mathbf{X} \approx \mathbf{U^\top V}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
 \end{inparaitem}
 
-$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $u_{zi},v_{zj} \leq 0 (\forall i,j,z)$
+$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $u_{zi},v_{zj} \geq 0 (\forall i,j,z)$
 \begin{inparaenum}[\color{red} 1.]
 	\item init: $\mathbf{U}, \mathbf{V} = rand()$
 	\item repeat for $\mathit{maxIters}$:
