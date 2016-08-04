@@ -301,7 +301,10 @@ $\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf
 \end{inparaenum}
 
 \section{Convolutional Neural Networks}
-TODO
+Neurons: $F_\sigma(x;w) = \sigma(w_0 + \sum_{i=1}^M{x_iw_i})$. Output: linear regression; $y = W^Lx^{L-1}$, binary classification; $y_1 = \text{P}[Y=1|x] = \frac{1}{1 + \exp[-\langle w_1^L,x^{L-1}\rangle]}$, multiclass; $y_k = \text{P}[Y=k|x]= \frac{\exp[\langle w_k^L,x^{L-1}\rangle]}{\sum_{m=1}^{K}{\exp[\langle w_m^L,x^{L-1}\rangle]}}$. Loss function $l(y, \hat{y})$: squared loss; $\frac{1}{2}(y - \hat{y})^2$, cross-entropy loss; $-y \log \hat{y} - (1-y)\log(1-\hat{y})$.
+
+\subsection{Neural Networks for Images}
+Translation invariance of images $\rightarrow$ neurons compute same fct, shift invariant filters; weights defined as filter masks, e.g. convolution: $F_{n,m}(x;w) = \sigma(b + \sum_{k=-2}^2\sum_{l=-2}^{2}{w_{k,l}x_{n+k,m+1}})$. To reduce dimension of convolution, use \{max, avg\}-pooling 
 
 \section{Optimization}
 Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^\top \in \mathbb{R}^D$
