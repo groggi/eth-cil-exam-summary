@@ -283,11 +283,11 @@ unnormalized distribution $\rightarrow$ two-sided loss function
 %\end{inparaitem}
 
 \subsection{EM for pLSA:}
-\begin{inparaenum}[\color{red} 1.]
+\begin{compactenum}
   \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} x_{i,j}\log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
 	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
 	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
-\end{inparaenum}
+\end{compactenum}
 
 \subsection{NMF Algorithm for quadratic cost function}
 \begin{inparaitem}[\color{red}\textbullet]
@@ -295,7 +295,8 @@ unnormalized distribution $\rightarrow$ two-sided loss function
 	\item NMF: $\mathbf{X} \approx \mathbf{U^\top V}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
 \end{inparaitem}
 
-$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $u_{zi},v_{zj} \geq 0 (\forall i,j,z)$
+$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $\forall i,j,z~u_{zi},v_{zj} \geq 0 $
+
 \begin{inparaenum}[\color{red} 1.]
 	\item init: $\mathbf{U}, \mathbf{V} = rand()$
 	\item repeat for $\mathit{maxIters}$:
