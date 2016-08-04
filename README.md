@@ -8,5 +8,5 @@ Please be advised that nothing found here is guaranteed to be complete, correct 
 This is largely based on the great work by ![Gregor Wegberg's](https://github.com/groggi) ![CIL Exam 2015 Summary](https://github.com/groggi/eth-cil-exam-summary).
 It has simply been adapted to the new lecture content of 2016.
 
-# PDF Download
-Might be provided later.
+# Download latest PDF
+[Download freshly compiled PDF provided by latex.aslushnikov.com](http://latex.aslushnikov.com/compile?git=https://github.com/mohlerm/eth-cil-exam-summary&target=main.tex)
