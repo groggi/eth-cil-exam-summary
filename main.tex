@@ -141,14 +141,14 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^\top = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^\top$
 	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^\top$, sort eigenvalues (and eigenvectors) in descending order
 	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
-	\item Transform data onto new Basis: $\overline{\mathbf{Z}} = \mathbf{U}_K^\top \overline{\mathbf{X}}$
-	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}$
-	\item Reverse centring: $\tilde{\mathbf{X}} = \tilde{\overline{\mathbf{X}}} + \mathbf{M}$
+	\item Transform data onto new Basis: $\overline{\mathbf{Z}}_K = \mathbf{U}_K^\top \overline{\mathbf{X}}$
+	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}_K$
+	\item Reverse centering: $\tilde{\mathbf{X}} = \tilde{\overline{\mathbf{X}}} + \mathbf{M}$
 \end{compactenum}
 
 \begin{compactitem}
-	\item For compression save $\mathbf{U}_k, \overline{\mathbf{Z}}, \overline{\mathbf{x}}$.
-	\item $\mathbf{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\mathbf{Z}} \in \mathbb{R}^{K \times N}, \overline{\mathbf{X}} \in \mathbb{R}^{D \times N}$
+	\item For compression save $\mathbf{U}_k, \overline{\mathbf{Z}}_K, \overline{\mathbf{x}}$.
+	\item $\mathbf{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\mathbf{Z}}_K \in \mathbb{R}^{K \times N}, \overline{\mathbf{X}} \in \mathbb{R}^{D \times N}$
 \end{compactitem}
 
 \begin{compactdesc}
