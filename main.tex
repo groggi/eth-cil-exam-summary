@@ -211,14 +211,13 @@ For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
-\subsection{AIC / BIC for GMM}
-Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
+\subsection{Model Order Selection (AIC / BIC for GMM)}
+Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). For choosing $K$:
 \begin{compactdesc}
 	\item[Akaike Information Criterion (AIC):] $\\\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
 	\item[Bayesian Information Criterion (BIC):] $\\\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
-	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \# clusters, $D$ is data dimension; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$
+	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \# clusters, data dimension $D$; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$. Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
 \end{compactdesc}
-Compare AIC/BIC for different $K$ -- the smaller the better.
 
 \section{Word Embeddings}
 \begin{compactdesc}
