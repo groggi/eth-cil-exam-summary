@@ -216,7 +216,7 @@ Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and comple
 \begin{compactdesc}
 	\item[Akaike Information Criterion (AIC):] $\\\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
 	\item[Bayesian Information Criterion (BIC):] $\\\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
-	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$ \# clusters, data dimension $D$; dimension of the $\mu$'s, $K-1$ \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$. Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
+	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$: \# clusters, $D$: $\mathsf{dim}\text{(data)}=\mathsf{dim}(\mu)$, $K-1$: \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$. Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
 \end{compactdesc}
 
 \section{Word Embeddings}
