@@ -223,11 +223,15 @@ Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and comple
 \begin{compactdesc}
   \item[Distributional Model:] $p_\theta(w|w') = $ Pr[$w$ occurs close to $w'$]
   \item[Log-likelihood:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}{\log p_\theta(w^{(t+\Delta)}|w^{(t)})}$
-  \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$ Log-L'd is hard to compute.
+  \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$.
+  Modifications:
+  \begin{inparaitem}[\color{red}\textbullet]
+  \item split vocab in main vocab $V$, context vocab $C$: $p_{\theta}(w|w') = \langle x_{w'}, y_{w} \rangle + b_w$, word embed. $x_w$, context embed. $y_w$
+  \item use GloVe objective
+  \end{inparaitem}
 \end{compactdesc}
-Simplify; distinguish vocabulary $V$ and context vocabulary $C$ $\rightarrow$ use mixed inner products. Change objective to GloVe.
 
-\subsection{GloVe Objective}
+\subsection{GloVe (Weighted Square Loss)}
 \begin{compactdesc}
   \item[Co-occurence Matrix:]$\mathbf{N} = (n_{ij}) \in \mathbb{R}^{|V|\cdot |C|} \leftrightarrow \# w_i$ in c'txt $w_j$
   \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j])^2$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
