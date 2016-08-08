@@ -1,6 +1,8 @@
 # Status
 Work in progress. Layout and structure pretty much complete, however still misses some things from the lecture.
 
+If you spot any mistakes or typos please go ahead and create an issue or a pull request.
+
 # Disclaimer
 Please be advised that nothing found here is guaranteed to be complete, correct or anything else. Feel free to report errors, I'll try to fix them.
 
