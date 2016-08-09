@@ -417,8 +417,8 @@ Iterative greedy minimization
 \section{Robust PCA}
 \begin{compactitem}
 	\item Idea: Approximate $\mathbf{X}$ with $\mathbf{L} + \mathbf{S}$, $\mathbf{L}$ is low-rank, $\mathbf{S}$ is sparse.
-	\item Minimize $\|\mathbf{L}\|_\star + \lambda \|\mathbf{S}\|_1$ s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$
-	\item A perfect reconstruction is possible if $\mathbf{S}$ is not low-rank, $\mathbf{L}$ is not sparse, or $\mathbf{X}$ is not low-rank \textit{and} sparse at the same time
+	\item $\min_{\mathbf{L},\mathbf{S}}\mathsf{rank}(\mathbf{L}) + \mu \lVert \mathbf{S}\rVert_0$, s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$. As non-convex, adapt to $\min_{\mathbf{L},\mathbf{S}} \|\mathbf{L}\|_\star + \lambda \lVert\mathbf{S}\rVert_1$ (\emph{not} the same in general)
+	\item Perfect reconstruction is \emph{not} possible if $\mathbf{S}$ is low-rank, $\mathbf{L}$ is sparse, or $\mathbf{X}$ is low-rank \textit{and} sparse at the same time
 \end{compactitem}
 
 \subsection{Alternating Direction Method of Multipliers (ADMM)}
