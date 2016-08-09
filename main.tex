@@ -364,12 +364,12 @@ $f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set
 Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
 
 \subsection{Coherence ($m(\cdot)$)}
-\begin{compactitem}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
 	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
-	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
+	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix; basis
 	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
-\end{compactitem}
+\end{inparaitem}
 
 
 \section{Dictionary Learning}
