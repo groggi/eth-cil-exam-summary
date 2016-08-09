@@ -234,7 +234,7 @@ Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and comple
 \subsection{GloVe (Weighted Square Loss)}
 \begin{compactdesc}
   \item[Co-occurence Matrix:]$\mathbf{N} = (n_{ij}) \in \mathbb{R}^{|V|\cdot |C|} \leftrightarrow \# w_i$ in c'txt $w_j$
-  \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j])^2$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
+  \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})\Big(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j]\Big)^2$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
 \end{compactdesc}
 unnormalized distribution $\rightarrow$ two-sided loss function
 \begin{compactdesc}
