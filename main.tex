@@ -357,8 +357,8 @@ Minimize  $f(\mathbf{x})$ s.t. $g_i(\mathbf{x}) \leq 0,\ i = 1, .., m$ (\textbf{
 \end{compactdesc}
 
 \subsection{Convex Optimization}
-$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(x^{(t)}) - f(x^*) \le \frac{c}{t}$. 
-\textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $x$: $f(y) \geq f(x) + g^\top(y-x) \ \forall y$
+$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(\mathbf{x}^{(t)}) - f(\mathbf{x}^*) \le \frac{c}{t}$. 
+\textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $\mathbf{x}$: $f(\mathbf{y}) \geq f(\mathbf{x}) + g^\top(\mathbf{y}-\mathbf{x}) \ \forall \mathbf{y}$
 
 \section{Sparse Coding}
 Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
