@@ -391,12 +391,11 @@ Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz}
   \item Reconstruct $\mathbf{x} \in \mathbb{R}^D$ from $\mathbf{y}$; find $\mathbf{z}^\star \in \argmin_{\mathbf{z}}\|\mathbf{z}\|_0$, s.t. $\mathbf{y} = \mathbf{\theta z}$ (e.g. with MP). Given $\mathbf{z}$, reconstruct $\mathbf{x}$ via $\mathbf{x} = \mathbf{Uz}$
 \end{compactitem}
 
-\subsection{CS: Matrix Factorization}
-$(\mathbf{U}^\star, \mathbf{Z}^\star) \in \argmin_\mathbf{U,Z} \| \mathbf{X} - \mathbf{U} \cdot \mathbf{Z} \|_F^2$
-Iterative greedy minimization
+\subsection{Matrix Factorization by Iterative Greedy Minimization}
+$(\mathbf{U}^\star, \mathbf{Z}^\star) \in \argmin_\mathbf{U,Z} \| \mathbf{X} - \mathbf{U} \cdot \mathbf{Z} \|_F^2$ not jointly convex but convex in 1 argument.
 \begin{inparaenum}[\color{red} 1.]
-  \item Coding step: $\mathbf{Z}^{t+1} \in \argmin_\mathbf{Z} \| \mathbf{X} - \mathbf{U}^t \mathbf{Z} \|_F^2$ subject to $\mathbf{Z}$ being sparse and $\mathbf{U}$ being fixed
-  \item Dictionary update step: $\mathbf{U}^{t+1} \in \argmin_\mathbf{U} \| \mathbf{X} - \mathbf{UZ}^{t+1} \|_F^2$, subject to $\|\mathbf{u}_l\|_2 = 1 \forall l=1,\dots,L$ and $\mathbf{Z}$ being fixed.
+  \item Coding step: $\mathbf{Z}^{t+1} \in \argmin_\mathbf{Z} \| \mathbf{X} - \mathbf{U}^t \mathbf{Z} \|_F^2$ subject to $\mathbf{Z}$ being sparse
+  \item Dictionary update step: $\mathbf{U}^{t+1} \in \argmin_\mathbf{U} \| \mathbf{X} - \mathbf{UZ}^{t+1} \|_F^2$, subject to $\forall l\in [L]:\|\mathbf{u}_l\|_2 = 1$
 \end{inparaenum}
 %\section{Matching Pursuit (MP): Inpainting}
 %Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
