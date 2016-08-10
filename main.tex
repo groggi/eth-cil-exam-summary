@@ -387,10 +387,8 @@ Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz}
 
 \subsection{Compressive Sensing}
 \begin{compactitem}
-  \item Find: $z^\star \in \argmin_{\mathbf{z}}\|\mathbf{z}\|_0$, s.t $\mathbf{y} = \mathbf{\theta z}$ (e.g. with MP)
-  \item Recovery of $\mathbf{x} \in \mathbb{R}^D$ from measured signal $\mathbf{y} \in \mathbb{R}^M$ (need to find $\mathbf{z}$).
-  $\mathbf{y} = \mathbf{Wx} = \mathbf{WUz} = \mathbf{\theta z}$, with $\theta \in \mathbb{R}^{M \times D}$
-  \item Given $\mathbf{z}$, reconstruct $\mathbf{x}$ via $\mathbf{x} = \mathbf{Uz}$
+  \item $\mathbf{x} \in \mathbb{R}^D$, $K$-sparse in o.n.b. $\mathbf{U}$. $\mathbf{y} \in \mathbb{R}^M$ with $y_i = \langle \mathbf{w}_i, \mathbf{x}\rangle $: $M$ lin. combinations of signal; $\mathbf{y} = \mathbf{Wx} = \mathbf{WUz} = \mathbf{\theta z}$, $\theta \in \mathbb{R}^{M \times D}$
+  \item Reconstruct $\mathbf{x} \in \mathbb{R}^D$ from $\mathbf{y}$; find $\mathbf{z}^\star \in \argmin_{\mathbf{z}}\|\mathbf{z}\|_0$, s.t. $\mathbf{y} = \mathbf{\theta z}$ (e.g. with MP). Given $\mathbf{z}$, reconstruct $\mathbf{x}$ via $\mathbf{x} = \mathbf{Uz}$
 \end{compactitem}
 
 \subsection{CS: Matrix Factorization}
