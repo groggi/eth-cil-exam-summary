@@ -353,23 +353,23 @@ Minimize  $f(\mathbf{x})$ s.t. $g_i(\mathbf{x}) \leq 0,\ i = 1, .., m$ (\textbf{
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\mathbf{x}) + \sum_{i=1}^m \lambda_i g_i(\mathbf{x}) + \sum_{i=1}^p \nu_i h_i(\mathbf{x})$
 	\item[Dual function:] $D(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
-	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Note: $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu}) \le \min_x{f(x)}$, equality if $dom\ f$ and $f$ convex
+	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Note: $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu}) \le \min_\mathbf{x}{f(\mathbf{x})}$, equality if $dom\ f$ and $f$ convex
 \end{compactdesc}
 
 \subsection{Convex Optimization}
-$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(x^{(t)}) - f(x^*) \le \frac{c}{t}$. 
-\textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $x$: $f(y) \geq f(x) + g^\top(y-x) \ \forall y$
+$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(\mathbf{x}^{(t)}) - f(\mathbf{x}^*) \le \frac{c}{t}$. 
+\textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $\mathbf{x}$: $f(\mathbf{y}) \geq f(\mathbf{x}) + g^\top(\mathbf{y}-\mathbf{x}) \ \forall \mathbf{y}$
 
 \section{Sparse Coding}
 Reconstruction error: $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\| \langle\mathbf{x},\mathbf{u}_d \rangle \cdot \mathbf{u}_d \|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$
 
 \subsection{Coherence ($m(\cdot)$)}
-\begin{compactitem}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
 	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
-	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
+	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix; basis
 	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
-\end{compactitem}
+\end{inparaitem}
 
 
 \section{Dictionary Learning}
@@ -417,8 +417,8 @@ Iterative greedy minimization
 \section{Robust PCA}
 \begin{compactitem}
 	\item Idea: Approximate $\mathbf{X}$ with $\mathbf{L} + \mathbf{S}$, $\mathbf{L}$ is low-rank, $\mathbf{S}$ is sparse.
-	\item Minimize $\|\mathbf{L}\|_\star + \lambda \|\mathbf{S}\|_1$ s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$
-	\item A perfect reconstruction is possible if $\mathbf{S}$ is not low-rank, $\mathbf{L}$ is not sparse, or $\mathbf{X}$ is not low-rank \textit{and} sparse at the same time
+	\item $\min_{\mathbf{L},\mathbf{S}}\mathsf{rank}(\mathbf{L}) + \mu \lVert \mathbf{S}\rVert_0$, s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$. As non-convex, adapt to $\min_{\mathbf{L},\mathbf{S}} \|\mathbf{L}\|_\star + \lambda \lVert\mathbf{S}\rVert_1$ (\emph{not} the same in general)
+	\item Perfect reconstruction is \emph{not} possible if $\mathbf{S}$ is low-rank, $\mathbf{L}$ is sparse, or $\mathbf{X}$ is low-rank \textit{and} sparse at the same time
 \end{compactitem}
 
 \subsection{Alternating Direction Method of Multipliers (ADMM)}
