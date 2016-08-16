@@ -199,7 +199,7 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$; $p_{\theta_k}(\mathbf{x}) = \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
 \begin{compactdesc}
 	\item[Mixture Models:] $p_\theta(\mathbf{x}) = \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x})$
-	\item[Assignment variable (generative model):] $\\\mathbf{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \mathbf{z}_k = 1$, $\operatorname{Pr}(\mathbf{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\mathbf{z}_k}$
+	\item[Assignment variable (generative model):] $\\z_k \in \{0, 1\}$, $\sum_{k=1}^K z_k = 1$, $\operatorname{Pr}(z_k = 1) = \pi_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \pi_k^{z_k}$
 	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)^{z_k}$
 	\item[Posterior Probabilities:] $\\\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
 	\item[Likelihood of observed data $\mathbf{X}$:] $p_\theta(\mathbf{X}) = \prod_{n=1}^N p_\theta(\mathbf{x}_n) = \prod_{n=1}^N \left(\sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right)$
@@ -210,7 +210,7 @@ For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
 \begin{compactenum}
 	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}$ for $k = 1, \ldots, K$ and $t=1$.
 	\item E-Step: Pr$[z_{k,n} = 1 | \mathbf{x}_n] = q_{k, n} = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
-	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^\top}{\sum_{n=1}^N q_{k,n}}$
+	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$\hspace{20pt} \& \hspace{20pt} $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$ \hspace{20pt} \& \hspace{20pt} $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^\top}{\sum_{n=1}^N q_{k,n}}$
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
@@ -256,8 +256,8 @@ unnormalized distribution $\rightarrow$ two-sided loss function
 \subsection{EM for pLSA:}
 \begin{compactenum}
   \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
-	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
-	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
+	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)} := \frac{v_{zj}u_{zi}}{\sum_{k=1}^K u_{ki} v_{kj}}$
+	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}}\hspace{10pt}\&\hspace{10pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
 \end{compactenum}
 
 \subsection{NMF Algorithm for quadratic cost function}
