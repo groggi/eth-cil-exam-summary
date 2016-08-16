@@ -287,7 +287,7 @@ unnormalized distribution $\rightarrow$ two-sided loss function
 
 \subsection{EM for pLSA:}
 \begin{compactenum}
-  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} x_{i,j}\log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
+  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
 	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)}$
 	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}} \hspace{20pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
 \end{compactenum}
