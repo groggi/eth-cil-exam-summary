@@ -138,7 +138,7 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 \begin{compactenum}
 	\item Empirical Mean: $\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n$
 	\item Center Data: $\overline{\mathbf{X}} = \mathbf{X} - [\overline{\mathbf{x}}, \ldots, \overline{\mathbf{x}}] = \mathbf{X} - \mathbf{M}$
-	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^\top = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^\top$
+	\item Cov. Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^\top = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^\top$
 	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^\top$, sort eigenvalues (and eigenvectors) in descending order
 	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
 	\item Transform data onto new Basis: $\overline{\mathbf{Z}}_K = \mathbf{U}_K^\top \overline{\mathbf{X}}$
@@ -151,19 +151,15 @@ $\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Targ
 	\item $\mathbf{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\mathbf{Z}}_K \in \mathbb{R}^{K \times N}, \overline{\mathbf{X}} \in \mathbb{R}^{D \times N}$
 \end{compactitem}
 
-\begin{compactdesc}
-	\item[Approx. Error:] Sum of discarded eigenvalues
-\end{compactdesc}
-
 \section{SVD}
-\begin{compactitem}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $\mathbf{A} = \mathbf{U} \mathbf{D} \mathbf{V}^\top = \sum_{k=1}^{\operatorname{rank}(\mathbf{A})} d_{k,k} u_k (v_k)^\top$
 	\item $\mathbf{A} \in \mathbb{R}^{N \times P}, \mathbf{U} \in \mathbb{R}^{N \times N}, \mathbf{D} \in \mathbb{R}^{N \times P}, \mathbf{V} \in \mathbb{R}^{P \times P}$
 	\item $\mathbf{U}^\top \mathbf{U} = I = \mathbf{V}^\top \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
 	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^\top$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^\top \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^\top \mathbf{A}$ and $\mathbf{A} \mathbf{A}^\top$ have the same eigenvalues)
 	\item $(\mathbf{D}^{-1})_{i,i} = \frac{1}{\mathbf{D}_{i, i}}$ ($\mathbf{D} \in \mathbb{R}^{N \times P} \to \mathbf{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
 	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^\top)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^\top \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
-\end{compactitem}
+\end{inparaitem}
 
 \begin{compactenum}
 	\item calculate $\mathbf{A}^\top \mathbf{A}$.
@@ -190,7 +186,14 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$.
 	\item Repeat from step 2, stops if $\|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = \|\mathbf{Z} - \mathbf{Z}^\text{new}\|^2_F = 0$.
 \end{inparaenum}
-
+\subsection{Clustering Stability}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item dist. between clust. (same data): $d(C,C') := \min_\Pi \frac{1}{2}\|Z-\Pi(Z')\|^2_F$ , $\Pi(Z
+')$ = row perm. of $Z$
+  \item arbitrary sets $\textbf{X},\textbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi \in \mathbb{S}_K} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\textbf{X},\textbf{Z}$))
+  \item random assignment with $K$ clusters of equal size: $r_{rand} = \frac{K-1}{K}$
+  \item $stability := 1-r/r_{rand}$
+\end{inparaitem}
 
 \section{Gaussian Mixture Models (GMM)}
 For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$; $p_{\theta_k}(\mathbf{x}) = \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
@@ -213,11 +216,12 @@ For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
 
 \subsection{Model Order Selection (AIC / BIC for GMM)}
 Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). For choosing $K$:
-\begin{compactdesc}
-	\item[Akaike Information Criterion (AIC):] $\\\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
-	\item[Bayesian Information Criterion (BIC):] $\\\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
-	\item[\# of free params:] fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$: \# clusters, $D$: $\mathsf{dim}\text{(data)}=\mathsf{dim}(\mu_i)$, $K-1$: \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$. Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
-\end{compactdesc}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item \textbf{Akaike Information Criterion}: $\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
+	\item \textbf{Bayesian Information Criterion}: $\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
+	\item \# of free params: fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$: \# clusters, $D$: $\mathsf{dim}\text{(data)}=\mathsf{dim}(\mu_i)$, $K-1$: \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$.
+	\item Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
+\end{inparaitem}
 
 \section{Word Embeddings}
 \begin{compactdesc}
