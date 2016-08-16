@@ -200,7 +200,7 @@ For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
 \begin{compactdesc}
 	\item[Mixture Models:] $p_\theta(\mathbf{x}) = \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x})$
 	\item[Assignment variable (generative model):] $\\\mathbf{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \mathbf{z}_k = 1$, $\operatorname{Pr}(\mathbf{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\mathbf{z}_k}$
-	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)$
+	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)^{z_k}$
 	\item[Posterior Probabilities:] $\\\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
 	\item[Likelihood of observed data $\mathbf{X}$:] $p_\theta(\mathbf{X}) = \prod_{n=1}^N p_\theta(\mathbf{x}_n) = \prod_{n=1}^N \left(\sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right)$
 	\item[MLE:] $\argmax_\theta\sum_{n=1}^N \log \left( \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right) \break \log \left( \sum_{k=1}^K{\frac{q_k \pi_k p_{\theta_k}(\mathbf{x}_n)}{q_k}}\right) \ge \sum_{k=1}^K{q_k[\log p_{\theta_k}(\mathbf{x}_n) + \log \pi_k - \log q_k]}$ with $\sum_{k=1}^K{q_k} = 1$ by Jensen. Lagrangian and get $q_k$ as below.
