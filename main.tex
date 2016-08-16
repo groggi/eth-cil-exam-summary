@@ -190,7 +190,7 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 \begin{inparaitem}[\color{red}\textbullet]
   \item dist. between clust. (same data): $d(C,C') := \min_\Pi \frac{1}{2}\|Z-\Pi(Z')\|^2_F$ , $\Pi(Z
 ')$ = row perm. of $Z$
-  \item arbitrary sets $\textbf{X},\textbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi \in \mathbb{S}_K} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\textbf{X},\textbf{Z}$))
+  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi \in \mathbb{S}_K} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
   \item random assignment with $K$ clusters of equal size: $r_{rand} = \frac{K-1}{K}$
   \item $stability := 1-r/r_{rand}$
 \end{inparaitem}
@@ -245,49 +245,13 @@ unnormalized distribution $\rightarrow$ two-sided loss function
   \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
   \item \hspace{26pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
 \end{compactdesc}
-%\section{Expectation-Maximization (EM) for Inpainting}
-%\begin{inparaenum}[\color{red} 1.]
-%	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
-%	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
-%	\item Sparse coding of $\mathbf{x}^{(t)}$: $\mathbf{z}^{(t)} \in \argmin_{\mathbf{z}} \|\mathbf{z}\|_0$ s.t. $\|\mathbf{x}^{(t)} - \mathbf{Uz}\|_2 < \sigma$
-%	\item Repeat (2.) \& (3.) till converging/$\mathit{maxIters}$
-%	\item Image reconstruction: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{x}^{(t)}$
-%\end{inparaenum}
 
-
-%\section{Haar Wavelet}
-%\begin{compactdesc}
-%	\item[Mother function:] $\psi(t)$ is $1$ for $0 \leq t < \frac{1}{2}$, $-1$ for $\frac{1}{2} \leq t < 1$, $0$ otherwise.
-%	\item[Haar function:] $\psi_{n,k}(t) = 2^{n/2} \psi(2^n t - k)$, $2^{n/2}$ only needed if normalized values needed!
-%\end{compactdesc}
-
-%\begin{compactitem}
-%	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^\top} \mathbf{W})^{-1} \mathbf{W}^\top = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^\top$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
-%	\item Don't forget $[1, 1, \ldots, 1]^\top$: first non-normalized basis!
-%	\item \textbf{``Coding'' step:} Tranform $\mathbf{x}$ into coordinate vector $\mathbf{c}$
-%	\item \textbf{``Thresholding'' step:} Set small absolute values in $\mathbf{c}$ to $0$
-%\end{compactitem}
-
-
-
-%\subsection{LSI}
-%Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^\top$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^\top$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^\top \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
 \section{Non-Negative Matrix Factorization (NMF) / pLSA}
 \begin{compactdesc}
 	\item[Context Model:] $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
 	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
 	\item[Symmetric parameterization:] $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
 \end{compactdesc}
-
-%\textbf{Matrix Factorization View:}
-%\begin{inparaitem}[\color{red}\textbullet]
-%	\item Normalize $\mathbf{X}$ resulting in $\hat{\mathbf{X}}$: $\hat{\mathbf{X}}_{d, n} := \frac{\mathbf{X}_{d,n}}{\sum_{d'=1}^D \sum_{n'=1}^N \mathbf{X}_{d', n'}}$
-%	\item $\hat{\mathbf{X}} \approx \mathbf{U} \mathbf{Z}$, $\hat{\mathbf{X}} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents
-%	\item $\mathbf{U}_{d, k} \equiv P(\mathit{word}=d | \mathit{topic} = k)$, $\sum_{d=1}^D \mathbf{U}_{d,k} = 1\, \forall k$
-%	\item $\mathbf{Z}_{k,n} \equiv P(\mathit{topic} = k | \mathit{doc} = n) P(\mathit{doc} = n)$, $\sum_{k, n} \mathbf{Z}_{k,n} = 1$
-%	\item $(\mathbf{U}\mathbf{Z})_{d, n} \equiv P(\mathit{word = d}, \mathit{doc} = n)$
-%	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
-%\end{inparaitem}
 
 \subsection{EM for pLSA:}
 \begin{compactenum}
@@ -406,17 +370,6 @@ Adapt the dictionary to signal characteristics. Objective: $(\mathbf{U}^\star, \
   \item Coding step: $\mathbf{Z}^{t+1} \in \argmin_\mathbf{Z} \| \mathbf{X} - \mathbf{U}^t \mathbf{Z} \|_F^2$ subject to $\mathbf{Z}$ being sparse
   \item Dictionary update step: $\mathbf{U}^{t+1} \in \argmin_\mathbf{U} \| \mathbf{X} - \mathbf{UZ}^{t+1} \|_F^2$, subject to $\forall l\in [L]:\|\mathbf{u}_l\|_2 = 1$
 \end{inparaenum}
-%\section{Matching Pursuit (MP): Inpainting}
-%Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
-%\begin{compactenum}
-%	\item Initialize: Coefficient vector $\mathbf{z} = \mathbf{0}$, residual $\mathbf{r} = \mathbf{M}\mathbf{x}$.
-%	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
-%	\begin{listcols}[2][5pt]
-%		\item $d^\star = \argmax_d \frac{|\langle \mathbf{M}\mathbf{u}_d, \mathbf{r}\rangle|}{\|\mathbf{M}\mathbf{u}_d\|_2}$
-%		\item $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2}$
-%		\item $\mathbf{r} = \mathbf{r} - \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2} \mathbf{M}\mathbf{u}_{d^\star}$
-%	\end{listcols}
-%\end{compactenum}
 
 \section{Robust PCA}
 \begin{compactitem}
@@ -432,9 +385,6 @@ $\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. 
 	\item ADMM: $\mathbf{x}_1^{(t+1)} := \argmin_{\mathbf{x}_1} L_p(\mathbf{x}_1, \mathbf{x}_2^{(t)}, \boldsymbol{\nu}^{(t)})$, $\mathbf{x}_2^{(t+1)} := \argmin_{\mathbf{x}_2} L_p(\mathbf{x}_1^{(t+1)}, \mathbf{x}_2, \boldsymbol{\nu}^{(t)})$, $\boldsymbol{\nu}^{(t+1)} := \boldsymbol{\nu}^{(t)} + p(\mathbf{A}_1 \mathbf{x}_1^{(t+1)} + \mathbf{A}_2 \mathbf{x}_2^{(t+1)} - \mathbf{b})$
 	\item ADDM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \ldots$, $\boldsymbol{\nu}$ is matrix here!
 \end{inparaitem}
-
-
-
 
 \raggedcolumns
 \end{multicols*}
