@@ -186,13 +186,13 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$.
 	\item Repeat from step 2, stops if $\|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = \|\mathbf{Z} - \mathbf{Z}^\text{new}\|^2_F = 0$.
 \end{inparaenum}
+
 \subsection{Clustering Stability}
 \begin{inparaitem}[\color{red}\textbullet]
   \item dist. between clust. (same data): $d(C,C') := \min_\Pi \frac{1}{2}\|Z-\Pi(Z')\|^2_F$ , $\Pi(Z
-')$ = row perm. of $Z$
-  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi \in \mathbb{S}_K} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
-  \item random assignment with $K$ clusters of equal size: $r_{rand} = \frac{K-1}{K}$
-  \item $stability := 1-r/r_{rand}$
+')$ = row perm. of $Z'$
+  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
+  \item for $K$ clusters: $\text{stability} := 1 - \frac{r}{r_{rand}}$ (1 good, 0 bad), rand. clust. of equal size: $r_{rand} = \frac{K-1}{K}$.
 \end{inparaitem}
 
 \section{Gaussian Mixture Models (GMM)}
@@ -201,7 +201,7 @@ For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)
 	\item[Mixture Models:] $p_\theta(\mathbf{x}) = \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x})$
 	\item[Assignment variable (generative model):] $\\z_k \in \{0, 1\}$, $\sum_{k=1}^K z_k = 1$, $\operatorname{Pr}(z_k = 1) = \pi_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \pi_k^{z_k}$
 	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)^{z_k}$
-	\item[Posterior Probabilities:] $\\\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
+	\item[Posterior Probabilities:] $\\\operatorname{Pr}(z_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(z_k = 1) p(\mathbf{x} | z_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(z_l = 1) p(\mathbf{x} | z_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
 	\item[Likelihood of observed data $\mathbf{X}$:] $p_\theta(\mathbf{X}) = \prod_{n=1}^N p_\theta(\mathbf{x}_n) = \prod_{n=1}^N \left(\sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right)$
 	\item[MLE:] $\argmax_\theta\sum_{n=1}^N \log \left( \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right) \break \log \left( \sum_{k=1}^K{\frac{q_k \pi_k p_{\theta_k}(\mathbf{x}_n)}{q_k}}\right) \ge \sum_{k=1}^K{q_k[\log p_{\theta_k}(\mathbf{x}_n) + \log \pi_k - \log q_k]}$ with $\sum_{k=1}^K{q_k} = 1$ by Jensen. Lagrangian and get $q_k$ as below.
 \end{compactdesc}
