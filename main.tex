@@ -191,9 +191,8 @@ Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\math
 \begin{inparaitem}[\color{red}\textbullet]
   \item dist. between clust. (same data): $d(C,C') := \min_\Pi \frac{1}{2}\|Z-\Pi(Z')\|^2_F$ , $\Pi(Z
 ')$ = row perm. of $Z'$
-  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi \in \mathbb{S}_K} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
-  \item random assignment with $K$ clusters of equal size: $r_{rand} = \frac{K-1}{K}$
-  \item $stability := 1-r/r_{rand}$
+  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
+  \item for $K$ clusters: $\text{stability} := 1 - \frac{r}{r_{rand}}$ (1 good, 0 bad), rand. clust. of equal size: $r_{rand} = \frac{K-1}{K}$.
 \end{inparaitem}
 
 \section{Gaussian Mixture Models (GMM)}
