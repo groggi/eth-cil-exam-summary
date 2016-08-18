@@ -101,7 +101,7 @@
 	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
 	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^\top \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
 	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
-	\item[\color{red}Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^\top \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
+	\item[\color{red}Frobenius:] $\mathbf{A} \in \mathbb{R}^{M \times N}$$\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^\top \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$
 \end{inparadesc}
 
 \subsection{Basis Transformation}
@@ -256,7 +256,7 @@ unnormalized distribution $\rightarrow$ two-sided loss function
 \subsection{EM for pLSA:}
 \begin{compactenum}
   \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
-	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)} := \frac{v_{zj}u_{zi}}{\sum_{k=1}^K u_{ki} v_{kj}}$
+	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)} := \frac{v_{zj}u_{zi}}{\sum_{k=1}^K v_{kj}u_{ki}}$
 	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}}\hspace{10pt}\&\hspace{10pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
 \end{compactenum}
 
