@@ -96,13 +96,16 @@
 \end{compactdesc}
 
 \subsection{Norms}
-\begin{inparadesc}
-	\item[\color{red}$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
-	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
-	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^\top \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
-	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
-	\item[\color{red}Frobenius:] $\mathbf{A} \in \mathbb{R}^{M \times N}$$\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^\top \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$
-\end{inparadesc}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $\|\mathbf{x}\|_0 = |\{i | x_i \neq 0\}|$
+	\item $\|\mathbf{x}\|_2 = \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
+	\item $\|\mathbf{x}\|_p = \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
+	\item $\mathbf{A} \in \mathbb{R}^{M \times N}$$\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$
+  \item $\|\mathbf{M}\|_1 = \sum_{i,j} | m_{i,j}|$
+	\item $\|\mathbf{M}\|_2 = \sigma_{\text{max}}(\mathbf{A})$
+	\item $\|\mathbf{M}\|_p = \max_{\mathbf{v} \neq 0} \frac{\|\mathbf{X}\mathbf{v}\|_p}{\|\mathbf{v}\|_p}$
+	\item $\|\mathbf{M}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
+\end{inparaitem}
 
 \subsection{Derivatives}
 \begin{inparaitem}[\color{red}\textbullet]
@@ -370,7 +373,7 @@ Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz}
 	\item update coefficients: $\mathbf{z}_{i^\star} \leftarrow \mathbf{z}_{i^\star} + \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle$
 	\item update residual: $\mathbf{r} \leftarrow \mathbf{r} - \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle \mathbf{u}_{i^\star}$.
 \end{inparaenum}
-\\\textbf{Exact recovery} when: $K<\frac{1}{2}( 1+\frac{1}{m(\mathbf{U})})$
+\\\textbf{Exact recovery} when: $K<1/2( 1+1/m(\mathbf{U}))$
 
 \textbf{Compressive Sensing}
 \begin{inparaitem}[\color{red}\textbullet]
