@@ -117,9 +117,11 @@ Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
 \end{compactenum}
 
 \subsection{Eigendecomposition}
-$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
-$\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
-Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
+\begin{inparaitem}[\color{red}\textbullet]
+  \item $\mathbf{A} \in \mathbb{R}^{N \times N}$ then $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$ with $\mathbf{Q} \in \mathbb{R}^{N \times N}$.
+  \item if all eigenvalues nonzero: $\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$ and $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
+  \item if $\mathbf{A}$ symmetric: $A = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q^\top}$ (and $\mathbf{Q}$ is orthogonal).
+\end{inparaitem}
 
 \subsection{Probability / Statistics}
 \begin{inparaitem}[\color{red}\textbullet]
