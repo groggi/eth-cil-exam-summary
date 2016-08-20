@@ -104,8 +104,21 @@
 	\item[\color{red}Frobenius:] $\mathbf{A} \in \mathbb{R}^{M \times N}$$\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^\top \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$
 \end{inparadesc}
 
-\subsection{Basis Transformation}
-$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
+\subsection{Derivatives}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{x}) = \frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{b}) = \mathbf{b}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{A}\mathbf{x}) = (\mathbf{A}^\top + \mathbf{A})\mathbf{x} =^{\text{if \textbf{A} sym.}} 2\mathbf{A}\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{A}\mathbf{x}) = \mathbf{A}^\top \mathbf{b}$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X} \mathbf{b}) = \mathbf{c}\mathbf{b}^\top$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X}^\top \mathbf{b}) = \mathbf{b}\mathbf{c}^\top$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\|\mathbf{x}^\top \mathbf{x}\|_2) = 2\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$
+\end{inparaitem}
+
+%\subsection{Basis Transformation}
+%$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
 
 \subsection{Eigenvalue / -vectors}
 Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
