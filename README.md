@@ -1,7 +1,7 @@
 # Status
-Work in progress. However, it should be close to its final version :) 
+Done. Release Candidate 1 should be considered final.
 
-If you spot any mistakes or typos please go ahead and create an issue or a pull request (and do not keep it to yourself please).
+However, If you spot any mistakes or typos please go ahead and create an issue or a pull request (and do not keep it to yourself please).
 
 You can also go ahead and create your own fork if you want to extend it or update it in future years.
 
@@ -13,4 +13,4 @@ This is largely based on ![Gregor Wegberg's](https://github.com/groggi) great ![
 It has been adapted to the new lecture content of 2016 and modified to suit our needs.
 
 # Download latest PDF
-[Download freshly compiled PDF provided by latex.aslushnikov.com](http://latex.aslushnikov.com/compile?git=https://github.com/mohlerm/eth-cil-exam-summary&target=main.tex)
+[Download Release Candidate](https://github.com/mohlerm/eth-cil-exam-summary/releases/download/v1.0-rc.1/eth-cil-exam-summary-2016-1.0.pdf)
