@@ -392,7 +392,7 @@ Adapt the dictionary to signal characteristics. Objective: $(\mathbf{U}^\star, \
 \begin{compactitem}
 	\item Idea: Approximate $\mathbf{X}$ with $\mathbf{L} + \mathbf{S}$, $\mathbf{L}$ is low-rank, $\mathbf{S}$ is sparse.
 	\item $\min_{\mathbf{L},\mathbf{S}}\mathsf{rank}(\mathbf{L}) + \mu \lVert \mathbf{S}\rVert_0$, s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$. As non-convex, change to $\min_{\mathbf{L},\mathbf{S}} \|\mathbf{L}\|_\star + \lambda \lVert\mathbf{S}\rVert_1$ (\emph{not} the same in general)
-	\item Perfect reconstruction is \emph{not} possible if $\mathbf{S}$ is low-rank, $\mathbf{L}$ is sparse, or $\mathbf{X}$ is low-rank \textit{and} sparse at the same time, coherence: $\|\mathbf{U}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{V}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{UV}^\top\|^2_{ij} \leq \frac{\nu r}{n^2}$
+	\item Perfect reconstruction is \emph{not} possible if $\mathbf{S}$ is low-rank, $\mathbf{L}$ is sparse, or $\mathbf{X}$ is low-rank \textit{and} sparse. Formally coherence: $\|\mathbf{U}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{V}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{UV}^\top\|^2_{ij} \leq \frac{\nu r}{n^2}$ : $\mathbf{L}=\mathbf{U}\mathbf{D}\mathbf{V}^\top$
 \end{compactitem}
 
 \subsection{Dual Ascent (Gradient Method for Dual Problem)}
