@@ -368,7 +368,7 @@ Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz}
 	\item init: $z \leftarrow 0, r \leftarrow x$
 	\item while $\|\mathbf{z}\|_0 < K$ do
 	\item select atom with smallest angle $i^\star = \argmax_i |\langle \mathbf{u}_i, \mathbf{r} \rangle|$
-	\item update coefficients: $\mathbf{z}_{i^\star} \leftarrow \mathbf{z}_{i^\star} + \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle$
+	\item update coefficients: $z_{i^\star} \leftarrow z_{i^\star} + \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle$
 	\item update residual: $\mathbf{r} \leftarrow \mathbf{r} - \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle \mathbf{u}_{i^\star}$.
 \end{inparaenum}
 \\\textbf{Exact recovery} when: $K<1/2( 1+1/m(\mathbf{U}))$
