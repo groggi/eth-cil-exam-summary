@@ -246,7 +246,7 @@ Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and comple
   \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$.
   Modifications:
   \begin{inparaitem}[\color{red}\textbullet]
-  \item split vocab in main vocab $V$, context vocab $C$: $\log p_{\theta}(w|w') = \langle x_{w'}, y_{w} \rangle + b_w$, word embed. $x_w$, context embed. $y_w$
+  \item split vocab in main vocab $V$, context vocab $C$: $\log p_{\theta}(w|w') = \langle  y_{w} , x_{w'} \rangle + b_w$,  word embed. $y_w$, context embed. $x_{w'}$
   \item use GloVe objective
   \end{inparaitem}
 \end{compactdesc}
