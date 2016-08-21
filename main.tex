@@ -352,7 +352,7 @@ Reconstruction Error $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\l
 Choice of base depends on signal. Fourier for global, wavelet for local support. PCA basis optimal for given $\Sigma$.
 
 \subsection{Overcomplete Basis}
-$\mathbf{U} \in \mathbb{R}^{D \times  L}$ for $\mathsf{dim}\text{(data)} = L > D =$ \# atoms. Decoding involved $\rightarrow$ add constraint $\mathbf{z}^\star \in \argmin_\mathbf{z} \lVert \mathbf{z} \rVert_0$ s.t. $\mathbf{x} = \mathbf{Uz}$. NP-hard $\rightarrow$ approximate with 1-norm (convex) or with MP.
+$\mathbf{U} \in \mathbb{R}^{D \times  L}$ for \# atoms $ = L > D = \mathsf{dim}\text{(data)}$. Decoding involved $\rightarrow$ add constraint $\mathbf{z}^\star \in \argmin_\mathbf{z} \lVert \mathbf{z} \rVert_0$ s.t. $\mathbf{x} = \mathbf{Uz}$. NP-hard $\rightarrow$ approximate with 1-norm (convex) or with MP.
 
 \textbf{Coherence}
 \begin{inparaitem}[\color{red}\textbullet]
