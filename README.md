@@ -11,4 +11,4 @@ This is largely based on ![Gregor Wegberg's](https://github.com/groggi) great ![
 It has been adapted to the new lecture content of 2016 and modified to suit our needs.
 
 # Download latest PDF
-[Download Release Candidate](https://github.com/mohlerm/eth-cil-exam-summary/releases/download/v1.0/eth-cil-exam-summary-2016-1.0.pdf)
+[Download Version 1.0](https://github.com/mohlerm/eth-cil-exam-summary/releases/download/v1.0/eth-cil-exam-summary-2016-1.0.pdf)
