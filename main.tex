@@ -51,7 +51,7 @@
   {\subsubcolorsection}
 \newcommand{\subsubcolorsection}[1]{%
 	\colorbox{blue!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesubsubsection\ #1}}}
-	
+
 % environment for multicols inside a list
 \NewDocumentEnvironment{listcols}{O{2} O{0pt}}
 	{%
@@ -116,7 +116,7 @@
   \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X} \mathbf{b}) = \mathbf{c}\mathbf{b}^\top$
   \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X}^\top \mathbf{b}) = \mathbf{b}\mathbf{c}^\top$
   \item $\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$
-  \item $\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\|\mathbf{x}^\top \mathbf{x}\|_2) = 2\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$
   \item $\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$
 \end{inparaitem}
 
@@ -258,14 +258,14 @@ Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and comple
 \end{compactdesc}
 unnormalized distribution $\rightarrow$ two-sided loss function
 \begin{compactdesc}
-  \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$ 
+  \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$
   \item \hspace{26pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
 \end{compactdesc}
 
 \section{Non-Negative Matrix Factorization (NMF) / pLSA}
 \begin{compactdesc}
 	\item[Context Model:] $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
-	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$ 
+	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$
 	\item[Symmetric parameterization:] $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
 \end{compactdesc}
 
@@ -297,7 +297,7 @@ $\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf
 \textbf{Neurons}: $F_\sigma(\mathbf{x};\mathbf{w}) = \sigma(w_0 + \sum_{i=1}^M{x_iw_i})$. \textbf{Output}: linear regression; $\mathbf{y} = \mathbf{W}^L\mathbf{x}^{L-1}$, binary classification; $y_1 = \text{P}[Y=1|\mathbf{x}] = \frac{1}{1 + \exp[-\langle \mathbf{w}_1^L,\mathbf{x}^{L-1}\rangle]}$, multiclass; $y_k = \text{P}[Y=k|\mathbf{x}]= \frac{\exp[\langle \mathbf{w}_k^L,\mathbf{x}^{L-1}\rangle]}{\sum_{m=1}^{K}{\exp[\langle \mathbf{w}_m^L, \mathbf{x}^{L-1}\rangle]}}$. \textbf{Loss function} $l(y, \hat{y})$: squared loss; $\frac{1}{2}(y - \hat{y})^2$, cross-entropy loss; $-y \log \hat{y} - (1-y)\log(1-\hat{y})$.
 
 \subsection{Neural Networks for Images}
-Translation invariance of images $\rightarrow$ neurons compute same fct, shift invariant filters; weights defined as filter masks, e.g. convolution: $F_{n,m}(\mathbf{x};\mathbf{w}) = \sigma(b + \sum_{k=-2}^2\sum_{l=-2}^{2}{w_{k,l}x_{n+k,m+l}})$. To reduce dimension of convolution, use \{max, avg\}-pooling 
+Translation invariance of images $\rightarrow$ neurons compute same fct, shift invariant filters; weights defined as filter masks, e.g. convolution: $F_{n,m}(\mathbf{x};\mathbf{w}) = \sigma(b + \sum_{k=-2}^2\sum_{l=-2}^{2}{w_{k,l}x_{n+k,m+l}})$. To reduce dimension of convolution, use \{max, avg\}-pooling
 
 \section{Optimization}
 
@@ -323,7 +323,7 @@ Assume \textbf{Additive Objective}; $f(x) = \frac{1}{N}\sum_{n=1}^{N}f_n(x)$
 	\item init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
 	\item for $t = 0 \ \text{to} \ \mathit{maxIter}$:
 	\item sample u.a.r. $n \sim \{1, \ldots, N\}$
-	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$, usually stepsize $\gamma \approx \frac{1}{t}$. 
+	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$, usually stepsize $\gamma \approx \frac{1}{t}$.
 \end{inparaenum}
 
 \subsection{Projected Gradient Descent (Constrained Opt.)}
@@ -341,7 +341,7 @@ Minimize  $f(\mathbf{x})$ s.t. $g_i(\mathbf{x}) \leq 0,\ i = 1, .., m$ (\textbf{
 \end{compactdesc}
 
 \subsection{Convex Optimization}
-$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(\mathbf{x}^{(t)}) - f(\mathbf{x}^*) \le \frac{c}{t}$. 
+$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(\mathbf{x}^{(t)}) - f(\mathbf{x}^*) \le \frac{c}{t}$.
 \textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $\mathbf{x}$: $f(\mathbf{y}) \geq f(\mathbf{x}) + g^\top(\mathbf{y}-\mathbf{x}) \ \forall \mathbf{y}$
 
 \section{Sparse Coding}
@@ -398,8 +398,8 @@ Adapt the dictionary to signal characteristics. Objective: $(\mathbf{U}^\star, \
 \subsection{Dual Ascent (Gradient Method for Dual Problem)}
 $\boldsymbol{\lambda}^{t+1} = \boldsymbol{\lambda}^{t} + \eta \nabla D(\boldsymbol{\lambda}^t)$,
 $ \nabla D (\boldsymbol{\lambda}) = \mathbf{A}\mathbf{x}^*-\mathbf{b}$ for $\mathbf{x}^* \in \arg\min_\mathbf{x} \mathcal{L}(\mathbf{x},\boldsymbol{\lambda})$
-\textbf{Dual Decomposition for Dual Ascent}: 
-\\$\mathbf{x}_i^{t+1} := \arg\min_{\mathbf{x}_i} \mathcal{L}_i(\mathbf{x}_i,\lambda^t)$; 
+\textbf{Dual Decomposition for Dual Ascent}:
+\\$\mathbf{x}_i^{t+1} := \arg\min_{\mathbf{x}_i} \mathcal{L}_i(\mathbf{x}_i,\lambda^t)$;
 $\boldsymbol{\lambda}^{t+1} := \boldsymbol{\lambda}^t + \eta^t \left( \sum_{i=1}^{N} \mathbf{A}_i \mathbf{x}_i^{t+1} -\mathbf{b} \right) $
 
 \subsection{Alternating Direction Method of Multipliers (ADMM)}
@@ -407,7 +407,7 @@ $\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. 
 \begin{inparaitem}[\color{red}\textbullet]
 	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^\top (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
 	\item ADMM: $\mathbf{x}_1^{(t+1)} := \argmin_{\mathbf{x}_1} L_p(\mathbf{x}_1, \mathbf{x}_2^{(t)}, \boldsymbol{\nu}^{(t)})$, $\mathbf{x}_2^{(t+1)} := \argmin_{\mathbf{x}_2} L_p(\mathbf{x}_1^{(t+1)}, \mathbf{x}_2, \boldsymbol{\nu}^{(t)})$, $\boldsymbol{\nu}^{(t+1)} := \boldsymbol{\nu}^{(t)} + p(\mathbf{A}_1 \mathbf{x}_1^{(t+1)} + \mathbf{A}_2 \mathbf{x}_2^{(t+1)} - \mathbf{b})$
-  \item ADMM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \|\mathbf{L}\|_* + \nu \|\mathbf{S}\|_1 + \left< \nu, \mathrm{vec}(\mathbf{L}+\mathbf{S}-\mathbf{X}) \right> + \frac{P}{2} \| \mathbf{L}+ \mathbf{S} - \mathbf{X} \|_F^2$ 
+  \item ADMM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \|\mathbf{L}\|_* + \nu \|\mathbf{S}\|_1 + \left< \nu, \mathrm{vec}(\mathbf{L}+\mathbf{S}-\mathbf{X}) \right> + \frac{P}{2} \| \mathbf{L}+ \mathbf{S} - \mathbf{X} \|_F^2$
   %updates: $\mathbf{L}^{t+1} = \mathcal{D}_{\rho^{-1}}(X-S-\rho^{-1}\text{mat}(\lambda))$
 \end{inparaitem}
 
