@@ -51,7 +51,7 @@
   {\subsubcolorsection}
 \newcommand{\subsubcolorsection}[1]{%
 	\colorbox{blue!10}{\parbox[t][0em]{\dimexpr\columnwidth-2\fboxsep}{\thesubsubsection\ #1}}}
-	
+
 % environment for multicols inside a list
 \NewDocumentEnvironment{listcols}{O{2} O{0pt}}
 	{%
@@ -78,29 +78,52 @@
 \begin{document}
 \begin{multicols*}{3}
 
-\section{PCA}
-$\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target: $\tilde{\mathbf{X}} \in \mathbb{R}^{K \times N}$.
-\begin{compactenum}
-	\item Empirical Mean: $\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n$
-	\item Center Data: $\overline{\mathbf{X}} = \mathbf{X} - [\overline{\mathbf{x}}, \ldots, \overline{\mathbf{x}}] = \mathbf{X} - \mathbf{M}$
-	\item Covariance Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^T = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^T$
-	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^T$, sort eigenvalues (and eigenvectors) in descending order
-	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
-	\item Transform data onto new Basis: $\overline{\mathbf{Z}} = \mathbf{U}_K^T \overline{\mathbf{X}}$
-	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}$
-	\item Reverse centring: $\tilde{\mathbf{X}} = \tilde{\overline{\mathbf{X}}} + \mathbf{M}$
-\end{compactenum}
-
-\begin{compactitem}
-	\item For compression save $\mathbf{U}_k, \overline{\mathbf{Z}}, \overline{\mathbf{x}}$.
-	\item $\mathbf{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\mathbf{Z}} \in \mathbb{R}^{K \times N}, \overline{\mathbf{X}} \in \mathbb{R}^{D \times N}$
-\end{compactitem}
-
+\section{Essentials}
+\subsection{Matrix/Vector}
 \begin{compactdesc}
-	\item[Approx. Error:] Sum of discarded eigenvalues
+	\item[Orthogonal:] (i.e. columns are orthonormal!) $\mathbf{A}^{-1} = \mathbf{A}^\top$, $\mathbf{A} \mathbf{A}^\top = \mathbf{A}^\top \mathbf{A} = \mathbf{I}$, $\operatorname{det}(\mathbf{A}) \in \{+1, -1\}$, $\operatorname{det}(\mathbf{A}^\top \mathbf{A}) = 1$
+	\item[Inner Product:] (in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^\top \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
+	\begin{inparaitem}[\color{red}\textbullet]
+		\item $\langle \mathbf{x} \pm \mathbf{y}, \mathbf{x} \pm \mathbf{y} \rangle = \langle \mathbf{x}, \mathbf{x} \rangle \pm 2 \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{y}, \mathbf{y} \rangle$
+		\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
+		\item $\langle \mathbf{x}, \mathbf{y} \rangle = \|\mathbf{x}\|_2 \cdot \|\mathbf{y}\|_2 \cdot \cos(\theta)$
+		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
+	\end{inparaitem}
+	\item[Outer Product:] $\mathbf{u} \mathbf{v}^\top$, $(\mathbf{u} \mathbf{v}^\top)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
+	\item[Transpose:] $(\mathbf{A}^\top)^{-1} = (\mathbf{A}^{-1})^\top$
+	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis
 \end{compactdesc}
 
-\section{Eigenvalue / -vectors}
+\subsection{Norms}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $\|\mathbf{x}\|_0 = |\{i | x_i \neq 0\}|$
+	\item $\|\mathbf{x}\|_2 = \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
+	\item $\|\mathbf{x}\|_p = \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
+	\item $\mathbf{M} \in \mathbb{R}^{m \times n}$,\ $\|\mathbf{M}\|_F =\allowbreak \sqrt{\sum_{i=1}^{m} \sum_{j=1}^{n}\mathbf{m}_{i,j}^2} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$
+  \item $\|\mathbf{M}\|_1 = \sum_{i,j} | m_{i,j}|$
+	\item $\|\mathbf{M}\|_2 = \sigma_{\text{max}}(\mathbf{M})$
+	\item $\|\mathbf{M}\|_p = \max_{\mathbf{v} \neq 0} \frac{\|\mathbf{M}\mathbf{v}\|_p}{\|\mathbf{v}\|_p}$
+	\item $\|\mathbf{M}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
+\end{inparaitem}
+
+\subsection{Derivatives}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{x}) = \frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{b}) = \mathbf{b}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{x}^\top \mathbf{A}\mathbf{x}) = (\mathbf{A}^\top + \mathbf{A})\mathbf{x} =^{\text{if \textbf{A} sym.}} 2\mathbf{A}\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\mathbf{b}^\top \mathbf{A}\mathbf{x}) = \mathbf{A}^\top \mathbf{b}$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X} \mathbf{b}) = \mathbf{c}\mathbf{b}^\top$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\mathbf{c}^\top \mathbf{X}^\top \mathbf{b}) = \mathbf{b}\mathbf{c}^\top$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\| \mathbf{x}-\mathbf{b} \|_2) = \frac{\mathbf{x}-\mathbf{b}}{\|\mathbf{x}-\mathbf{b}\|_2}$
+  \item $\frac{\partial}{\partial \mathbf{x}}(\|\mathbf{x}\|^2_2) = \frac{\partial}{\partial \mathbf{x}} (\mathbf{x}^\top \mathbf{x}) = 2\mathbf{x}$
+  \item $\frac{\partial}{\partial \mathbf{X}}(\|\mathbf{X}\|_F^2) = 2\mathbf{X}$
+\end{inparaitem}
+
+%\subsection{Basis Transformation}
+%$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
+
+\subsection{Eigenvalue / -vectors}
 Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
 \begin{compactenum}
 	\item solve $\operatorname{det}(\mathbf{A} - \lambda \mathbf{I}) \overset{!}{=} 0$ resulting in $\{\lambda_i\}_i$
@@ -109,77 +132,15 @@ Eigenvalue Problem: $\mathbf{Ax} = \lambda \mathbf{x}$
 	\item (opt.) normalize eigenvector $q_i$: $q_i^{\text{norm}} = \frac{1}{\|q_i\|_2} q_i$.
 \end{compactenum}
 
-\section{Eigendecomposition}
-$\mathbf{A} \in \mathbb{R}^{N \times N}$ with $N$ linear independent eigenvectors, then: $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$. $\mathbf{Q} \in \mathbb{R}^{N \times N}$, $i$-th column is the $i$-th eigenvector of $\mathbf{A}$. $\boldsymbol{\Lambda}$ is diagonal and $\boldsymbol{\lambda}_{i,i}$ is the $i$-th eigenvector. Every symmetric matrix can be ``eigendecomposed''. 
-$\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$, $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
-Calculate eigenvalues $\lambda_i$ and eigenvectors $q_i$. Normalise the eigenvectors. Put eigenvectors as columns into $\mathbf{Q}$ and eigenvalues into the diagonal of $\boldsymbol{\Lambda}$.
+\subsection{Eigendecomposition}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item $\mathbf{A} \in \mathbb{R}^{N \times N}$ then $\mathbf{A} = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q}^{-1}$ with $\mathbf{Q} \in \mathbb{R}^{N \times N}$.
+  \item if all eigenvalues nonzero: $\mathbf{A}^{-1} = \mathbf{Q} \boldsymbol{\Lambda}^{-1} \mathbf{Q}^{-1}$ and $(\boldsymbol{\Lambda}^{-1})_{i,i} = \frac{1}{\lambda_i}$
+  \item if $\mathbf{A}$ symmetric: $A = \mathbf{Q} \boldsymbol{\Lambda} \mathbf{Q^\top}$ (and $\mathbf{Q}$ is orthogonal).
+\end{inparaitem}
 
-\section{SVD}
-\begin{compactitem}
-	\item $\mathbf{A} = \mathbf{U} \mathbf{D} \mathbf{V}^T = \sum_{k=1}^{\operatorname{rank}(\mathbf{A})} d_{k,k} u_k (v_k)^T$
-	\item $\mathbf{A} \in \mathbb{R}^{N \times P}, \mathbf{U} \in \mathbb{R}^{N \times N}, \mathbf{D} \in \mathbb{R}^{N \times P}, \mathbf{V} \in \mathbb{R}^{P \times P}$
-	\item $\mathbf{U}^T \mathbf{U} = I = \mathbf{V}^T \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
-	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^T$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^T \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^T \mathbf{A}$ and $\mathbf{A} \mathbf{A}^T$ have the same eigenvalues)
-	\item $(\mathbf{D}^{-1})_{i,i} = \frac{1}{\mathbf{D}_{i, i}}$ ($\mathbf{D} \in \mathbb{R}^{N \times P} \to \mathbf{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
-	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^T)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^T \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
-\end{compactitem}
-
-\begin{compactenum}
-	\item calculate $\mathbf{A}^T \mathbf{A}$.
-	\item calculate eigenvalues of $\mathbf{A}^T \mathbf{A}$, the square root of them are the diagonal elements of $\mathbf{D}$.
-	\item calculate eigenvectors of $\mathbf{A}^T \mathbf{A}$ using the eigenvalues resulting in the columns of $\mathbf{V}$.
-	\item calculate the missing matrix: $\mathbf{U} = \mathbf{A} \mathbf{V} \mathbf{D}^{-1}$. Can be checked by calculating the eigenvectors of $\mathbf{A} \mathbf{A}^T$.
-	\item normalize each columns of $\mathbf{U}$ and $\mathbf{V}$.
-\end{compactenum}
-
-\subsection{Low-Rank approximation}
-Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k} = \mathbf{U}_{i, k} \mathbf{D}_{k,k} (\mathbf{V}^T)_{k, j}$.
-\begin{compactdesc}
-	\item[Error Frobenius:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_F = \sqrt{\sum_{i > K} \sigma_i^2} = \sqrt{\sum_{i > K} \lambda_i}$
-	\item[Error Euclidean:] $\|\mathbf{A} - \tilde{\mathbf{A}}\|_2 = \sigma_{K+1}$
-\end{compactdesc}
-
-\section{Basis Transform}
-$\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, invertible). Representing $\mathbf{x}$ in basis $\mathbf{V}$ by \emph{coordinate vector} $\mathbf{a}$: $\mathbf{x} = \mathbf{V} \mathbf{a} \Rightarrow \mathbf{a} = \mathbf{V}^{-1} \mathbf{x}$. Knowing $\mathbf{a}$ representing $\mathbf{x}$ in $\mathbf{V}$ we can calculate coordinate vector $\mathbf{b}$ representing $\mathbf{x}$ in $\mathbf{W}$ with: $\mathbf{x} = \mathbf{W}^{-1} \mathbf{b} = \mathbf{V}^{-1} \mathbf{a} \Rightarrow \mathbf{b} = \mathbf{W} \mathbf{V}^{-1} \mathbf{a}$.
-
-\section{Matrix/Vector}
-\begin{compactdesc}
-	\item[Orthogonal:] (i.e. columns are orthonormal!) $\mathbf{A}^{-1} = \mathbf{A}^T$, $\mathbf{A} \mathbf{A}^T = \mathbf{A}^T \mathbf{A} = \mathbf{I}$, $\operatorname{det}(\mathbf{A}) \in \{+1, -1\}$, $\operatorname{det}(\mathbf{A}^T \mathbf{A}) = 1$
-	\item[Inner Product:] (in $\mathbb{R}^D$) $\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T \mathbf{y} = \sum_{i=1}^{N} \mathbf{x}_i \mathbf{y}_i$.
-	\begin{inparaitem}[\color{red}\textbullet]
-		\item $\langle \mathbf{x} \pm \mathbf{y}, \mathbf{x} \pm \mathbf{y} \rangle = \langle \mathbf{x}, \mathbf{x} \rangle \pm 2 \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{y}, \mathbf{y} \rangle$
-		\item $\langle \mathbf{x}, \mathbf{y} + \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{y} \rangle + \langle \mathbf{x}, \mathbf{z} \rangle$
-		\item $\langle \mathbf{x} + \mathbf{y}, \mathbf{z} \rangle = \langle \mathbf{x}, \mathbf{z} \rangle + \langle \mathbf{y}, \mathbf{z} \rangle$
-		\item $\langle \mathbf{x}, \mathbf{y} \rangle = \|\mathbf{x}\|_2 \cdot \|\mathbf{y}\|_2 \cdot \cos(\theta)$
-		\item If $\mathbf{y}$ is a unit vector then $\langle \mathbf{x}, \mathbf{y} \rangle$ projects $\mathbf{x}$ onto $\mathbf{y}$
-	\end{inparaitem}
-	\item[Outer Product:] $\mathbf{u} \mathbf{v}^T$, $(\mathbf{u} \mathbf{v}^T)_{i, j} = \mathbf{u}_i \mathbf{v}_j$
-	\item[Transpose:] $(\mathbf{A}^T)^{-1} = (\mathbf{A}^{-1})^T$
-	\item[Gram-Schmidt:] $\{\mathbf{w}_i\}_i$ non-orthogonal basis. $\mathbf{v}_n = \mathbf{w}_n - \sum_{i=1}^{n-1} \frac{\langle \mathbf{v}_i, \mathbf{w}_n \rangle}{\langle \mathbf{v}_i, \mathbf{v}_i \rangle} \mathbf{v}_i$ results in $\{\mathbf{v}_i\}_i$ an orthogonal basis
-\end{compactdesc}
-
-\section{Norms}
-\begin{inparadesc}
-	\item[\color{red}$l_0$:] $\|\mathbf{x}\|_0 := |\{i | x_i \neq 0\}|$
-	\item[\color{red}Nuclear:] $\|\mathbf{X}\|_\star = \sum_{i=1}^{\min(m, n)} \sigma_i$
-	\item[\color{red}Euclidean:] $\|\mathbf{x}\|_2 := \sqrt{\sum_{i=1}^{N} \mathbf{x}_i^2} = \sqrt{\mathbf{x}^T \mathbf{x}} = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}$
-	\item[\color{red}$p$-norm:] $\|\mathbf{x}\|_p := \left( \sum_{i=1}^{N} |x_i|^p \right)^{\frac{1}{p}}$
-	\item[\color{red}Frobenius:] $\|\mathbf{A}\|_F :=\allowbreak \sqrt{\sum_{i=1}^{M} \sum_{j=1}^{N} |\mathbf{A}_{i, j}|^2} =\allowbreak \sqrt{\operatorname{trace}(\mathbf{A}^T \mathbf{A})} =\allowbreak \sqrt{\sum_{i=1}^{\min\{m, n\}} \sigma_i^2}$ ($\sigma_i$ is the $i$-th singularvalue), $\mathbf{A} \in \mathbb{R}^{M \times N}$
-\end{inparadesc}
-
-\section{$K$-means Algorithm}
-\begin{inparadesc}
-	\item[\color{red}Target:] $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \|\mathbf{X} - \mathbf{U} \mathbf{Z}\|_F^2 = \sum_{n=1}^N \sum_{k=1}^K \mathbf{z}_{k,n} \|\mathbf{x}_n - \mathbf{u}_k\|_2^2$
-\end{inparadesc}
-\begin{inparaenum}[\color{red} 1.]
-	\item Initiate: choose randomly $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually $K$ randomly chosen data points).
-	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_1\|_2^2, \ldots, \|\mathbf{x}_n - \mathbf{u}_K\|_2^2 \}$ gives us the cluster $k$ whose centroid $\mathbf{u}_k$ is closest to data point $\mathbf{x}_n$. Set accordingly the $k$-th element of the $n$-th column of the assignment matrix $\mathbf{Z}$ to $1$, others to $0$.
-	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$ (each centroid is in the middle of all data points assigned to it's cluster).
-	\item Repeat from step 2, stops if $\frac{1}{2} \|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = 0$.
-\end{inparaenum}
-
-\section{Probability / Statistics}
-\begin{compactitem}
+\subsection{Probability / Statistics}
+\begin{inparaitem}[\color{red}\textbullet]
 	\item $P(x) := Pr[X = x] := \sum_{y \in Y} P(x, y)$
 	\item $P(x|y) := Pr[X = x | Y = y] := \frac{P(x,y)}{P(y)},\quad \text{if } P(y) > 0$
 	\item $\forall y \in Y: \sum_{x \in X} P(x|y) = 1$ (property for any fixed $y$)
@@ -187,193 +148,268 @@ $\mathbf{V}, \mathbf{W}$ are two basis matrices (each column is a basis vector, 
 	\item $P(x|y) = \frac{P(y|x)P(x)}{P(y)}$ (Bayes' rule)
 	\item $P(x|y) = P(x) \Leftrightarrow P(y|x) = P(y)$ (iff $X$, $Y$ independent)
 	\item $P(x_1, \ldots, x_n) = \prod_{i=1}^n P(x_i)$ (iff IID)
+\end{inparaitem}
+
+
+\section{Dimensionality Reduction / PCA}
+$\mathbf{X} \in \mathbb{R}^{D \times N}$. $N$ observations, $K$ properties. Target: $\tilde{\mathbf{X}} \in \mathbb{R}^{K \times N}$.
+\begin{inparaenum}[\color{red} 1.]
+	\item Empirical Mean: $\overline{\mathbf{x}} = \frac{1}{N} \sum_{n=1}^N \mathbf{x}_n$
+	\item Center Data: $\overline{\mathbf{X}} = \mathbf{X} - [\overline{\mathbf{x}}, \ldots, \overline{\mathbf{x}}] = \mathbf{X} - \mathbf{M}$
+	\item Cov. Matrix: $\boldsymbol{\Sigma} = \frac{1}{N	} \sum_{n=1}^N (\mathbf{x}_n - \overline{\mathbf{x}}) (\mathbf{x}_n - \overline{\mathbf{x}})^\top = \frac{1}{N} \overline{\mathbf{X}}\overline{\mathbf{X}}^\top$
+	\item Eigenvalue Decomposition: $\boldsymbol{\Sigma} = \mathbf{U} \boldsymbol{\Lambda} \mathbf{U}^\top$, sort eigenvalues (and eigenvectors) in descending order
+	\item Select $K < D$, keep only the first $K$ eigenvalues and corresponding eigenvectors $\Rightarrow \mathbf{U}_K, \boldsymbol{\lambda}_K$
+	\item Transform data onto new Basis: $\overline{\mathbf{Z}}_K = \mathbf{U}_K^\top \overline{\mathbf{X}}$
+	\item Reconstruct to original Basis: $\tilde{\overline{\mathbf{X}}} = \mathbf{U}_k \overline{\mathbf{Z}}_K$
+	\item Reverse centering: $\tilde{\mathbf{X}} = \tilde{\overline{\mathbf{X}}} + \mathbf{M}$
+\end{inparaenum}
+
+\begin{compactitem}
+	\item For compression save $\mathbf{U}_k, \overline{\mathbf{Z}}_K, \overline{\mathbf{x}}$.
+	\item $\mathbf{U}_k \in \mathbb{R}^{D \times K}, \boldsymbol{\Sigma} \in \mathbb{R}^{D \times D}, \overline{\mathbf{Z}}_K \in \mathbb{R}^{K \times N}, \overline{\mathbf{X}} \in \mathbb{R}^{D \times N}$
 \end{compactitem}
 
+\section{SVD}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $\mathbf{A} = \mathbf{U} \mathbf{D} \mathbf{V}^\top = \sum_{k=1}^{\operatorname{rank}(\mathbf{A})} d_{k,k} u_k (v_k)^\top$
+	\item $\mathbf{A} \in \mathbb{R}^{N \times P}, \mathbf{U} \in \mathbb{R}^{N \times N}, \mathbf{D} \in \mathbb{R}^{N \times P}, \mathbf{V} \in \mathbb{R}^{P \times P}$
+	\item $\mathbf{U}^\top \mathbf{U} = I = \mathbf{V}^\top \mathbf{V}$ ($\mathbf{U}, \mathbf{V}$ columns are orthonormal)
+	\item $\mathbf{U}$ columns are eigenvectors of $\mathbf{A} \mathbf{A}^\top$, $\mathbf{V}$ columns are eigenvectors of $\mathbf{A}^\top \mathbf{A}$, $\mathbf{D}$ diagonal elements are singular values, i.e. the square roots of the eigenvalues ($\mathbf{A}^\top \mathbf{A}$ and $\mathbf{A} \mathbf{A}^\top$ have the same eigenvalues)
+	\item $(\mathbf{D}^{-1})_{i,i} = \frac{1}{\mathbf{D}_{i, i}}$ ($\mathbf{D} \in \mathbb{R}^{N \times P} \to \mathbf{D}^{-1} \in \mathbb{R}^{P \times N}$, i.e. don't forget to transpose)
+	\item Missing columns in $\mathbf{U}$ are basis of $\operatorname{null}(A^\top)$ and in $\mathbf{V}$ are basis of $\operatorname{null}(A)$. Calculate: $\mathbf{A}^\top \mathbf{u} = \mathbf{0}$ or $\mathbf{A} \mathbf{v} = \mathbf{0}$ for $\mathbf{u}$ or $\mathbf{v}$.
+\end{inparaitem}
+
+\begin{inparaenum}[\color{red} 1.]
+	\item calculate $\mathbf{A}^\top \mathbf{A}$.
+	\item calculate eigenvalues of $\mathbf{A}^\top \mathbf{A}$, the square root of them, in descending order, are the diagonal elements of $\mathbf{D}$.
+	\item calculate eigenvectors of $\mathbf{A}^\top \mathbf{A}$ using the eigenvalues resulting in the columns of $\mathbf{V}$.
+	\item calculate the missing matrix: $\mathbf{U} = \mathbf{A} \mathbf{V} \mathbf{D}^{-1}$. Can be checked by calculating the eigenvectors of $\mathbf{A} \mathbf{A}^\top$.
+	\item normalize each column of $\mathbf{U}$ and $\mathbf{V}$.
+\end{inparaenum}
+
+\subsection{Low-Rank approximation}
+Using only $K$ largest eigenvalues and corresponding eigenvectors. $\tilde{\mathbf{A}}_{i, j} = \sum_{k}^K \mathbf{U}_{i, k} \mathbf{D}_{k,k} \mathbf{V}_{j, k} = \mathbf{U}_{i, k} \mathbf{D}_{k,k} (\mathbf{V}^\top)_{k, j}$.\\
+	$\|\mathbf{A} - \tilde{\mathbf{A}}\|_F = \sqrt{\sum_{i > K} \sigma_i^2} = \sqrt{\sum_{i > K} \lambda_i}$,
+	$\|\mathbf{A} - \tilde{\mathbf{A}}\|_2 = \sigma_{K+1}$
+
+\section{$K$-means Algorithm}
+\begin{inparadesc}
+	\item[\color{red}Target:] $\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \|\mathbf{X} - \mathbf{U} \mathbf{Z}\|_F^2 = \sum_{n=1}^N \sum_{k=1}^K \mathbf{z}_{k,n} \|\mathbf{x}_n - \mathbf{u}_k\|_2^2$
+\end{inparadesc}
+\begin{inparaenum}[\color{red} 1.]
+	\item Initiate: choose $K$ centroids $\mathbf{U} = [\mathbf{u}_1, \ldots, \mathbf{u}_K]$ (usually u.a.r.)
+	\item Assign data points to clusters. $k^\star(\mathbf{x}_n) = \argmin_k \{ \|\mathbf{x}_n - \mathbf{u}_k\|_2 \}$ returns cluster $k^\star$, whose centroid $\mathbf{u}_{k^\star}$ is closest to data point $\mathbf{x}_n$. Set $\mathbf{z}_{k^\star,n} = 1$, and for $ l \neq k^\star~ \mathbf{z}_{l,n}=0$.
+	\item Update centroids: $\mathbf{u}_k = \frac{\sum_{n=1}^N z_{k,n} \mathbf{x}_n}{\sum_{n=1}^N z_{k,n}}$.
+	\item Repeat from step 2, stops if $\|\mathbf{Z} - \mathbf{Z}^\text{new}\|_0 = \|\mathbf{Z} - \mathbf{Z}^\text{new}\|^2_F = 0$.
+\end{inparaenum}
+
+\subsection{Clustering Stability}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item dist. between clust. (same data): $d(C,C') := \min_\Pi \frac{1}{2}\|Z-\Pi(Z')\|^2_F$ , $\Pi(Z
+')$ = row perm. of $Z'$
+  \item arbitrary sets $\mathbf{X},\mathbf{X'}$ of size $N,N'$: $r := \frac{1}{N'} \min_{\Pi} \{ \sum_{n=1}^{N'} \mathbb{I}_{\{\Pi(\phi(x'_n)) \neq z'_n\} } \}$ ($\phi$: multi-class classifier trained on ($\mathbf{X},\mathbf{Z}$))
+  \item for $K$ clusters: $\text{stability} := 1 - \frac{r}{r_{rand}}$ (1 good, 0 bad), rand. clust. of equal size: $r_{rand} = \frac{K-1}{K}$.
+\end{inparaitem}
+
 \section{Gaussian Mixture Models (GMM)}
+For GMM let $\boldsymbol{\theta}_k = (\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$; $p_{\theta_k}(\mathbf{x}) = \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
 \begin{compactdesc}
-	\item[GMM:] $p(\mathbf{x}) = \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \Sigma_k)$
-	\item[Assignment variable:] $\mathbf{z}_k \in \{0, 1\}$, $\sum_{k=1}^K \mathbf{z}_k = 1$, $\operatorname{Pr}(\mathbf{z}_k = 1) = \boldsymbol{\pi}_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \boldsymbol{\pi}_k^{\mathbf{z}_k}$
-	\item[Complete data distribution:] $p(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k \mathcal{N}(\boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)^{\mathbf{z}_k}$
-	\item[Posterior Probabilities:] $\operatorname{Pr}(\mathbf{z}_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(\mathbf{z}_k = 1) p(\mathbf{x} | \mathbf{z}_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(\mathbf{z}_l = 1) p(\mathbf{x} | \mathbf{z}_l = 1)} = \frac{\boldsymbol{\pi}_k \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)}{\sum_{l=1}^K \boldsymbol{\pi}_l \mathcal{N}(\mathbf{x} | \boldsymbol{\mu}_l, \boldsymbol{\Sigma}_l)}$
-	\item[Likelihood of observed data $\mathbf{X}$:] $p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \prod_{n=1}^N p(\mathbf{x}_n) = \prod_{n=1}^N \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k)$
-	\item[Log-likelihood:] $\ln p(\mathbf{X} | \boldsymbol{\pi}, \boldsymbol{\mu}, \boldsymbol{\Sigma}) =\break \sum_{i=1}^N \ln \left( \sum_{k=1}^K \pi_k \mathcal{N}(\mathbf{x}_i | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
-	\item[Negative Log-likelihood:] The smaller, the better the fit: $-\ln(p(\mathbf{X} | \mathbf{\theta})) = -\Sigma_{n=1}^N \ln\left( \Sigma_{k=1}^K \boldsymbol{\pi}_k \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k, \boldsymbol{\Sigma}_k) \right)$
+	\item[Mixture Models:] $p_\theta(\mathbf{x}) = \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x})$
+	\item[Assignment variable (generative model):] $\\z_k \in \{0, 1\}$, $\sum_{k=1}^K z_k = 1$, $\operatorname{Pr}(z_k = 1) = \pi_k \Leftrightarrow p(\mathbf{z}) = \prod_{k=1}^K \pi_k^{z_k}$
+	\item[Complete data distribution:] $p_\theta(\mathbf{x}, \mathbf{z}) = \prod_{k=1}^K \left( \boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})\right)^{z_k}$
+	\item[Posterior Probabilities:] $\\\operatorname{Pr}(z_k = 1 | \mathbf{x}) = \frac{\operatorname{Pr}(z_k = 1) p(\mathbf{x} | z_k = 1)}{\sum_{l=1}^K \operatorname{Pr}(z_l = 1) p(\mathbf{x} | z_l = 1)} = \frac{\boldsymbol{\pi}_k p_{\theta_k}(\mathbf{x})}{\sum_{l=1}^K \boldsymbol{\pi}_l p_{\theta_l}(\mathbf{x})}$
+	\item[Likelihood of observed data $\mathbf{X}$:] $p_\theta(\mathbf{X}) = \prod_{n=1}^N p_\theta(\mathbf{x}_n) = \prod_{n=1}^N \left(\sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right)$
+	\item[MLE:] $\argmax_\theta\sum_{n=1}^N \log \left( \sum_{k=1}^K \pi_k p_{\theta_k}(\mathbf{x}_n)\right) \break \log \left( \sum_{k=1}^K{\frac{q_k \pi_k p_{\theta_k}(\mathbf{x}_n)}{q_k}}\right) \ge \sum_{k=1}^K{q_k[\log p_{\theta_k}(\mathbf{x}_n) + \log \pi_k - \log q_k]}$ with $\sum_{k=1}^K{q_k} = 1$ by Jensen. Lagrangian and get $q_k$ as below.
 \end{compactdesc}
 
-\subsection{AIC / BIC for GMM}
-Trade-off: balance between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). Heuristics:
-\begin{compactdesc}
-	\item[Akaike Information Criterion (AIC):] $\operatorname{AIC}(\theta | \mathbf{X}) = -\ln(p_\theta(\mathbf{X})) + \kappa(\theta)$
-	\item[Bayesian Information Criterion (BIC):] $\operatorname{BIC}(\theta | \mathbf{X}) = -\ln(p_\theta(\mathbf{x})) + \frac{1}{2} \kappa(\theta) \ln(N)$
-	\item[\# of free params:] (fixed covariance matrix!) $\kappa(\theta) = K \cdot D + T$ ($K$ number of clusters, $D$ is data dimension (i.e. dimension of the $\mu$'s), $T$ number of not fixed $\pi$'s.
-\end{compactdesc}
-Note that the first term is the log-likelihood multiplied by $-1$. Compare AIC/BIC for different $L$, smaller is better.
-
-
-\section{Expectation-Maximization (EM) for GMM}
-\begin{compactenum}
-	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}, t = 1$ for $k = 1, \ldots, K$
-	\item E-Step: $q_{k,n} := \mathbb{E}[z_{k,n}] = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
-	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$, $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$, and $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_k - \boldsymbol{\mu}_k^{(t)})^T}{\sum_{n=1}^N q_{k,n}}$
+\subsection{Expectation-Maximization (EM) for GMM}
+\begin{compactenum}[\color{red} 1.]
+	\item Initialize $\boldsymbol{\pi}_k^{(0)}, \boldsymbol{\mu}_k^{(0)}, \boldsymbol{\Sigma}_k^{(0)}$ for $k = 1, \ldots, K$ and $t=1$.
+	\item E-Step: Pr$[z_{k,n} = 1 | \mathbf{x}_n] = q_{k, n} = \frac{\boldsymbol{\pi}_k^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_k^{(t-1)}, \boldsymbol{\Sigma}_k^{(t-1)})}{\sum_{j=1}^K \boldsymbol{\pi}_j^{(t-1)} \mathcal{N}(\mathbf{x}_n | \boldsymbol{\mu}_j^{(t-1)}, \boldsymbol{\Sigma}_j^{(t-1)})}$
+	\item M-Step: $\boldsymbol{\mu}_k^{(t)} := \frac{\sum_{n=1}^N q_{k,n} \mathbf{x}_n}{\sum_{n=1}^N q_{k,n}}$\hspace{20pt} \& \hspace{20pt} $\boldsymbol{\pi}_k^{(t)} := \frac{1}{N} \sum_{n=1}^N q_{k,n}$ \hspace{20pt} \& \hspace{20pt} $\Sigma_k^{(t)} = \frac{\sum_{n=1}^N q_{k, n} (\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})(\mathbf{x}_n - \boldsymbol{\mu}_k^{(t)})^\top}{\sum_{n=1}^N q_{k,n}}$
 	\item Repeat from (2.) with $t = t + 1$ if not $\| \log p(\mathbf{X} | \boldsymbol{\pi}^{(t)}, \boldsymbol{\mu}^{(t)}, \boldsymbol{\Sigma}^{(t)}) - \log p(\mathbf{X} | \boldsymbol{\pi}^{(t-1)}, \boldsymbol{\mu}^{(t-1)}, \boldsymbol{\Sigma}^{(t-1)}) \| < \epsilon$
 \end{compactenum}
 
+\subsection{Model Order Selection (AIC / BIC for GMM)}
+Trade-off between data fit (i.e. likelihood $p(\mathbf{X} | \theta)$) and complexity (i.e. \# of free parameters $\kappa(\cdot)$). For choosing $K$:
+\begin{inparaitem}[\color{red}\textbullet]
+	\item \textbf{Akaike Information Criterion}: $\operatorname{AIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \kappa(\theta)$
+	\item \textbf{Bayesian Information Criterion}: $\operatorname{BIC}(\theta | \mathbf{X}) = -\log p_\theta(\mathbf{X}) + \frac{1}{2} \kappa(\theta) \log N$
+	\item \# of free params: fixed covariance matrix: $\kappa(\theta) = K \cdot D + (K - 1)$ ($K$: \# clusters, $D$: $\mathsf{dim}\text{(data)}=\mathsf{dim}(\mu_i)$, $K-1$: \# free clusters), full covariance matrix: $\kappa(\theta) = K(D + \frac{D(D+1)}{2}) + (K - 1)$.
+	\item Compare AIC/BIC for different $K$ -- the smaller the better. BIC penalizes complexity more.
+\end{inparaitem}
 
-\section{Expectation-Maximization (EM) for Inpainting}
-\begin{inparaenum}[\color{red} 1.]
-	\item Assume initial $\mathbf{z}^{(0)}$, $\mathbf{x}^{(0)}$ original image, $t = 1$
-	\item Reconstruct image $\mathbf{x}^{(t)} = \mathbf{M}\mathbf{x}^{(t-1)} + (\mathbf{I} - \mathbf{M})\mathbf{U}\mathbf{z}^{(t-1)}$
-	\item Sparse coding of $\mathbf{x}^{(t)}$: $\mathbf{z}^{(t)} \in \argmin_{\mathbf{z}} \|\mathbf{z}\|_0$ s.t. $\|\mathbf{x}^{(t)} - \mathbf{Uz}\|_2 < \sigma$
-	\item Repeat (2.) \& (3.) till converging/$\mathit{maxIters}$
-	\item Image reconstruction: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{x}^{(t)}$
-\end{inparaenum}
-
-
-\section{Haar Wavelet}
+\section{Word Embeddings}
 \begin{compactdesc}
-	\item[Mother function:] $\psi(t)$ is $1$ for $0 \leq t < \frac{1}{2}$, $-1$ for $\frac{1}{2} \leq t < 1$, $0$ otherwise.
-	\item[Haar function:] $\psi_{n,k}(t) = 2^{n/2} \psi(2^n t - k)$, $2^{n/2}$ only needed if normalized values needed!
+  \item[Distributional Model:] $p_\theta(w|w') = $ Pr[$w$ occurs close to $w'$]
+  \item[Log-likelihood:] $L(\theta; \mathbf{w}) = \sum_{t=1}^T\sum_{\Delta \in I}{\log p_\theta(w^{(t+\Delta)}|w^{(t)})}$
+  \item[Latent Vector Model:] $w \mapsto (\mathbf{x}_w, b_w) \in \mathbb{R}^{D+1} \\p_{\theta}(w|w') = \frac{\exp[\langle \mathbf{x}_w,\mathbf{x}_{w'}\rangle + b_w]}{\sum_{v\in V}{\exp[\langle \mathbf{x}_v,\mathbf{x}_{w'}\rangle + b_v ]}}$.
+  Modifications:
+  \begin{inparaitem}[\color{red}\textbullet]
+  \item split vocab in main vocab $V$, context vocab $C$: $\log p_{\theta}(w|w') = \langle  y_{w} , x_{w'} \rangle + b_w$,  word embed. $y_w$, context embed. $x_{w'}$
+  \item use GloVe objective
+  \end{inparaitem}
 \end{compactdesc}
 
-\begin{compactitem}
-	\item For the not normalized basis: $\mathbf{W}^{-1} = (\mathbf{W^T} \mathbf{W})^{-1} \mathbf{W}^T = \operatorname{diag}(\frac{1}{l_1}, \ldots, \frac{1}{l_n}) \mathbf{W}^T$ where $l_i$ is the norm of the $i$-th column of $\mathbf{W}$. This is valid because $\mathbf{W}$ is orthogonal!
-	\item Don't forget $[1, 1, \ldots, 1]^T$: first non-normalized basis!
-	\item \textbf{``Coding'' step:} Tranform $\mathbf{x}$ into coordinate vector $\mathbf{c}$
-	\item \textbf{``Thresholding'' step:} Set small absolute values in $\mathbf{c}$ to $0$
-\end{compactitem}
+\subsection{GloVe (Weighted Square Loss)}
+\begin{compactdesc}
+  \item[Co-occurence Matrix:]$\mathbf{N} = (n_{ij}) \in \mathbb{R}^{|V|\cdot |C|} \leftrightarrow \# w_i$ in c'txt $w_j$
+  \item[Objective:] $H(\theta;\mathbf{N}) = \sum_{n_{ij} > 0} f(n_{ij})(\log n_{ij} - \log \exp[\langle \mathbf{x}_i, \mathbf{y}_j \rangle + b_i + d_j])^2$ with $f(n) = \min\{1, (\frac{n}{n_{max}})^\alpha\}$, $\alpha \in (0;1]$.
+\end{compactdesc}
+unnormalized distribution $\rightarrow$ two-sided loss function
+\begin{compactdesc}
+  \item[SGD:] 1. $\mathbf{x}_i^{new} \leftarrow \mathbf{x}_i + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{y}_j$
+  \item \hspace{26pt}2. $\mathbf{y}_j^{new} \leftarrow \mathbf{y}_j + 2\eta f(n_{ij})(\log n_{ij} - \langle \mathbf{x}_i, \mathbf{y}_j \rangle)\mathbf{x}_i$
+\end{compactdesc}
+
+\section{Non-Negative Matrix Factorization (NMF) / pLSA}
+\begin{compactdesc}
+	\item[Context Model:] $p(w | d) = \sum_{z=1}^K p(w | z) p(z | d)$
+	\item[Conditional independence assumption ($*$):] $p(w|d) = \sum_z p(w,z|d) = \sum_z p(w|d,z)p(z|d) \stackrel{*}{=} \sum_z p(w|z)p(z|d)$
+	\item[Symmetric parameterization:] $p(w, d) = \sum_z p(z)p(w | z) p(d | z)$
+\end{compactdesc}
+
+\subsection{EM for pLSA:}
+\begin{compactenum}[\color{red} 1.]
+  \item Log-Likelihood: $L(\mathbf{U}, \mathbf{V}) = \sum_{i,j} x_{i,j}\log p(w_j|d_i) = \break \sum_{(i,j) \in X} \log \sum_{z=1}^K p(w_j|z)p(z|d_i)$
+	\item E-Step (optimal q): $q_{zij} = \frac{p(w_j|z)p(z|d_i)}{\sum_{k=1}^K p(w_j|k)p(k|d_i)} := \frac{v_{zj}u_{zi}}{\sum_{k=1}^K v_{kj}u_{ki}}$
+	\item M-Steps: $p(z|d_i) = \frac{\sum_j x_{ij}q_{zij}}{\sum_j x_{ij}}\hspace{10pt}\&\hspace{10pt} p(w_j|z) = \frac{\sum_i x_{ij}q_{zij}}{\sum_{i,l}x_{il}q_{zil}}$
+\end{compactenum}
+
+\subsection{NMF Algorithm for quadratic cost function}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $\mathbf{X} \in \mathbb{Z}^{N \times M}_{\geq 0}$
+	\item NMF: $\mathbf{X} \approx \mathbf{U^\top V}, x_{ij} = \sum_z u_{zi}v_{zj} = \langle \mathbf{u}_i, \mathbf{v}_j \rangle$
+\end{inparaitem}
+
+$\min_{\mathbf{U}, \mathbf{V}} J(\mathbf{U}, \mathbf{V}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}^\top\mathbf{V}\|_F^2$ s.t. $\forall i,j,z~u_{zi},v_{zj} \geq 0 $
+
+\begin{inparaenum}[\color{red} 1.]
+	\item init: $\mathbf{U}, \mathbf{V} = rand()$
+	\item repeat for $\mathit{maxIters}$:
+	\item update $\mathbf{U}$: $(\mathbf{VV}^\top)\mathbf{U} = \mathbf{VX}^\top$
+	\item project $u_{zi} = \max \{ 0, u_{zi} \}$
+	\item update $\mathbf{V}$: $(\mathbf{UU}^\top)\mathbf{V} = \mathbf{UX}$
+	\item project $v_{zj} = \max \{ 0, v_{zj} \}$
+\end{inparaenum}
+
+\section{Convolutional Neural Networks}
+\textbf{Neurons}: $F_\sigma(\mathbf{x};\mathbf{w}) = \sigma(w_0 + \sum_{i=1}^M{x_iw_i})$. \textbf{Output}: linear regression; $\mathbf{y} = \mathbf{W}^L\mathbf{x}^{L-1}$, binary classification; $y_1 = \text{P}[Y=1|\mathbf{x}] = \frac{1}{1 + \exp[-\langle \mathbf{w}_1^L,\mathbf{x}^{L-1}\rangle]}$, multiclass; $y_k = \text{P}[Y=k|\mathbf{x}]= \frac{\exp[\langle \mathbf{w}_k^L,\mathbf{x}^{L-1}\rangle]}{\sum_{m=1}^{K}{\exp[\langle \mathbf{w}_m^L, \mathbf{x}^{L-1}\rangle]}}$. \textbf{Loss function} $l(y, \hat{y})$: squared loss; $\frac{1}{2}(y - \hat{y})^2$, cross-entropy loss; $-y \log \hat{y} - (1-y)\log(1-\hat{y})$.
+
+\subsection{Neural Networks for Images}
+Translation invariance of images $\rightarrow$ neurons compute same fct, shift invariant filters; weights defined as filter masks, e.g. convolution: $F_{n,m}(\mathbf{x};\mathbf{w}) = \sigma(b + \sum_{k=-2}^2\sum_{l=-2}^{2}{w_{k,l}x_{n+k,m+l}})$. To reduce dimension of convolution, use \{max, avg\}-pooling
 
 \section{Optimization}
-Gradient of $f: \mathbb{R}^D \to \mathbb{R}$ is $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^T \in \mathbb{R}^D$
 
-\subsection{Convex Functions}
-A function $f(x)$ is convex if domain of $f$ (set of input values) is convex (e.g. $\mathbb{R}^D$) and $\forall y, z, \forall t \in [0, 1]: f(t \cdot y + (1-t) \cdot z) \leq t \cdot f(y) + (1-t) \cdot f(z)$.
-
-\subsection{Coordinate Descent}
-Update one coordinate (the $d$-th), others are fixed.
+\subsection{Coordinate Descent (update the $d$-th coord. per step)}
 \begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
-	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item choose $d$ uniformly from $1, \ldots, D$
-	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, \ldots, u, \ldots, x_D^{(t)})$
+	\item init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
+	\item for $t = 0 \ \text{to} \ \mathit{maxIter}$:
+	\item sample u.a.r. $d \sim \{1, \ldots, D\}$
+	\item $u^\star = \argmin_{u \in \mathbb{R}} f(x_1^{(t)}, .., x_{d-1}^{(t)}, u, x_{d+1}^{(t)}, .., x_D^{(t)})$
 	\item $\mathbf{x}_d^{(t+1)} = u^\star$ and $\mathbf{x}_i^{(t+1)} = \mathbf{x}_i^{(t)}$ for $i \neq d$
 \end{inparaenum}
 
-\subsection{Gradient Descent}
+\subsection{Gradient Descent (or Deepest Descent)}
+\textbf{Gradient}: $\nabla f(\mathbf{x}) := \left( \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_1}, \ldots, \frac{\partial f(\mathbf{x})}{\partial \mathbf{x}_D} \right)^\top$
 \begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
-	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$: $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})$
+	\item init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
+	\item for $t = 0 \ \text{to} \ \mathit{maxIter}$: $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})$, usually $\gamma \approx \frac{1}{t}$
 \end{inparaenum}
 
-\subsection{Stochastic Gradient Descent}
+\subsection{Stochastic Gradient Descent (SGD)}
+Assume \textbf{Additive Objective}; $f(x) = \frac{1}{N}\sum_{n=1}^{N}f_n(x)$
 \begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$, stepsize usually $\gamma \approx \frac{1}{t}$
-	\item For $t = 0 \ \text{to} \ \mathit{maxIters}$:
-	\item choose $n$ uniformly from $1, \ldots, D$
-	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$
+	\item init: $\mathbf{x}^{(0)} \in \mathbb{R}^D$
+	\item for $t = 0 \ \text{to} \ \mathit{maxIter}$:
+	\item sample u.a.r. $n \sim \{1, \ldots, N\}$
+	\item $\mathbf{x}^{(t+1)} = \mathbf{x}^{(t)} - \gamma \nabla f_n(\mathbf{x}^{(t)})$, usually stepsize $\gamma \approx \frac{1}{t}$.
 \end{inparaenum}
 
-\subsection{Projected Gradient Descent}
-In the gradient update step use a projection into constraint space $Q \subseteq \mathbb{R}^D$ with $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|y - x\|$: $\mathbf{x}^{(t+1)} = P_Q\left(\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})\right)$
+\subsection{Projected Gradient Descent (Constrained Opt.)}
+minimize $f(x)$, $x \in Q$ (constraint).
+\textbf{Project} $x$ onto $Q$: $P_Q(\mathbf{x}) = \argmin_{y \in Q} \|\mathbf{y} - \mathbf{x}\|$,
+\textbf{Projected Gradient Update}: $\mathbf{x}^{(t+1)} = P_Q[\mathbf{x}^{(t)} - \gamma \nabla f(\mathbf{x}^{(t)})]$,
+$\mathbf{x}^{(t+1)}$ is unique if $Q$ convex.
 
 \subsection{Lagrangian Multipliers}
-Minimize  $f(\mathbf{x})$ subject to $g_i(\mathbf{x}) \leq 0,\ i = 1, \ldots, m$ and $h_i(\mathbf{x}) = \mathbf{a}_i^T \mathbf{x} - b_i = 0,\ i = 1, \ldots, p$.
+Minimize  $f(\mathbf{x})$ s.t. $g_i(\mathbf{x}) \leq 0,\ i = 1, .., m$ (\textbf{inequality constr.}) and $h_i(\mathbf{x}) = \mathbf{a}_i^\top \mathbf{x} - b_i = 0,\ i = 1, .., p$ (\textbf{equality constraint})
 \begin{compactdesc}
 	\item[Lagrangian:] $L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) := f(\mathbf{x}) + \sum_{i=1}^m \lambda_i g_i(\mathbf{x}) + \sum_{i=1}^p \nu_i h_i(\mathbf{x})$
-	\item[Dual function:] $d(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
-	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} d(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Result is lower bound of optimum $f(\mathbf{x}^\star)$. Also only interested in $d(\cdot)$ where it is finite (if needed add (in)equality as a ``subject to'').
+	\item[Dual function:] $D(\boldsymbol{\lambda}, \boldsymbol{\nu}) := \inf_{\mathbf{x}} L(\mathbf{x}, \boldsymbol{\lambda}, \boldsymbol{\nu}) \in \mathbb{R}$
+	\item[Dual Problem:] $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu})$ s.t. $\boldsymbol{\lambda} \geq \mathbf{0}$. Note: $\max_{\boldsymbol{\lambda}, \boldsymbol{\nu}} D(\boldsymbol{\lambda}, \boldsymbol{\nu}) \le \min_\mathbf{x}{f(\mathbf{x})}$, equality if $dom\ f$ and $f$ convex
 \end{compactdesc}
 
-\section{Matching Pursuit (MP): Over-Complete Dictionaries}
-Sparse approximation of a vector $\mathbf{x}$ onto an over-complete dictionary $\mathcal{D}$ represented by matrix $\mathbf{U}$ using $K$ dictionary entries.
-\begin{compactenum}
-	\item Initialize: Coefficient vector $\mathbb{R}^{|\mathcal{D}|} \ni \mathbf{z} = \mathbf{0}$, Residual $\mathbf{r} = \mathbf{x}$
-	\item While $\|\mathbf{z}\|_0 < K$ repeat the following steps
-	\item Find next dictionary index: $d^\star = \argmax_d |\langle \mathbf{u}_d, \mathbf{r} \rangle|$
-	\item Update coefficients: $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle$
-	\item Update residual: $\mathbf{r} = \mathbf{r} - \langle \mathbf{u}_{d^\star}, \mathbf{r} \rangle \mathbf{u}_{d^\star}$.
-\end{compactenum}
+\subsection{Convex Optimization}
+$f : \mathbb{R}^D \rightarrow \mathbb{R}$ is convex, if $dom\ f$ is a convex set, and if $\forall \mathbf{x}, \mathbf{y} \in dom\ f$, and for $0 \leq \alpha \leq 1$: $f(\alpha \mathbf{x} + (1 - \alpha)\mathbf{y}) \leq \alpha f(\mathbf{x}) + (1-\alpha)f(\mathbf{y})$. local=global min, \textbf{Convergence}: $f(\mathbf{x}^{(t)}) - f(\mathbf{x}^*) \le \frac{c}{t}$.
+\textbf{Subgradient} $g \in \mathbb{R}^D$ of $f$ at $\mathbf{x}$: $f(\mathbf{y}) \geq f(\mathbf{x}) + g^\top(\mathbf{y}-\mathbf{x}) \ \forall \mathbf{y}$
 
-\section{Matching Pursuit (MP): Inpainting}
-Diagonal matrix $\mathbf{M}$ with $\mathbf{M}_{i, i} = 1$ if $i$-th pixel known, otherwise $\mathbf{M}_{i,i} = 0$. Interested in $\mathbf{z}^\star \in \argmax_{\mathbf{z}} \|\mathbf{z}\|_0$ subject to $\|\mathbf{M}(\mathbf{x} - \mathbf{Uz})\|_2 < \sigma$. $\mathbf{U}$ over-complete dictionary of known parts, $\sigma$ allowed error. Reconstructed image: $\hat{\mathbf{x}} = \mathbf{Mx} + (\mathbf{I} - \mathbf{M})\mathbf{U} \mathbf{z}^\star$.
-\begin{compactenum}
-	\item Initialize: Coefficient vector $\mathbf{z} = \mathbf{0}$, residual $\mathbf{r} = \mathbf{M}\mathbf{x}$.
-	\item While $\|z\|_0 < K$ and $\|r\|_2 > 0$ repeat the following steps
-	\begin{listcols}[2][5pt]
-		\item $d^\star = \argmax_d \frac{|\langle \mathbf{M}\mathbf{u}_d, \mathbf{r}\rangle|}{\|\mathbf{M}\mathbf{u}_d\|_2}$
-		\item $\mathbf{z}_{d^\star} = \mathbf{z}_{d^\star} + \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2}$
-		\item $\mathbf{r} = \mathbf{r} - \frac{\langle \mathbf{M}\mathbf{u}_{d^\star}, \mathbf{r} \rangle}{\|\mathbf{M}\mathbf{u}_{d^\star}\|_2^2} \mathbf{M}\mathbf{u}_{d^\star}$
-	\end{listcols}
-\end{compactenum}
+\section{Sparse Coding}
 
+\subsection{Orthogonal Basis}
+For $\mathbf{x}$ and o.n.b. $\mathbf{U}$ compute $\mathbf{z} = \mathbf{U}^\top \mathbf{x} $. Approx $ \mathbf{\hat{x}} = \mathbf{U\hat{z}}$, $\hat{z}_i = z_i$ if $ \lvert z_i \rvert > \epsilon$ else 0.
+Reconstruction Error $\|\mathbf{x}-\mathbf{\hat{x}}\|^2 = \sum_{d\notin\sigma}\langle\mathbf{x},\mathbf{u}_d\rangle ^2$.
+Choice of base depends on signal. Fourier for global, wavelet for local support. PCA basis optimal for given $\Sigma$.
 
-\section{Coherence ($m(\cdot)$)}
-\begin{compactitem}
-	\item $D$ dimension of data, $L$ number of atoms, $L > D$ then over-complete dictionary
-	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^T \mathbf{u}_j |$
-	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ is orthogonal matrix and a basis
-	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal $\mathbf{B}$
-\end{compactitem}
+\subsection{Overcomplete Basis}
+$\mathbf{U} \in \mathbb{R}^{D \times  L}$ for \# atoms $ = L > D = \mathsf{dim}\text{(data)}$. Decoding involved $\rightarrow$ add constraint $\mathbf{z}^\star \in \argmin_\mathbf{z} \lVert \mathbf{z} \rVert_0$ s.t. $\mathbf{x} = \mathbf{Uz}$. NP-hard $\rightarrow$ approximate with 1-norm (convex) or with MP.
+
+\textbf{Coherence}
+\begin{inparaitem}[\color{red}\textbullet]
+	\item $m(\mathbf{U}) = \max_{i,j:\, i \neq j} | \mathbf{u}_i^\top \mathbf{u}_j |$
+	\item $m(\mathbf{B}) = 0$ if $\mathbf{B}$ orthogonal matrix
+	\item $m([\mathbf{B}, \mathbf{u}]) \geq \frac{1}{\sqrt{D}}$ if atom $\mathbf{u}$ is added to orthogonal basis $\mathbf{B}$ (o.n.b. = orthonormal base)
+\end{inparaitem}
+
+\textbf{Matching Pursuit (MP)}
+approximation of $\mathbf{x}$ onto $\mathbf{U}$, using $K$ entries.
+Objective: $\mathbf{z}^\star \in \argmin_{\mathbf{z}} \|\mathbf{x} - \mathbf{Uz} \|_2$, s.t. $\|\mathbf{z}\|_0 \leq K$
+\begin{inparaenum}[\color{red}1.]
+	\item init: $z \leftarrow 0, r \leftarrow x$
+	\item while $\|\mathbf{z}\|_0 < K$ do
+	\item select atom with smallest angle $i^\star = \argmax_i |\langle \mathbf{u}_i, \mathbf{r} \rangle|$
+	\item update coefficients: $z_{i^\star} \leftarrow z_{i^\star} + \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle$
+	\item update residual: $\mathbf{r} \leftarrow \mathbf{r} - \langle \mathbf{u}_{i^\star}, \mathbf{r} \rangle \mathbf{u}_{i^\star}$.
+\end{inparaenum}
+\\\textbf{Exact recovery} when: $K<1/2( 1+1/m(\mathbf{U}))$
+
+\textbf{Compressive Sensing}
+\begin{inparaitem}[\color{red}\textbullet]
+  \item $\mathbf{x} \in \mathbb{R}^D$, $K$-sparse in o.n.b. $\mathbf{U}$. $\mathbf{y} \in \mathbb{R}^M$ with $y_i = \langle \mathbf{w}_i, \mathbf{x}\rangle $: $M$ lin. combinations of signal; $\mathbf{y} = \mathbf{Wx} = \mathbf{WUz} = \mathbf{\theta z}$, $\theta \in \mathbb{R}^{M \times D}$
+  \item Reconstruct $\mathbf{x} \in \mathbb{R}^D$ from $\mathbf{y}$; find $\mathbf{z}^\star \in \argmin_{\mathbf{z}}\|\mathbf{z}\|_0$, s.t. $\mathbf{y} = \mathbf{\theta z}$ (e.g. with MP). Given $\mathbf{z}$, reconstruct $\mathbf{x}$ via $\mathbf{x} = \mathbf{Uz}$
+\end{inparaitem}
+
+\subsection{Dictionary Learning}
+Adapt the dictionary to signal characteristics. Objective: $(\mathbf{U}^\star, \mathbf{Z}^\star) \in \argmin_\mathbf{U,Z} \| \mathbf{X} - \mathbf{U} \cdot \mathbf{Z} \|_F^2$ not jointly convex but convex in 1 argument.
+
+\textbf{Matrix Factorization by Iter Greedy Minimization}
+\begin{inparaenum}[\color{red} 1.]
+  \item Coding step: $\mathbf{Z}^{t+1} \in \argmin_\mathbf{Z} \| \mathbf{X} - \mathbf{U}^t \mathbf{Z} \|_F^2$ subject to $\mathbf{Z}$ being sparse ($\mathbf{z}_n^{t+1}\in \argmin_\mathbf{z}\|\mathbf{z}\|_0$ s.t.$\|\mathbf{x}_n - \mathbf{U}^t\mathbf{z}\|_2 \le \sigma \|\mathbf{x}_n\|_2$)
+  \item Dict update step: $\mathbf{U}^{t+1} \in \argmin_\mathbf{U} \| \mathbf{X} - \mathbf{UZ}^{t+1} \|_F^2$, subj to $\forall l\in [L]:\|\mathbf{u}_l\|_2 = 1$. (set $\mathbf{U} = [\mathbf{u}_1^t\cdots \mathbf{u}_l\cdots \mathbf{u}_L^t],~ \min_{u_l}\|\mathbf{X} - \mathbf{U}\mathbf{Z}^{t+1}\|_F^2 = \min_{u_l}\|\mathbf{R}_l^t - \mathbf{u}_l(\mathbf{z}_l^{t+1})^\top\|_F^2$ with $\mathbf{R}_l^t = \tilde{\mathbf{U}}\Sigma\tilde{\mathbf{V}}^\top$ by $\mathbf{u}^*_l=\tilde{\mathbf{u}}_1$)
+\end{inparaenum}
 
 \section{Robust PCA}
 \begin{compactitem}
 	\item Idea: Approximate $\mathbf{X}$ with $\mathbf{L} + \mathbf{S}$, $\mathbf{L}$ is low-rank, $\mathbf{S}$ is sparse.
-	\item Minimize $\|\mathbf{L}\|_\star + \lambda \|\mathbf{S}\|_1$ s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$
-	\item A perfect reconstruction is possible if $\mathbf{S}$ is not low-rank, $\mathbf{L}$ is not sparse, or $\mathbf{X}$ is not low-rank \textit{and} sparse at the same time
+	\item $\min_{\mathbf{L},\mathbf{S}}\mathsf{rank}(\mathbf{L}) + \mu \lVert \mathbf{S}\rVert_0$, s. t. $\mathbf{L} + \mathbf{S} = \mathbf{X}$. As non-convex, change to $\min_{\mathbf{L},\mathbf{S}} \|\mathbf{L}\|_\star + \lambda \lVert\mathbf{S}\rVert_1$ (\emph{not} the same in general)
+	\item Perfect reconstruction is \emph{not} possible if $\mathbf{S}$ is low-rank, $\mathbf{L}$ is sparse, or $\mathbf{X}$ is low-rank \textit{and} sparse. Formally coherence: $\|\mathbf{U}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{V}^\top \mathbf{e}_i\|^2 \leq \frac{\nu r}{n}$, $\|\mathbf{UV}^\top\|^2_{ij} \leq \frac{\nu r}{n^2}$ : $\mathbf{L}=\mathbf{U}\mathbf{D}\mathbf{V}^\top$
 \end{compactitem}
+
+\subsection{Dual Ascent (Gradient Method for Dual Problem)}
+$\boldsymbol{\lambda}^{t+1} = \boldsymbol{\lambda}^{t} + \eta \nabla D(\boldsymbol{\lambda}^t)$,
+$ \nabla D (\boldsymbol{\lambda}) = \mathbf{A}\mathbf{x}^*-\mathbf{b}$ for $\mathbf{x}^* \in \arg\min_\mathbf{x} \mathcal{L}(\mathbf{x},\boldsymbol{\lambda})$
+\textbf{Dual Decomposition for Dual Ascent}:
+\\$\mathbf{x}_i^{t+1} := \arg\min_{\mathbf{x}_i} \mathcal{L}_i(\mathbf{x}_i,\lambda^t)$;
+$\boldsymbol{\lambda}^{t+1} := \boldsymbol{\lambda}^t + \eta^t \left( \sum_{i=1}^{N} \mathbf{A}_i \mathbf{x}_i^{t+1} -\mathbf{b} \right) $
 
 \subsection{Alternating Direction Method of Multipliers (ADMM)}
 $\min_{\mathbf{x}_1, \mathbf{x}_2} f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2)$ s. t. $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b}$, $f_1, f_2$ convex
 \begin{inparaitem}[\color{red}\textbullet]
-	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^T (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
+	\item Augmented Lagrangian: $L_p(\mathbf{x}_1, \mathbf{x}_2, \boldsymbol{\nu}) = f_1(\mathbf{x}_1) + f_2(\mathbf{x}_2) + \boldsymbol{\nu}^\top (\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b}) + \frac{p}{2}\| \mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 - \mathbf{b} \|_2^2$
 	\item ADMM: $\mathbf{x}_1^{(t+1)} := \argmin_{\mathbf{x}_1} L_p(\mathbf{x}_1, \mathbf{x}_2^{(t)}, \boldsymbol{\nu}^{(t)})$, $\mathbf{x}_2^{(t+1)} := \argmin_{\mathbf{x}_2} L_p(\mathbf{x}_1^{(t+1)}, \mathbf{x}_2, \boldsymbol{\nu}^{(t)})$, $\boldsymbol{\nu}^{(t+1)} := \boldsymbol{\nu}^{(t)} + p(\mathbf{A}_1 \mathbf{x}_1^{(t+1)} + \mathbf{A}_2 \mathbf{x}_2^{(t+1)} - \mathbf{b})$
-	\item ADDM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \ldots$, $\boldsymbol{\nu}$ is matrix here!
+  \item ADMM for RPCA: $f_1(\mathbf{L}) = \|\mathbf{L}\|_\star$, $f_2(\mathbf{S}) = \lambda \| \mathbf{S} \|_1$, $\mathbf{A}_1 \mathbf{x}_1 + \mathbf{A}_2 \mathbf{x}_2 = \mathbf{b} \text{ becomes } \mathbf{L} + \mathbf{S} = \mathbf{X}$, therefore $L_p(\mathbf{L}, \mathbf{S}, \boldsymbol{\nu}) = \|\mathbf{L}\|_* + \nu \|\mathbf{S}\|_1 + \left< \nu, \mathrm{vec}(\mathbf{L}+\mathbf{S}-\mathbf{X}) \right> + \frac{P}{2} \| \mathbf{L}+ \mathbf{S} - \mathbf{X} \|_F^2$
+  %updates: $\mathbf{L}^{t+1} = \mathcal{D}_{\rho^{-1}}(X-S-\rho^{-1}\text{mat}(\lambda))$
 \end{inparaitem}
-
-
-\section{Non-Negative Matrix Factorization (NMF)}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item $\mathbf{X} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents, $X$ stores word count per document
-	\item Target: $\mathbf{X} \approx \mathbf{UZ}$, $\mathbf{U} \in \mathbb{R}^{D \times K}_{\geq 0}$, $\mathbf{Z} \in \mathbb{R}^{K \times N}_{\geq 0}$ (semi-NMF: $\mathbf{U}$ allows negative entries)
-\end{inparaitem}
-
-\subsection{LSI}
-Approx. $\mathbf{X}$ using SVD keeping $K$ largest singular values with $\tilde{\mathbf{X}} = \mathbf{U} \boldsymbol{\Sigma}_K \mathbf{V}^T$. Interpret $(\mathbf{U} \boldsymbol{\Sigma}_K)^T$ as mapping from $D$ dim. word space to $K$ dim. latent topic space. New document $\mathbf{x} \mapsto (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}$. Compare using inner product $\langle \tilde{\mathbf{x}}_1, \tilde{\mathbf{x}}_2 \rangle = \langle (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_1, (\mathbf{U} \boldsymbol{\Sigma}_K)^T \mathbf{x}_2 \rangle$: Larger value $\Rightarrow$ more similar.
-
-\subsection{pLSI}
-\begin{compactitem}
-	\item $P(\mathit{word} | \mathit{doc}) = \sum_{k=1}^K P(\mathit{word} | \mathit{topic} = k) P(\mathit{topic} = k | \mathit{doc})$
-	\item $P(\mathit{word}, \mathit{doc}) = P(\mathit{word} | \mathit{doc}) P(\mathit{doc}) \break= \sum_z P(\mathit{word} | \mathit{topic}) P(\mathit{doc} | \mathit{topic}) P(\mathit{topic})$
-\end{compactitem}
-
-\textbf{Matrix Factorization View:}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item Normalize $\mathbf{X}$ resulting in $\hat{\mathbf{X}}$: $\hat{\mathbf{X}}_{d, n} := \frac{\mathbf{X}_{d,n}}{\sum_{d'=1}^D \sum_{n'=1}^N \mathbf{X}_{d', n'}}$
-	\item $\hat{\mathbf{X}} \approx \mathbf{U} \mathbf{Z}$, $\hat{\mathbf{X}} \in \mathbb{R}^{D \times N}_{\geq 0}$, $D$ words, $N$ documents
-	\item $\mathbf{U}_{d, k} \equiv P(\mathit{word}=d | \mathit{topic} = k)$, $\sum_{d=1}^D \mathbf{U}_{d,k} = 1\, \forall k$
-	\item $\mathbf{Z}_{k,n} \equiv P(\mathit{topic} = k | \mathit{doc} = n) P(\mathit{doc} = n)$, $\sum_{k, n} \mathbf{Z}_{k,n} = 1$
-	\item $(\mathbf{U}\mathbf{Z})_{d, n} \equiv P(\mathit{word = d}, \mathit{doc} = n)$
-	\item Log-likelihood: $\log P(\hat{\mathbf{X}}; \mathbf{U}, \mathbf{Z}) = \sum_{d=1}^D \sum_{n=1}^N \hat{\mathbf{X}}_{d,n} \log \sum_{k=1}^K \mathbf{U}_{d, k} \mathbf{Z}_{k, n}$
-\end{inparaitem}
-
-\textbf{Expectation Maximization (EM):}
-\begin{compactenum}
-	\item E-Step: $P(z|d, w) = \frac{P(z)P(d|z)P(w|z)}{\sum_{z' \in \mathcal{Z}} P(z') P(d|z') P(w|z')}$
-	\item M-Steps: $P(w|z) \propto \sum_{d} f(d, w) P(z|d, w)$, $P(d|z) \propto \sum_{w} f(d, w) P(z|d, w)$, $P(z) \propto \sum_{d} \sum_{w} f(d, w) P(z|d, w)$, $f(d, w)$ is frequency of term $w$ in doc $d$.
-\end{compactenum}
-\begin{inparaitem}[\color{red}\textbullet]
-	\item $P(w|z) \in \mathbb{R}^{D \times K}$
-	\item $P(d|z) \in \mathbb{R}^{N \times K}$
-	\item $P(z) \in \mathbb{R}^{K}$
-\end{inparaitem}
-
-\subsection{NMF Algorithm for quadratic cost function}
-$\min_{\mathbf{U}, \mathbf{Z}} J(\mathbf{U}, \mathbf{Z}) = \frac{1}{2} \|\mathbf{X} - \mathbf{U}\mathbf{Z}\|_F^2$ s.t. $\mathbf{U}_{d,k} \in [0, \infty)\ \forall d, k$ \&  $\mathbf{Z}_{k, n} \in [0, \infty)\ \forall k, n$
-\begin{inparaenum}[\color{red} 1.]
-	\item Init: $\mathbf{U} \gets \mathrm{rand}(D,K), \mathbf{Z} \gets \mathrm{rand}(K,N)$
-	\item repeat for $\mathit{maxIters}$:
-	\item Update $\mathbf{U}$: $u_{d,k} \gets u_{d,k} \frac{(\mathbf{X}\mathbf{Z}^T)_{d,k}}{(\mathbf{U}\mathbf{Z}\mathbf{Z}^T)_{d,k}}$
-	\item Update $\mathbf{Z}$: $z_{k,n} \gets z_{k,n} \frac{(\mathbf{U}^T\mathbf{X})_{k,n}}{(\mathbf{U}^T\mathbf{U}\mathbf{Z})_{k,n}}$
-\end{inparaenum}
 
 \raggedcolumns
 \end{multicols*}
